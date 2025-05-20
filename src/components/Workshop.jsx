@@ -29,17 +29,17 @@ export default function Workshop() {
   });
 
   const fissureImages = [
-    { label: "12", url: "/public/repair-places/12.png" },
-    { label: "1:5", url: "/public/repair-places/1:5.png" },
-    { label: "3", url: "/public/repair-places/3.png" },
-    { label: "4:5", url: "/public/repair-places/4:5.png" },
-    { label: "6", url: "/public/repair-places/6.png" },
-    { label: "7:5", url: "/public/repair-places/7:5.png" },
-    { label: "9", url: "/public/repair-places/9.png" },
-    { label: "10:5", url: "/public/repair-places/10:5.png" },
-    { label: "left-heart", url: "/public/repair-places/left-heart.png" },
-    { label: "right-heart", url: "/public/repair-places/right-heart.png" },
-    { label: "core-heart", url: "/public/repair-places/core-heart.png" },
+    { label: "12", url: "/repair-places/12.png" },
+    { label: "1:5", url: "/repair-places/1:5.png" },
+    { label: "3", url: "/repair-places/3.png" },
+    { label: "4:5", url: "/repair-places/4:5.png" },
+    { label: "6", url: "/repair-places/6.png" },
+    { label: "7:5", url: "/repair-places/7:5.png" },
+    { label: "9", url: "/repair-places/9.png" },
+    { label: "10:5", url: "/repair-places/10:5.png" },
+    { label: "left-heart", url: "/repair-places/left-heart.png" },
+    { label: "right-heart", url: "/repair-places/right-heart.png" },
+    { label: "core-heart", url: "/repair-places/core-heart.png" },
   ];
 
   const [page, setPage] = useState(1);
