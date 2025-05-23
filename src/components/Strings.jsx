@@ -186,8 +186,8 @@ useEffect(() => {
                         href={`mailto:${entry.mail}?subject=Encordado&body=Hola ${entry.name}, tu raqueta encordada con ${entry.string} está lista para ser retirada.`}
                         onClick={() => handleComplete(entry.id)}
                         style={{
-                          pointerEvents: entry.completed ? "none" : "auto",
-                          opacity: entry.completed ? 0.5 : 1,
+                          pointerEvents: !entry.completed ? "none" : "auto",
+                          opacity: !entry.completed ? 0.5 : 1,
                         }}
                       >
                         <i className="fa-solid fa-envelope"></i>

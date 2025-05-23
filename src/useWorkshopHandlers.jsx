@@ -15,7 +15,7 @@ export const useWorkshopHandlers = (initialData) => {
   }
 
 const handleSubmit = async () => {
-  const now = new Date();
+  const now = new Date(); 
   const currentDate = now.toISOString().split("T")[0]; // yyyy-mm-dd
   const currentTime = now.toTimeString().split(" ")[0].slice(0, 5); // hh:mm
 

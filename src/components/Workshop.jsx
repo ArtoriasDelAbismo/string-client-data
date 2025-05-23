@@ -11,7 +11,6 @@ export default function Workshop() {
     handleComplete,
     handleDelete,
     handleSubmit,
-    setNextId,
     setSearchTerm,
     setSubmittedData,
     handleToggleCheck,
@@ -283,7 +282,7 @@ export default function Workshop() {
                 <td style={tdStyle}>
                   <div>
                     <button onClick={() => {handleToggleCheck(entry.id, entry.completed)}}>
-                      <i className="fa-solid fa-check"></i>
+                      {entry.completed ? <i className="fa-solid fa-xmark"></i> : <i className="fa-solid fa-check"></i> }
                     </button>
                     <button>
                       <a
