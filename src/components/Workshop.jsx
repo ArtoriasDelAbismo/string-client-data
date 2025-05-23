@@ -14,7 +14,7 @@ export default function Workshop() {
     setNextId,
     setSearchTerm,
     setSubmittedData,
-    handleCheck,
+    handleToggleCheck,
   } = useWorkshopHandlers({
     name: "",
     lastName: "",
@@ -282,7 +282,7 @@ export default function Workshop() {
                 <td style={tdStyle}>{entry.time}</td>
                 <td style={tdStyle}>
                   <div>
-                    <button onClick={() => handleCheck(entry.id)}>
+                    <button onClick={() => {handleToggleCheck(entry.id, entry.completed)}}>
                       <i className="fa-solid fa-check"></i>
                     </button>
                     <button>

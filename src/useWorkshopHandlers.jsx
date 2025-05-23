@@ -69,33 +69,33 @@ const handleSubmit = async () => {
   const handleSearch = (e) => {
     setSearchTerm(e.target.value.toLowerCase());
   };
-  const handleCheck = async (id) => {
-    console.log("🔍 handleCheck called with id:", id); // Add this
 
-    if (!id || typeof id !== "number") {
-      console.error("🚫 Invalid ID passed to handleCheck:", id);
-      return;
-    }
+const handleToggleCheck = async (id, currentStatus) => {
+  console.log("🔄 handleToggleCheck called with id:", id, "currentStatus:", currentStatus);
 
-    const { data, error } = await supabase
-      .from("workshop-data")
-      .update({ completed: true })
-      .eq("id", id)
-      .select(); // include select to get proper error messages
+  if (!Number.isInteger(id) || id < 0) {
+    console.error("🚫 Invalid ID passed to handleToggleCheck:", id);
+    return;
+  }
 
-    if (error) {
-      console.error("❌ Failed to update:", error.message);
-    } else {
-      console.log("✅ Updated row:", data);
+  const { data, error } = await supabase
+    .from("string-client-data")
+    .update({ completed: !currentStatus })
+    .eq("id", id)
+    .select();
 
-      // Update local state
-      setSubmittedData((prev) =>
-        prev.map((entry) =>
-          entry.id === id ? { ...entry, completed: true } : entry
-        )
-      );
-    }
-  };
+  if (error) {
+    console.error("❌ Failed to update:", error.message);
+  } else {
+    console.log("✅ Toggled row:", data);
+
+    setSubmittedData((prev) =>
+      prev.map((entry) =>
+        entry.id === id ? { ...entry, completed: !currentStatus } : entry
+      )
+    );
+  }
+};
 
   return {
     formData,
@@ -109,6 +109,6 @@ const handleSubmit = async () => {
     setFormData,
     setSearchTerm,
     setSubmittedData,
-    handleCheck,
+    handleToggleCheck,
   };
 };

@@ -11,6 +11,7 @@ export default function Strings() {
     handleComplete,
     handleDelete,
     handleSubmit,
+    handleToggleCheck,
     setNextId,
     setSearchTerm,
     setSubmittedData,
@@ -27,15 +28,24 @@ export default function Strings() {
 
   const [page, setPage] = useState(1);
 
-  useEffect(() => {
-    const fetchFilteredData = async () => {
-      const results = await fetchEntry(searchTerm, page);
-      setSubmittedData(results);
-      const maxId = results.reduce((max, item) => Math.max(max, item.id), 0);
-      setNextId(maxId + 1);
-    };
-    fetchFilteredData();
-  }, [searchTerm, page]);
+useEffect(() => {
+  const fetchFilteredData = async () => {
+    const results = await fetchEntry(searchTerm, page);
+
+    // Ensure every entry has a `completed` boolean
+    const sanitizedResults = results.map((entry) => ({
+      ...entry,
+      completed: entry.completed ?? false,
+    }));
+
+    setSubmittedData(sanitizedResults);
+
+    const maxId = sanitizedResults.reduce((max, item) => Math.max(max, item.id), 0);
+    setNextId(maxId + 1);
+  };
+  fetchFilteredData();
+}, [searchTerm, page]);
+
 
   const thStyle = {
     border: "1px solid #ccc",
@@ -168,6 +178,9 @@ export default function Strings() {
                 <td style={tdStyle}>{entry.time}</td>
                 <td style={tdStyle}>
                   <div>
+                    <button onClick={() => {handleToggleCheck(entry.id, entry.completed)}}>
+                      <i className="fa-solid fa-check"></i>
+                    </button>
                     <button>
                       <a
                         href={`mailto:${entry.mail}?subject=Encordado&body=Hola ${entry.name}, tu raqueta encordada con ${entry.string} está lista para ser retirada.`}
