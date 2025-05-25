@@ -79,7 +79,7 @@ const handleToggleCheck = async (id, currentStatus) => {
   }
 
   const { data, error } = await supabase
-    .from("string-client-data")
+    .from("workshop-data")
     .update({ completed: !currentStatus })
     .eq("id", id)
     .select();
