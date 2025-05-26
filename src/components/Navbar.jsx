@@ -3,12 +3,20 @@ import { Link } from "react-router-dom";
 
 export default function Navbar() {
   return (
-    <header style={{ position: "absolute", top: "0", left: "0", width: "100%", fontSize:"small" }}>
-      <nav style={{ display: "flex", height:"76px" }}>
+    <header
+      style={{
+        position: "absolute",
+        top: "0",
+        left: "0",
+        width: "100%",
+        fontSize: "small",
+      }}
+    >
+      <nav style={{ display: "flex", height: "76px" }}>
         <div style={{ display: "flex", alignSelf: "center", padding: "20px" }}>
           <img style={{ width: "150px" }} src="/logoTBWorkshop.png" alt="" />
         </div>
-        <div style={{display:'flex', alignItems:'center'}}>
+        <div style={{ display: "flex", alignItems: "center" }}>
           <ul style={{ listStyle: "none", display: "flex", gap: "20px" }}>
             <Link to={"/"}>Home</Link>
             <Link to={"/Strings"}>Strings</Link>
@@ -30,8 +38,11 @@ export default function Navbar() {
               >
                 Smart Manager
               </a>
-            </li>          </ul>
+            </li>{" "}
+          </ul>
         </div>
+        <p style={{position:'absolute', top:'0', right:'9px'}}>v {__APP_VERSION__}</p>
+
       </nav>
     </header>
   );
