@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useWorkshopHandlers } from "../useWorkshopHandlers";
 import { fetchWorkshopEntry } from "../db";
+import Navbar from "./Navbar";
 
 export default function Workshop() {
   const {
@@ -28,23 +29,23 @@ export default function Workshop() {
   });
 
   const fissureImages = [
-    { label: "12", url: "/repair-places/12.png" },
-    { label: "1:5", url: "/repair-places/1:5.png" },
-    { label: "3", url: "/repair-places/3.png" },
-    { label: "4:5", url: "/repair-places/4:5.png" },
-    { label: "6", url: "/repair-places/6.png" },
-    { label: "7:5", url: "/repair-places/7:5.png" },
-    { label: "9", url: "/repair-places/9.png" },
-    { label: "10:5", url: "/repair-places/10:5.png" },
-    { label: "left-heart", url: "/repair-places/left-heart.png" },
-    { label: "right-heart", url: "/repair-places/right-heart.png" },
-    { label: "core-heart", url: "/repair-places/core-heart.png" },
+    { label: "00", url: "/repair-places/12.png" },
+    { label: "13:30", url: "/repair-places/1:5.png" },
+    { label: "15", url: "/repair-places/3.png" },
+    { label: "16:30", url: "/repair-places/4:5.png" },
+    { label: "18", url: "/repair-places/6.png" },
+    { label: "19:30", url: "/repair-places/7:5.png" },
+    { label: "21", url: "/repair-places/9.png" },
+    { label: "22:30", url: "/repair-places/10:5.png" },
+    { label: "Left-heart", url: "/repair-places/left-heart.png" },
+    { label: "Right-heart", url: "/repair-places/right-heart.png" },
+    { label: "Core-heart", url: "/repair-places/core-heart.png" },
+    { label: "Bottom-cap", url: "/repair-places/bottom-cap.png" },
   ];
 
   const [page, setPage] = useState(1);
   const [showFissureSelector, setShowFissureSelector] = useState(false);
   const [modalImage, setModalImage] = useState(null);
-
 
   useEffect(() => {
     const fetchFilteredData = async () => {
@@ -69,7 +70,9 @@ export default function Workshop() {
 
   return (
     <>
+      <Navbar />
       <form
+      style={{marginTop:'100px'}}
         onSubmit={(e) => {
           e.preventDefault();
           handleSubmit();
@@ -147,6 +150,7 @@ export default function Workshop() {
           >
             <div
               style={{
+                maxWidth:'675px',
                 background: "white",
                 padding: "20px",
                 borderRadius: "8px",
@@ -156,7 +160,11 @@ export default function Workshop() {
               }}
             >
               {fissureImages.map((img) => (
+                <div style={{display:'flex', flexDirection:'column'}}>
+                
+                <p style={{color:'black', fontWeight:'bold'}}>{img.label}</p>
                 <img
+                className="image-selector-img"
                   key={img.label}
                   src={img.url}
                   alt={img.label}
@@ -179,6 +187,7 @@ export default function Workshop() {
                     borderRadius: "6px",
                   }}
                 />
+                </div>
               ))}
               <button
                 onClick={() => setShowFissureSelector(false)}
@@ -281,8 +290,16 @@ export default function Workshop() {
                 <td style={tdStyle}>{entry.time}</td>
                 <td style={tdStyle}>
                   <div>
-                    <button onClick={() => {handleToggleCheck(entry.id, entry.completed)}}>
-                      {entry.completed ? <i className="fa-solid fa-xmark"></i> : <i className="fa-solid fa-check"></i> }
+                    <button
+                      onClick={() => {
+                        handleToggleCheck(entry.id, entry.completed);
+                      }}
+                    >
+                      {entry.completed ? (
+                        <i className="fa-solid fa-xmark"></i>
+                      ) : (
+                        <i className="fa-solid fa-check"></i>
+                      )}
                     </button>
                     <button>
                       <a
@@ -315,35 +332,34 @@ export default function Workshop() {
         </table>
 
         {modalImage && (
-  <div
-    onClick={() => setModalImage(null)}
-    style={{
-      position: "fixed",
-      top: 0,
-      left: 0,
-      width: "100vw",
-      height: "100vh",
-      backgroundColor: "rgba(0, 0, 0, 0.7)",
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "center",
-      zIndex: 1000,
-      cursor: "zoom-out",
-    }}
-  >
-    <img
-      src={modalImage}
-      alt="Fissure Site"
-      style={{
-        maxWidth: "90%",
-        maxHeight: "90%",
-        borderRadius: "10px",
-        boxShadow: "0 0 20px rgba(0,0,0,0.6)",
-      }}
-    />
-  </div>
-)}
-
+          <div
+            onClick={() => setModalImage(null)}
+            style={{
+              position: "fixed",
+              top: 0,
+              left: 0,
+              width: "100vw",
+              height: "100vh",
+              backgroundColor: "rgba(0, 0, 0, 0.7)",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              zIndex: 1000,
+              cursor: "zoom-out",
+            }}
+          >
+            <img
+              src={modalImage}
+              alt="Fissure Site"
+              style={{
+                maxWidth: "90%",
+                maxHeight: "90%",
+                borderRadius: "10px",
+                boxShadow: "0 0 20px rgba(0,0,0,0.6)",
+              }}
+            />
+          </div>
+        )}
 
         {/* Pagination */}
         <div style={{ marginTop: "20px", display: "flex", gap: "20px" }}>

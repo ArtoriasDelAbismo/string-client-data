@@ -1,9 +1,11 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import Navbar from './Navbar'
 
 export default function Home() {
   return (
     <>
+    <Navbar />
         <h1>Tierra Database</h1>
         <div style={{display:'flex', justifyContent:'center', gap:'10px'}}>
             <div>

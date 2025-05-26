@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useFormHandlers } from "../useFormHandlers";
 import { fetchEntry } from "../db";
+import Navbar from "./Navbar";
 
 export default function Strings() {
   const {
@@ -62,7 +63,9 @@ useEffect(() => {
 
   return (
     <>
+    <Navbar />
       <form
+        style={{marginTop:'100px'}}
         onSubmit={(e) => {
           e.preventDefault();
           handleSubmit();
