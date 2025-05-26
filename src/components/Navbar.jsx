@@ -33,7 +33,7 @@ export default function Navbar() {
             <li>
               <a
                 href="https://tierrabatida.com.ar/"
-                target="_blank"
+                target="_blank" 
                 rel="noopener noreferrer"
               >
                 Smart Manager
@@ -41,8 +41,9 @@ export default function Navbar() {
             </li>{" "}
           </ul>
         </div>
-        <p style={{position:'absolute', top:'0', right:'9px'}}>v {__APP_VERSION__}</p>
-
+        <p style={{ position: "absolute", top: "0", right: "9px", color:'#555959' }}>
+          v {__APP_VERSION__}
+        </p>
       </nav>
     </header>
   );
