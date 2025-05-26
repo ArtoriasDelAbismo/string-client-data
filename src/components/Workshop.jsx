@@ -20,10 +20,10 @@ export default function Workshop() {
     lastName: "",
     service: "",
     fissureSite: "",
-    notes: "",
     mail: "",
     phone: "",
     racket: "",
+    notes: "",
     date: "",
     time: "",
   });
@@ -92,6 +92,7 @@ export default function Workshop() {
             { label: "Mail", name: "mail", type: "email" },
             { label: "Phone", name: "phone", type: "text" },
             { label: "Racket", name: "racket", type: "text" },
+            { label: "Notes", name: "notes", type: "text" },
             { label: "Service", name: "service", type: "text" },
             { label: "Notes", name: "notes", type: "text" },
           ].map(({ label, name, type }) => (
@@ -243,7 +244,6 @@ export default function Workshop() {
         >
           <thead style={{ color: "black" }}>
             <tr>
-              <th style={thStyle}>ID</th>
               <th style={thStyle}>Name</th>
               <th style={thStyle}>Last Name</th>
               <th style={thStyle}>Mail</th>
@@ -251,6 +251,7 @@ export default function Workshop() {
               <th style={thStyle}>Racket</th>
               <th style={thStyle}>Service</th>
               <th style={thStyle}>Fissure Site</th>
+              <th style={thStyle}>Notes</th>
               <th style={thStyle}>Date</th>
               <th style={thStyle}>Time</th>
               <th style={thStyle}>Done/Delete</th>
@@ -261,10 +262,9 @@ export default function Workshop() {
               <tr
                 key={entry.id}
                 style={{
-                  backgroundColor: entry.completed ? "#419b45" : "transparent",
+                  backgroundColor: entry.completed ? "#419b45" : "transparent", fontSize:'small'
                 }}
               >
-                <td style={tdStyle}>{entry.id}</td>
                 <td style={tdStyle}>{entry.name}</td>
                 <td style={tdStyle}>{entry.lastName}</td>
                 <td style={tdStyle}>{entry.mail}</td>
@@ -285,6 +285,7 @@ export default function Workshop() {
                     />
                   )}
                 </td>
+                                <td style={tdStyle}>{entry.notes}</td>
 
                 <td style={tdStyle}>{entry.date}</td>
                 <td style={tdStyle}>{entry.time}</td>
