@@ -54,6 +54,15 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
+.image-selector-img {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.image-selector-img:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;
