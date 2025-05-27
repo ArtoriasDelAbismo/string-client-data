@@ -9,8 +9,8 @@ export default function Footer() {
         display: "flex",
         justifyContent: "center",
         width: "100%",
-        height:'110px',
-        alignItems:'center',
+        height: "110px",
+        alignItems: "center",
         left: "0",
         fontSize: "small",
         backgroundColor: "#242424",
@@ -18,7 +18,6 @@ export default function Footer() {
     >
       <div>
         <p>
-          Created by{" "}
           <a href="https://journadev.netlify.app/" target="_blank">
             Journadev
           </a>{" "}
