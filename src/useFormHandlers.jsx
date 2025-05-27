@@ -53,10 +53,22 @@ export const useFormHandlers = (initialData) => {
     setSubmittedData(updatedData);
   };
 
-  const handleDelete = (id) => {
-    const updatedData = submittedData.filter((entry) => entry.id !== id);
-    setSubmittedData(updatedData);
-  };
+const handleDelete = async (id) => {
+  const { error } = await supabase
+    .from("string-client-data")
+    .delete()
+    .eq("id", id);
+
+  if (error) {
+    console.error("❌ Failed to delete entry:", error.message);
+    return;
+  }
+
+  // Only update local state if deletion was successful
+  setSubmittedData((prev) => prev.filter((entry) => entry.id !== id));
+  console.log("🗑️ Successfully deleted entry with ID:", id);
+};
+
 
   const handleSearch = (e) => {
     setSearchTerm(e.target.value.toLowerCase());
