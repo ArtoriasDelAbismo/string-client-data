@@ -55,6 +55,7 @@ export default function Workshop() {
     fetchFilteredData();
   }, [searchTerm, page]);
 
+
   const thStyle = {
     border: "1px solid #ccc",
     padding: "8px",

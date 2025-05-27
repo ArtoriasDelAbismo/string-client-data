@@ -10,6 +10,8 @@ export default function Navbar() {
         left: "0",
         width: "100%",
         fontSize: "small",
+        zIndex:'2',
+        backgroundColor:'#242424'
       }}
     >
       <nav style={{ display: "flex", height: "76px" }}>

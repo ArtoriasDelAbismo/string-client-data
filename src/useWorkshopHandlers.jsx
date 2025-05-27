@@ -30,14 +30,13 @@ const handleSubmit = async () => {
   const { data, error } = await supabase
     .from("workshop-data")
     .insert(newEntry)
-    .select(); // this returns the inserted row(s) including auto-generated id
+    .select(); 
 
   if (error) {
     console.error("❌ Error inserting:", error.message);
     return;
   }
 
-  // Add the returned entry (with valid `id`) to the state
   setSubmittedData((prev) => [...prev, data[0]]);
 
   setFormData({
@@ -96,6 +95,8 @@ const handleToggleCheck = async (id, currentStatus) => {
     );
   }
 };
+
+
 
   return {
     formData,
