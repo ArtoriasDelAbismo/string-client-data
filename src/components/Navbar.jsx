@@ -34,7 +34,7 @@ export default function Navbar() {
             </li>
             <li>
               <a
-                href="https://tierrabatida.com.ar/"
+                href="https://tierrabatida.com.ar/wp-admin/admin.php?page=smart-manager"
                 target="_blank" 
                 rel="noopener noreferrer"
               >
