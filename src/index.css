@@ -108,7 +108,7 @@ button:focus-visible {
 @media (max-width: 1047px) {
 
   #root{ 
-    width: 569px;
+    width: 400px;
   }
   table {
     min-width: unset;
