@@ -28,25 +28,30 @@ export default function Strings() {
   });
 
   const [page, setPage] = useState(1);
+  const [loading, setLoading] = useState(false);
 
-useEffect(() => {
-  const fetchFilteredData = async () => {
-    const results = await fetchEntry(searchTerm, page);
+  useEffect(() => {
+    const fetchFilteredData = async () => {
+      setLoading(true);
+      const results = await fetchEntry(searchTerm, page);
 
-    // Ensure every entry has a `completed` boolean
-    const sanitizedResults = results.map((entry) => ({
-      ...entry,
-      completed: entry.completed ?? false,
-    }));
+      // Ensure every entry has a `completed` boolean
+      const sanitizedResults = results.map((entry) => ({
+        ...entry,
+        completed: entry.completed ?? false,
+      }));
 
-    setSubmittedData(sanitizedResults);
+      setSubmittedData(sanitizedResults);
 
-    const maxId = sanitizedResults.reduce((max, item) => Math.max(max, item.id), 0);
-    setNextId(maxId + 1);
-  };
-  fetchFilteredData();
-}, [searchTerm, page]);
-
+      const maxId = sanitizedResults.reduce(
+        (max, item) => Math.max(max, item.id),
+        0
+      );
+      setNextId(maxId + 1);
+      setLoading(false);
+    };
+    fetchFilteredData();
+  }, [searchTerm, page]);
 
   const thStyle = {
     border: "1px solid #ccc",
@@ -63,9 +68,9 @@ useEffect(() => {
 
   return (
     <>
-    <Navbar />
+      <Navbar />
       <form
-        style={{marginTop:'100px'}}
+        style={{ marginTop: "100px" }}
         onSubmit={(e) => {
           e.preventDefault();
           handleSubmit();
@@ -141,70 +146,84 @@ useEffect(() => {
           </button>
         </div>
 
-        <table
-          style={{
-            width: "100%",
-            borderCollapse: "collapse",
-            minWidth: "1004px",
-          }}
-        >
-          <thead style={{ color: "black" }}>
-            <tr>
-              <th style={thStyle}>ID</th>
-              <th style={thStyle}>Name</th>
-              <th style={thStyle}>Last Name</th>
-              <th style={thStyle}>String</th>
-              <th style={thStyle}>Caliber</th>
-              <th style={thStyle}>Tension</th>
-              <th style={thStyle}>Mail</th>
-              <th style={thStyle}>Date</th>
-              <th style={thStyle}>Time</th>
-              <th style={thStyle}>Done/Delete</th>
-            </tr>
-          </thead>
-          <tbody>
-            {submittedData.map((entry) => (
-              <tr
-                key={entry.id}
-                style={{
-                  backgroundColor: entry.completed ? "#419b45" : "transparent",
-                }}
-              >
-                <td style={tdStyle}>{entry.id}</td>
-                <td style={tdStyle}>{entry.name}</td>
-                <td style={tdStyle}>{entry.lastName}</td>
-                <td style={tdStyle}>{entry.string}</td>
-                <td style={tdStyle}>{entry.caliber}</td>
-                <td style={tdStyle}>{entry.tension}</td>
-                <td style={tdStyle}>{entry.mail}</td>
-                <td style={tdStyle}>{entry.date}</td>
-                <td style={tdStyle}>{entry.time}</td>
-                <td style={tdStyle}>
-                  <div>
-                    <button onClick={() => {handleToggleCheck(entry.id, entry.completed)}}>
-                    {entry.completed ? <i className="fa-solid fa-xmark"></i> : <i className="fa-solid fa-check"></i> } 
-                    </button>
-                    <button>
-                      <a
-                        href={`mailto:${entry.mail}?subject=Encordado&body=Hola ${entry.name}, tu raqueta encordada con ${entry.string} está lista para ser retirada.`}
-                        onClick={() => handleComplete(entry.id)}
-                        style={{
-                          pointerEvents: !entry.completed ? "none" : "auto",
-                          opacity: !entry.completed ? 0.5 : 1,
+        {loading ? (
+          <div className="spinner"></div>
+        ) : (
+          <table
+            style={{
+              width: "100%",
+              borderCollapse: "collapse",
+              minWidth: "1004px",
+            }}
+          >
+            <thead style={{ color: "black" }}>
+              <tr>
+                <th style={thStyle}>ID</th>
+                <th style={thStyle}>Name</th>
+                <th style={thStyle}>Last Name</th>
+                <th style={thStyle}>String</th>
+                <th style={thStyle}>Caliber</th>
+                <th style={thStyle}>Tension</th>
+                <th style={thStyle}>Mail</th>
+                <th style={thStyle}>Date</th>
+                <th style={thStyle}>Time</th>
+                <th style={thStyle}>Done/Delete</th>
+              </tr>
+            </thead>
+            <tbody>
+              {submittedData.map((entry) => (
+                <tr
+                  key={entry.id}
+                  style={{
+                    backgroundColor: entry.completed
+                      ? "#419b45"
+                      : "transparent",
+                  }}
+                >
+                  <td style={tdStyle}>{entry.id}</td>
+                  <td style={tdStyle}>{entry.name}</td>
+                  <td style={tdStyle}>{entry.lastName}</td>
+                  <td style={tdStyle}>{entry.string}</td>
+                  <td style={tdStyle}>{entry.caliber}</td>
+                  <td style={tdStyle}>{entry.tension}</td>
+                  <td style={tdStyle}>{entry.mail}</td>
+                  <td style={tdStyle}>{entry.date}</td>
+                  <td style={tdStyle}>{entry.time}</td>
+                  <td style={tdStyle}>
+                    <div>
+                      <button
+                        onClick={() => {
+                          handleToggleCheck(entry.id, entry.completed);
                         }}
                       >
-                        <i className="fa-solid fa-envelope"></i>
-                      </a>
-                    </button>
-                    <button onClick={() => handleDelete(entry.id)}>
-                      <i className="fa-solid fa-trash"></i>
-                    </button>
-                  </div>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+                        {entry.completed ? (
+                          <i className="fa-solid fa-xmark"></i>
+                        ) : (
+                          <i className="fa-solid fa-check"></i>
+                        )}
+                      </button>
+                      <button>
+                        <a
+                          href={`mailto:${entry.mail}?subject=Encordado&body=Hola ${entry.name}, tu raqueta encordada con ${entry.string} está lista para ser retirada.`}
+                          onClick={() => handleComplete(entry.id)}
+                          style={{
+                            pointerEvents: !entry.completed ? "none" : "auto",
+                            opacity: !entry.completed ? 0.5 : 1,
+                          }}
+                        >
+                          <i className="fa-solid fa-envelope"></i>
+                        </a>
+                      </button>
+                      <button onClick={() => handleDelete(entry.id)}>
+                        <i className="fa-solid fa-trash"></i>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
 
         {/* Pagination */}
         <div style={{ marginTop: "20px", display: "flex", gap: "20px" }}>

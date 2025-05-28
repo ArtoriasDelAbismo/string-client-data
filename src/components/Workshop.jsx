@@ -28,6 +28,8 @@ export default function Workshop() {
     time: "",
   });
 
+  const [loading, setLoading] = useState(false)
+
   const fissureImages = [
     { label: "00", url: "/repair-places/12.png" },
     { label: "13:30", url: "/repair-places/1:5.png" },
@@ -49,12 +51,13 @@ export default function Workshop() {
 
   useEffect(() => {
     const fetchFilteredData = async () => {
+      setLoading(true)
       const results = await fetchWorkshopEntry(searchTerm, page);
       setSubmittedData(results);
+      setLoading(false)
     };
     fetchFilteredData();
   }, [searchTerm, page]);
-
 
   const thStyle = {
     border: "1px solid #ccc",
@@ -73,7 +76,7 @@ export default function Workshop() {
     <>
       <Navbar />
       <form
-      style={{marginTop:'100px'}}
+        style={{ marginTop: "100px" }}
         onSubmit={(e) => {
           e.preventDefault();
           handleSubmit();
@@ -95,7 +98,6 @@ export default function Workshop() {
             { label: "Racket", name: "racket", type: "text" },
             { label: "Notes", name: "notes", type: "text" },
             { label: "Service", name: "service", type: "text" },
-            { label: "Notes", name: "notes", type: "text" },
           ].map(({ label, name, type }) => (
             <div key={name}>
               <label>
@@ -152,7 +154,7 @@ export default function Workshop() {
           >
             <div
               style={{
-                maxWidth:'675px',
+                maxWidth: "675px",
                 background: "white",
                 padding: "20px",
                 borderRadius: "8px",
@@ -162,33 +164,34 @@ export default function Workshop() {
               }}
             >
               {fissureImages.map((img) => (
-                <div style={{display:'flex', flexDirection:'column'}}>
-                
-                <p style={{color:'black', fontWeight:'bold'}}>{img.label}</p>
-                <img
-                className="image-selector-img"
-                  key={img.label}
-                  src={img.url}
-                  alt={img.label}
-                  onClick={() => {
-                    handleChange({
-                      target: {
-                        name: "fissureSite",
-                        value: img.url,
-                      },
-                    });
-                    setShowFissureSelector(false);
-                  }}
-                  style={{
-                    width: "100px",
-                    cursor: "pointer",
-                    border:
-                      formData.fissureSite === img.url
-                        ? "3px solid green"
-                        : "2px solid transparent",
-                    borderRadius: "6px",
-                  }}
-                />
+                <div style={{ display: "flex", flexDirection: "column" }}>
+                  <p style={{ color: "black", fontWeight: "bold" }}>
+                    {img.label}
+                  </p>
+                  <img
+                    className="image-selector-img"
+                    key={img.label}
+                    src={img.url}
+                    alt={img.label}
+                    onClick={() => {
+                      handleChange({
+                        target: {
+                          name: "fissureSite",
+                          value: img.url,
+                        },
+                      });
+                      setShowFissureSelector(false);
+                    }}
+                    style={{
+                      width: "100px",
+                      cursor: "pointer",
+                      border:
+                        formData.fissureSite === img.url
+                          ? "3px solid green"
+                          : "2px solid transparent",
+                      borderRadius: "6px",
+                    }}
+                  />
                 </div>
               ))}
               <button
@@ -235,103 +238,108 @@ export default function Workshop() {
             <i className="fa-solid fa-magnifying-glass"></i>
           </button>
         </div>
-
-        <table
-          style={{
-            width: "100%",
-            borderCollapse: "collapse",
-            minWidth: "1004px",
-          }}
-        >
-          <thead style={{ color: "black" }}>
-            <tr>
-              <th style={thStyle}>Name</th>
-              <th style={thStyle}>Last Name</th>
-              <th style={thStyle}>Mail</th>
-              <th style={thStyle}>Phone</th>
-              <th style={thStyle}>Racket</th>
-              <th style={thStyle}>Service</th>
-              <th style={thStyle}>Fissure Site</th>
-              <th style={thStyle}>Notes</th>
-              <th style={thStyle}>Date</th>
-              <th style={thStyle}>Time</th>
-              <th style={thStyle}>Done/Delete</th>
-            </tr>
-          </thead>
-          <tbody>
-            {submittedData.map((entry) => (
-              <tr
-                key={entry.id}
-                style={{
-                  backgroundColor: entry.completed ? "#419b45" : "transparent", fontSize:'small'
-                }}
-              >
-                <td style={tdStyle}>{entry.name}</td>
-                <td style={tdStyle}>{entry.lastName}</td>
-                <td style={tdStyle}>{entry.mail}</td>
-                <td style={tdStyle}>{entry.phone}</td>
-                <td style={tdStyle}>{entry.racket}</td>
-                <td style={tdStyle}>{entry.service}</td>
-                <td style={tdStyle}>
-                  {entry.fissureSite && (
-                    <img
-                      src={entry.fissureSite}
-                      alt="Fissure site"
-                      style={{
-                        width: "60px",
-                        borderRadius: "6px",
-                        cursor: "pointer",
-                      }}
-                      onClick={() => setModalImage(entry.fissureSite)}
-                    />
-                  )}
-                </td>
-                                <td style={tdStyle}>{entry.notes}</td>
-
-                <td style={tdStyle}>{entry.date}</td>
-                <td style={tdStyle}>{entry.time}</td>
-                <td style={tdStyle}>
-                  <div>
-                    <button
-                      onClick={() => {
-                        handleToggleCheck(entry.id, entry.completed);
-                      }}
-                    >
-                      {entry.completed ? (
-                        <i className="fa-solid fa-xmark"></i>
-                      ) : (
-                        <i className="fa-solid fa-check"></i>
-                      )}
-                    </button>
-                    <button>
-                      <a
-                        href={
-                          entry.completed
-                            ? `mailto:${entry.mail}?subject=Servicio&body=Hola ${entry.name}, tu servicio de ${entry.service} está listo para ser retirado.`
-                            : undefined
-                        }
+        {loading ? (
+          <div className="spinner"></div>
+        ) : (
+          <table
+            style={{
+              width: "100%",
+              borderCollapse: "collapse",
+              minWidth: "1004px",
+            }}
+          >
+            <thead style={{ color: "black" }}>
+              <tr>
+                <th style={thStyle}>Name</th>
+                <th style={thStyle}>Last Name</th>
+                <th style={thStyle}>Mail</th>
+                <th style={thStyle}>Phone</th>
+                <th style={thStyle}>Racket</th>
+                <th style={thStyle}>Service</th>
+                <th style={thStyle}>Fissure Site</th>
+                <th style={thStyle}>Notes</th>
+                <th style={thStyle}>Date</th>
+                <th style={thStyle}>Time</th>
+                <th style={thStyle}>Done/Delete</th>
+              </tr>
+            </thead>
+            <tbody>
+              {submittedData.map((entry) => (
+                <tr
+                  key={entry.id}
+                  style={{
+                    backgroundColor: entry.completed ? "#419b45" : "transparent",
+                    fontSize: "small",
+                  }}
+                >
+                  <td style={tdStyle}>{entry.name}</td>
+                  <td style={tdStyle}>{entry.lastName}</td>
+                  <td style={tdStyle}>{entry.mail}</td>
+                  <td style={tdStyle}>{entry.phone}</td>
+                  <td style={tdStyle}>{entry.racket}</td>
+                  <td style={tdStyle}>{entry.service}</td>
+                  <td style={tdStyle}>
+                    {entry.fissureSite && (
+                      <img
+                        src={entry.fissureSite}
+                        alt="Fissure site"
                         style={{
-                          pointerEvents:
-                            entry.completed && !entry.emailSent
-                              ? "auto"
-                              : "none",
-                          opacity:
-                            entry.completed && !entry.emailSent ? 1 : 0.5,
+                          width: "60px",
+                          borderRadius: "6px",
+                          cursor: "pointer",
+                        }}
+                        onClick={() => setModalImage(entry.fissureSite)}
+                      />
+                    )}
+                  </td>
+                  <td style={tdStyle}>{entry.notes}</td>
+
+                  <td style={tdStyle}>{entry.date}</td>
+                  <td style={tdStyle}>{entry.time}</td>
+                  <td style={tdStyle}>
+                    <div>
+                      <button
+                        onClick={() => {
+                          handleToggleCheck(entry.id, entry.completed);
                         }}
                       >
-                        <i className="fa-solid fa-envelope"></i>
-                      </a>
-                    </button>
+                        {entry.completed ? (
+                          <i className="fa-solid fa-xmark"></i>
+                        ) : (
+                          <i className="fa-solid fa-check"></i>
+                        )}
+                      </button>
+                      <button>
+                        <a
+                          href={
+                            entry.completed
+                              ? `mailto:${entry.mail}?subject=Servicio&body=Hola ${entry.name}, tu servicio de ${entry.service} está listo para ser retirado.`
+                              : undefined
+                          }
+                          style={{
+                            pointerEvents:
+                              entry.completed && !entry.emailSent
+                                ? "auto"
+                                : "none",
+                            opacity:
+                              entry.completed && !entry.emailSent ? 1 : 0.5,
+                          }}
+                        >
+                          <i className="fa-solid fa-envelope"></i>
+                        </a>
+                      </button>
 
-                    <button onClick={() => handleDelete(entry.id)}>
-                      <i className="fa-solid fa-trash"></i>
-                    </button>
-                  </div>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+                      <button onClick={() => handleDelete(entry.id)}>
+                        <i className="fa-solid fa-trash"></i>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+
+        )}
 
         {modalImage && (
           <div
