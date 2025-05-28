@@ -26,7 +26,7 @@ const PAGE_SIZE = 10;
 
 export const fetchEntry = async (searchTerm = "", page = 1) => {
   try {
-    const baseSelect = "id, name, lastName, string, caliber, tension, mail, date, time, completed";
+    const baseSelect = "id, name, lastName, string, caliber, tension, racket, mail, date, time, completed";
     let query = supabase
       .from("string-client-data")
       .select(baseSelect)

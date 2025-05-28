@@ -22,6 +22,7 @@ export default function Strings() {
     string: "",
     caliber: "",
     tension: "",
+    racket: "",
     mail: "",
     date: "",
     time: "",
@@ -90,6 +91,7 @@ export default function Strings() {
             { label: "String", name: "string", type: "text" },
             { label: "Caliber", name: "caliber", type: "text" },
             { label: "Tension", name: "tension", type: "text" },
+            { label: "Racket", name: "racket", type: "text" },
             { label: "Mail", name: "mail", type: "email" },
           ].map(({ label, name, type }) => (
             <div key={name}>
@@ -145,10 +147,10 @@ export default function Strings() {
             <i className="fa-solid fa-magnifying-glass"></i>
           </button>
         </div>
-
+            
         {loading ? (
           <div className="spinner"></div>
-        ) : (
+        ) : (       
           <table
             style={{
               width: "100%",
@@ -164,6 +166,7 @@ export default function Strings() {
                 <th style={thStyle}>String</th>
                 <th style={thStyle}>Caliber</th>
                 <th style={thStyle}>Tension</th>
+                <th style={thStyle}>Racket</th>
                 <th style={thStyle}>Mail</th>
                 <th style={thStyle}>Date</th>
                 <th style={thStyle}>Time</th>
@@ -186,6 +189,7 @@ export default function Strings() {
                   <td style={tdStyle}>{entry.string}</td>
                   <td style={tdStyle}>{entry.caliber}</td>
                   <td style={tdStyle}>{entry.tension}</td>
+                  <td style={tdStyle}>{entry.racket}</td>
                   <td style={tdStyle}>{entry.mail}</td>
                   <td style={tdStyle}>{entry.date}</td>
                   <td style={tdStyle}>{entry.time}</td>
