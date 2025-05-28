@@ -23,7 +23,6 @@ export default function Home() {
     <>
       <Navbar />
 
-      {/* Background Image Layer */}
       <div
         style={{
           position: "fixed",
@@ -42,7 +41,6 @@ export default function Home() {
         }}
       />
 
-      {/* Foreground Content Layer */}
       <div
         style={{
           position: "relative",
