@@ -129,3 +129,7 @@ button:focus-visible {
     display: none !important;
   }
 }
+
+.css-y7ab46-MuiPaper-root-MuiDrawer-paper{
+  background-color: #555859;
+}

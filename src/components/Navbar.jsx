@@ -1,52 +1,97 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import {
+  AppBar,
+  Toolbar,
+  IconButton,
+  Drawer,
+  List,
+  ListItem,
+  ListItemText,
+  useMediaQuery,
+  Box,
+} from "@mui/material";
+import MenuIcon from "@mui/icons-material/Menu";
+import { useTheme } from "@mui/material/styles";
 
 export default function Navbar() {
+  const [drawerOpen, setDrawerOpen] = useState(false);
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
+
+  const toggleDrawer = (open) => () => {
+    setDrawerOpen(open);
+  };
+
+  const menuItems = [
+    { label: "Home", to: "/" },
+    { label: "Strings", to: "/Strings" },
+    { label: "Workshop", to: "/Workshop" },
+    { label: "Website", href: "https://tierrabatida.com.ar/" },
+    {
+      label: "Smart Manager",
+      href: "https://tierrabatida.com.ar/wp-admin/admin.php?page=smart-manager",
+    },
+  ];
+
+  const drawerList = (
+    <Box sx={{ width: 250, backgroundColor:'#555859', height:'100%' }} role="presentation" onClick={toggleDrawer(false)}>
+      <List>
+        {menuItems.map(({ label, to, href }) => (
+          <ListItem sx={{color:'white'}} button key={label} component={to ? Link : "a"} to={to} href={href} target={href ? "_blank" : undefined}>
+            <ListItemText primary={label} />
+          </ListItem>
+        ))}
+      </List>
+    </Box>
+  );
+
   return (
-    <header
-      style={{
-        position: "absolute",
-        top: "0",
-        left: "0",
-        width: "100%",
-        fontSize: "small",
-        zIndex:'2',
-        backgroundColor:'#242424'
-      }}
-    >
-      <nav style={{ display: "flex", height: "76px" }}>
-        <div style={{ display: "flex", alignSelf: "center", padding: "20px" }}>
-          <img style={{ width: "150px" }} src="/logoTBWorkshop.png" alt="" />
-        </div>
-        <div className="link-list" style={{ display: "flex", alignItems: "end" }}>
-          <ul style={{ listStyle: "none", display: "flex", gap: "20px" }}>
-            <Link to={"/"}>Home</Link>
-            <Link to={"/Strings"}>Strings</Link>
-            <Link to={"/Workshop"}>Workshop</Link>
-            <li>
-              <a
-                href="https://tierrabatida.com.ar/"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Website
-              </a>
-            </li>
-            <li>
-              <a
-                href="https://tierrabatida.com.ar/wp-admin/admin.php?page=smart-manager"
-                target="_blank" 
-                rel="noopener noreferrer"
-              >
-                Smart Manager
-              </a>
-            </li>{" "}
-          </ul>
-        </div>
-        <p style={{ position: "absolute", top: "0", right: "9px", color:'#555959' }}>
-          v {__APP_VERSION__}
-        </p>
-      </nav>
-    </header>
+    <AppBar position="absolute" sx={{ backgroundColor: "#242424", zIndex: 2 }}>
+      <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
+        {/* Logo */}
+        <Box sx={{ display: "flex", alignItems: "center" }}>
+          <img style={{ width: "150px" }} src="/logoTBWorkshop.png" alt="Logo" />
+        </Box>
+
+        {/* Desktop Nav */}
+        {!isMobile ? (
+          <Box sx={{ display: "flex", gap: 2, alignItems: "center" }}>
+            {menuItems.map(({ label, to, href }) =>
+              to ? (
+                <Link key={label} to={to} style={{ color: '#555859', textDecoration: "none" }}>
+                  {label}
+                </Link>
+              ) : (
+                <a
+                  key={label}
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ color: "#fff", textDecoration: "none" }}
+                >
+                  {label}
+                </a>
+              )
+            )}
+          </Box>
+        ) : (
+          <>
+            {/* Hamburger Icon for Mobile */}
+            <IconButton edge="end" color="inherit" onClick={toggleDrawer(true)}>
+              <MenuIcon />
+            </IconButton>
+            <Drawer anchor="right" open={drawerOpen} onClose={toggleDrawer(false)}>
+              {drawerList}
+            </Drawer>
+          </>
+        )}
+      </Toolbar>
+
+      {/* Version tag */}
+      <Box sx={{ position: "absolute", top: 0, right: 10, color: "#555959", fontSize: "12px" }}>
+        v {__APP_VERSION__}
+      </Box>
+    </AppBar>
   );
 }
