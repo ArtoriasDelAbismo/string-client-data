@@ -92,3 +92,37 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+
+
+.table-container {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.responsive-table {
+  width: 100%;
+  min-width: 1000px;
+  border-collapse: collapse;
+}
+
+@media (max-width: 1047px) {
+
+  #root{ 
+    width: 569px;
+  }
+  table {
+    min-width: unset;
+    font-size: 14px;
+    background-color: #213547;
+  }
+
+  th, td {
+    padding: 4px;
+  }
+
+  form {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+}
