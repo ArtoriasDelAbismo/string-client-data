@@ -125,4 +125,7 @@ button:focus-visible {
     flex-direction: row;
     flex-wrap: wrap;
   }
+  .link-list {
+    display: none !important;
+  }
 }

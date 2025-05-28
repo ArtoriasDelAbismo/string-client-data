@@ -18,7 +18,7 @@ export default function Navbar() {
         <div style={{ display: "flex", alignSelf: "center", padding: "20px" }}>
           <img style={{ width: "150px" }} src="/logoTBWorkshop.png" alt="" />
         </div>
-        <div style={{ display: "flex", alignItems: "end" }}>
+        <div className="link-list" style={{ display: "flex", alignItems: "end" }}>
           <ul style={{ listStyle: "none", display: "flex", gap: "20px" }}>
             <Link to={"/"}>Home</Link>
             <Link to={"/Strings"}>Strings</Link>
