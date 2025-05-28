@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
@@ -6,6 +6,18 @@ import Footer from "./Footer";
 export default function Home() {
   const [backgroundImage, setBackgroundImage] = useState(null);
   const [imageVisible, setImageVisible] = useState(false);
+
+    useEffect(() => {
+    const images = [
+      "/stringing-black-white.jpg",
+      "/broken_racquet_20111.png"
+    ];
+
+    images.forEach((src) => {
+      const img = new Image();
+      img.src = src;
+    });
+  }, []);
 
   return (
     <>
