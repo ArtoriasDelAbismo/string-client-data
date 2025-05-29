@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   AppBar,
   Toolbar,
@@ -13,14 +13,21 @@ import {
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useTheme } from "@mui/material/styles";
+import { supabase } from "../supaBase";
 
 export default function Navbar() {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
+  const navigate = useNavigate();
 
   const toggleDrawer = (open) => () => {
     setDrawerOpen(open);
+  };
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    navigate("/Login");
   };
 
   const menuItems = [
@@ -35,10 +42,22 @@ export default function Navbar() {
   ];
 
   const drawerList = (
-    <Box sx={{ width: 250, backgroundColor:'#555859', height:'100%' }} role="presentation" onClick={toggleDrawer(false)}>
+    <Box
+      sx={{ width: 250, backgroundColor: "#555859", height: "100%" }}
+      role="presentation"
+      onClick={toggleDrawer(false)}
+    >
       <List>
         {menuItems.map(({ label, to, href }) => (
-          <ListItem sx={{color:'white'}} button key={label} component={to ? Link : "a"} to={to} href={href} target={href ? "_blank" : undefined}>
+          <ListItem
+            sx={{ color: "white" }}
+            button
+            key={label}
+            component={to ? Link : "a"}
+            to={to}
+            href={href}
+            target={href ? "_blank" : undefined}
+          >
             <ListItemText primary={label} />
           </ListItem>
         ))}
@@ -51,7 +70,11 @@ export default function Navbar() {
       <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
         {/* Logo */}
         <Box sx={{ display: "flex", alignItems: "center" }}>
-          <img style={{ width: "150px" }} src="/logoTBWorkshop.png" alt="Logo" />
+          <img
+            style={{ width: "150px" }}
+            src="/logoTBWorkshop.png"
+            alt="Logo"
+          />
         </Box>
 
         {/* Desktop Nav */}
@@ -59,7 +82,11 @@ export default function Navbar() {
           <Box sx={{ display: "flex", gap: 2, alignItems: "center" }}>
             {menuItems.map(({ label, to, href }) =>
               to ? (
-                <Link key={label} to={to} style={{ color: '#555859', textDecoration: "none" }}>
+                <Link
+                  key={label}
+                  to={to}
+                  style={{ color: "#555859", textDecoration: "none" }}
+                >
                   {label}
                 </Link>
               ) : (
@@ -74,6 +101,7 @@ export default function Navbar() {
                 </a>
               )
             )}
+            <button onClick={handleLogout}>Logout</button>
           </Box>
         ) : (
           <>
@@ -81,7 +109,11 @@ export default function Navbar() {
             <IconButton edge="end" color="inherit" onClick={toggleDrawer(true)}>
               <MenuIcon />
             </IconButton>
-            <Drawer anchor="right" open={drawerOpen} onClose={toggleDrawer(false)}>
+            <Drawer
+              anchor="right"
+              open={drawerOpen}
+              onClose={toggleDrawer(false)}
+            >
               {drawerList}
             </Drawer>
           </>
@@ -89,7 +121,15 @@ export default function Navbar() {
       </Toolbar>
 
       {/* Version tag */}
-      <Box sx={{ position: "absolute", top: 0, right: 10, color: "#555959", fontSize: "12px" }}>
+      <Box
+        sx={{
+          position: "absolute",
+          top: 0,
+          right: 10,
+          color: "#555959",
+          fontSize: "12px",
+        }}
+      >
         v {__APP_VERSION__}
       </Box>
     </AppBar>
