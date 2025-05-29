@@ -42,6 +42,7 @@ const handleLogin = async (e) => {
           <h2>Login</h2>
           {error && <p style={{ color: "red" }}>{error}</p>}
           <input
+          style={{borderRadius:'4px', height:'30px'}}
             type="email"
             placeholder="Email"
             onChange={(e) => {
@@ -49,6 +50,7 @@ const handleLogin = async (e) => {
             }}
           />
           <input
+          style={{borderRadius:'4px', height:'30px'}}
             type="password"
             placeholder="Password"
             onChange={(e) => {
