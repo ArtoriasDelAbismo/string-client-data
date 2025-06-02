@@ -15,7 +15,10 @@ import MenuIcon from "@mui/icons-material/Menu";
 import { useTheme } from "@mui/material/styles";
 import { supabase } from "../supaBase";
 
-export default function Navbar() {
+export default function Navbar(props) {
+
+  const { isLoggedIn } = props
+  
   const [drawerOpen, setDrawerOpen] = useState(false);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
@@ -78,7 +81,7 @@ export default function Navbar() {
         </Box>
 
         {/* Desktop Nav */}
-        {!isMobile ? (
+        {!isMobile && isLoggedIn ? (
           <Box sx={{ display: "flex", gap: 2, alignItems: "center" }}>
             {menuItems.map(({ label, to, href }) =>
               to ? (
@@ -101,9 +104,9 @@ export default function Navbar() {
                 </a>
               )
             )}
-            <button onClick={handleLogout}>Logout</button>
+              <button onClick={handleLogout}>Logout</button>
           </Box>
-        ) : (
+        ) : isMobile && isLoggedIn ? (
           <>
             {/* Hamburger Icon for Mobile */}
             <IconButton edge="end" color="inherit" onClick={toggleDrawer(true)}>
@@ -117,7 +120,7 @@ export default function Navbar() {
               {drawerList}
             </Drawer>
           </>
-        )}
+        ):(null)}
       </Toolbar>
 
       {/* Version tag */}
