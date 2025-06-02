@@ -1,38 +1,49 @@
 import React, { useState } from "react";
 import { supabase } from "../supaBase";
 import { useNavigate } from "react-router-dom";
+import Navbar from "./Navbar";
+import { useSnackbar } from "notistack"; 
 
-
-export default function Login() {
+export default function Login(props) {
+  const { isLoggedIn, setIsLoggedIn } = props;
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
 
+  const navigate = useNavigate();
+  const { enqueueSnackbar } = useSnackbar(); 
 
-const navigate = useNavigate();
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    setError(null);
 
-const handleLogin = async (e) => {
-  e.preventDefault();
-  const { error } = await supabase.auth.signInWithPassword({
-    email,
-    password,
-  });
-  if (error) {
-    setError(error.message);
-  } else {
-    navigate("/"); 
-  }
-};
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
 
+    if (error) {
+      setError(error.message);
+      setIsLoggedIn(false);
+    } else if (data?.user) {
+      setIsLoggedIn(true);
+      enqueueSnackbar("Login successful!", { variant: "success" }); 
+      navigate("/");
+    } else {
+      setError("Login failed. Please try again.");
+      setIsLoggedIn(false);
+    }
+  };
 
   return (
     <>
+      <Navbar />
       <div
         style={{
           border: "2px solid #555859",
           borderRadius: "8px",
           padding: "20px",
-        boxShadow: "0 6px 16px rgba(73, 73, 73, 0.2)",
+          boxShadow: "0 6px 16px rgba(73, 73, 73, 0.2)",
         }}
       >
         <form
@@ -42,20 +53,16 @@ const handleLogin = async (e) => {
           <h2>Login</h2>
           {error && <p style={{ color: "red" }}>{error}</p>}
           <input
-          style={{borderRadius:'4px', height:'30px'}}
+            style={{ borderRadius: "4px", height: "30px" }}
             type="email"
             placeholder="Email"
-            onChange={(e) => {
-              setEmail(e.target.value);
-            }}
+            onChange={(e) => setEmail(e.target.value)}
           />
           <input
-          style={{borderRadius:'4px', height:'30px'}}
+            style={{ borderRadius: "4px", height: "30px" }}
             type="password"
             placeholder="Password"
-            onChange={(e) => {
-              setPassword(e.target.value);
-            }}
+            onChange={(e) => setPassword(e.target.value)}
           />
           <button type="submit">Login</button>
         </form>
