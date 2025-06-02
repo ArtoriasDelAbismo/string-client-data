@@ -5,17 +5,22 @@ import Workshop from "./components/Workshop.jsx";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import Login from "./components/Login.jsx";
+import { useState } from "react";
+
 
 function App() {
+
+const [isLoggedIn, setIsLoggedIn] = useState(false)
+
   return (
     <Router>
       <Routes>
-        <Route path="/Login" element={<Login />} />
+        <Route path="/Login" element={<Login isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />} />
         <Route
           path="/"
           element={
             <ProtectedRoute>  
-              <Home />
+              <Home isLoggedIn={isLoggedIn} />
             </ProtectedRoute>
           }
         />
