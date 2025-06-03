@@ -15,14 +15,19 @@ import {
 import MenuIcon from "@mui/icons-material/Menu";
 import { useTheme } from "@mui/material/styles";
 import { supabase } from "../supaBase";
+import { useLocation } from "react-router-dom";
+
 
 export default function Navbar() {
-  const { session } = useContext(SupabaseContext); 
+  const { session, loading } = useContext(SupabaseContext); 
   const [drawerOpen, setDrawerOpen] = useState(false);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   const navigate = useNavigate();
-
+  
+  const location = useLocation();
+  if (location.pathname === "/Login") 
+    return null;
   const toggleDrawer = (open) => () => {
     setDrawerOpen(open);
   };
@@ -67,6 +72,7 @@ export default function Navbar() {
     </Box>
   );
 
+  if (loading) return null
   return (
     <AppBar position="absolute" sx={{ backgroundColor: "#242424", zIndex: 2 }}>
       <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
