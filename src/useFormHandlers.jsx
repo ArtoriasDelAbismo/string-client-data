@@ -65,7 +65,7 @@ export const useFormHandlers = (initialData) => {
       return;
     }
 
-    // Only update local state if deletion was successful
+
     setSubmittedData((prev) => prev.filter((entry) => entry.id !== id));
     console.log("🗑️ Successfully deleted entry with ID:", id);
   };
@@ -113,7 +113,6 @@ export const useFormHandlers = (initialData) => {
     searchTerm,
     handleChange,
     handleComplete,
-    handleDelete,
     handleSubmit,
     handleSearch,
     setFormData,

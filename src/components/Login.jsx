@@ -4,8 +4,7 @@ import { useNavigate } from "react-router-dom";
 import Navbar from "./Navbar";
 import { useSnackbar } from "notistack"; 
 
-export default function Login(props) {
-  const { isLoggedIn, setIsLoggedIn } = props;
+export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
@@ -24,14 +23,11 @@ export default function Login(props) {
 
     if (error) {
       setError(error.message);
-      setIsLoggedIn(false);
     } else if (data?.user) {
-      setIsLoggedIn(true);
       enqueueSnackbar("Login successful!", { variant: "success" }); 
       navigate("/");
     } else {
       setError("Login failed. Please try again.");
-      setIsLoggedIn(false);
     }
   };
 

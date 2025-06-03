@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
+import { SupabaseContext } from "./SupabaseContext";
 import { Link, useNavigate } from "react-router-dom";
 import {
   AppBar,
@@ -15,10 +16,8 @@ import MenuIcon from "@mui/icons-material/Menu";
 import { useTheme } from "@mui/material/styles";
 import { supabase } from "../supaBase";
 
-export default function Navbar(props) {
-
-  const { isLoggedIn } = props
-  
+export default function Navbar() {
+  const { session } = useContext(SupabaseContext); 
   const [drawerOpen, setDrawerOpen] = useState(false);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
@@ -71,7 +70,6 @@ export default function Navbar(props) {
   return (
     <AppBar position="absolute" sx={{ backgroundColor: "#242424", zIndex: 2 }}>
       <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
-        {/* Logo */}
         <Box sx={{ display: "flex", alignItems: "center" }}>
           <img
             style={{ width: "150px" }}
@@ -81,7 +79,7 @@ export default function Navbar(props) {
         </Box>
 
         {/* Desktop Nav */}
-        {!isMobile && isLoggedIn ? (
+        {!isMobile && session ? (
           <Box sx={{ display: "flex", gap: 2, alignItems: "center" }}>
             {menuItems.map(({ label, to, href }) =>
               to ? (
@@ -104,11 +102,10 @@ export default function Navbar(props) {
                 </a>
               )
             )}
-              <button onClick={handleLogout}>Logout</button>
+            <button onClick={handleLogout}>Logout</button>
           </Box>
-        ) : isMobile && isLoggedIn ? (
+        ) : isMobile && session ? (
           <>
-            {/* Hamburger Icon for Mobile */}
             <IconButton edge="end" color="inherit" onClick={toggleDrawer(true)}>
               <MenuIcon />
             </IconButton>
@@ -120,10 +117,9 @@ export default function Navbar(props) {
               {drawerList}
             </Drawer>
           </>
-        ):(null)}
+        ) : null}
       </Toolbar>
 
-      {/* Version tag */}
       <Box
         sx={{
           position: "absolute",

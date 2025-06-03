@@ -10,8 +10,8 @@ export default function Strings() {
     searchTerm,
     handleChange,
     handleComplete,
-    handleDelete,
     handleSubmit,
+    handleEdit,
     handleToggleCheck,
     setNextId,
     setSearchTerm,
@@ -147,14 +147,13 @@ export default function Strings() {
             <i className="fa-solid fa-magnifying-glass"></i>
           </button>
         </div>
-            
+
         {loading ? (
           <div className="spinner"></div>
-        ) : (     
+        ) : (
           <div className="table-container">
-
             <table
-            className="responsive-table"
+              className="responsive-table"
               style={{
                 width: "100%",
                 borderCollapse: "collapse",
@@ -221,8 +220,8 @@ export default function Strings() {
                             <i className="fa-solid fa-envelope"></i>
                           </a>
                         </button>
-                        <button onClick={() => handleDelete(entry.id)}>
-                          <i className="fa-solid fa-trash"></i>
+                        <button onClick={() => handleEdit(entry.id)}>
+                          <i class="fa-solid fa-pen-to-square"></i>
                         </button>
                       </div>
                     </td>
@@ -230,7 +229,7 @@ export default function Strings() {
                 ))}
               </tbody>
             </table>
-          </div>  
+          </div>
         )}
 
         {/* Pagination */}
