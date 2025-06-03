@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { supabase } from "../supaBase";
 import { useNavigate } from "react-router-dom";
-import Navbar from "./Navbar";
 import { useSnackbar } from "notistack"; 
 
 export default function Login() {
@@ -33,7 +32,6 @@ export default function Login() {
 
   return (
     <>
-      <Navbar />
       <div
         style={{
           border: "2px solid #555859",
@@ -42,11 +40,13 @@ export default function Login() {
           boxShadow: "0 6px 16px rgba(73, 73, 73, 0.2)",
         }}
       >
+        <div>
+          <img style={{width:'120px', marginBottom:'40px'}} src="/logoTBWorkshop.png" alt="" />
+        </div>
         <form
           style={{ display: "flex", flexDirection: "column", gap: "20px" }}
           onSubmit={handleLogin}
         >
-          <h2>Login</h2>
           {error && <p style={{ color: "red" }}>{error}</p>}
           <input
             style={{ borderRadius: "4px", height: "30px" }}
