@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useFormHandlers } from "../useFormHandlers";
 import { fetchEntry } from "../db";
 import Navbar from "./Navbar";
+import { caliberOptions } from "../data";
 
 export default function Strings() {
   const {
@@ -109,6 +110,25 @@ export default function Strings() {
             <div key={name}>
               <label>
                 <h2>{label}</h2>
+                {name === "caliber" ? (
+        <select
+          name="caliber"
+          value={formData.caliber}
+          onChange={handleChange}
+          style={{
+            width: "100%",
+            maxWidth: "140px",
+            boxSizing: "border-box",
+            fontSize: "14px",
+          }}
+          required
+        >
+          <option value="">Select</option>
+          {caliberOptions.map((option) => (
+            <option key={option} value={option}>{option}</option>
+          ))}
+        </select>
+      ) : (
                 <input
                   name={name}
                   type={type}
@@ -121,7 +141,7 @@ export default function Strings() {
                     fontSize: "14px",
                   }}
                   required
-                />
+                />)}
               </label>
             </div>
           ))}
@@ -242,11 +262,25 @@ export default function Strings() {
                     </td>
                     <td style={tdStyle}>
                       {isEditingId === entry.id ? (
-                        <input
-                          name="caliber"
-                          value={editData.caliber}
-                          onChange={handleEditChange}
-                        />
+<div key="caliber">
+  <label>
+    <select
+      name="caliber"
+      value={formData.caliber}
+      onChange={handleChange}
+      style={{ width: "140px", fontSize: "14px" }}
+      required
+    >
+      <option value="">Select caliber</option>
+      {caliberOptions.map((option) => (
+        <option key={option} value={option}>
+          {option}
+        </option>
+      ))}
+    </select>
+  </label>
+</div>
+
                       ) : (
                         entry.caliber
                       )}
