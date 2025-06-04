@@ -116,7 +116,12 @@ export default function Workshop() {
                   type={type}
                   value={formData[name]}
                   onChange={handleChange}
-                  style={{ height: "35px", borderRadius: "4px" }}
+                  style={{
+                    width: "100%",
+                    maxWidth: "140px",
+                    boxSizing: "border-box",
+                    fontSize: "14px",
+                  }}
                   required
                 />
               </label>
@@ -254,7 +259,7 @@ export default function Workshop() {
             style={{
               width: "100%",
               borderCollapse: "collapse",
-              minWidth: "1004px",
+              minWidth: "1000px",
             }}
           >
             <thead style={{ color: "black" }}>
@@ -267,9 +272,9 @@ export default function Workshop() {
                 <th style={thStyle}>Service</th>
                 <th style={thStyle}>Fissure Site</th>
                 <th style={thStyle}>Notes</th>
-                <th style={thStyle}>Date</th>
-                {!isEditing && <th style={thStyle}>Date</th>}
-                {!isEditing && <th style={thStyle}>Time</th>}
+                {!isEditingId && <th style={thStyle}>Date</th>}
+                {!isEditingId && <th style={thStyle}>Time</th>}
+                <th style={thStyle}>Done/Edit</th>
               </tr>
             </thead>
             <tbody>
@@ -380,15 +385,35 @@ export default function Workshop() {
                       <td style={tdStyle}>{entry.time}</td>
                     </>
                   )}
-                  <td style={tdStyle}>
+                  <td
+                    style={{
+                      tdStyle,
+                    }}
+                  >
                     {isEditingId === entry.id ? (
-                      <div>
+                      <div
+                        style={{
+                          display: "flex",
+                          gap: "2px",
+                          justifyContent: "center",
+                          minWidth: "110px",
+                        }}
+                      >
                         <button onClick={handleUpdate}>
-                          <i className="fa-solid fa-check"></i> Confirm
+                          <i className="fa-solid fa-check"></i>
+                        </button>
+                        <button onClick={() => handleEdit(null)}>
+                          <i className="fa-solid fa-xmark"></i>
                         </button>
                       </div>
                     ) : (
-                      <div>
+                      <div
+                        style={{
+                          display: "flex",
+                          gap: "2px",
+                          justifyContent: "center",
+                        }}
+                      >
                         <button
                           onClick={() => {
                             handleToggleCheck(entry.id, entry.completed);

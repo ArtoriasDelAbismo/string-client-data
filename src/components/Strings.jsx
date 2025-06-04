@@ -138,6 +138,7 @@ export default function Strings() {
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
+          width: "1200px",
         }}
       >
         <h3>Submitted Data:</h3>
@@ -291,9 +292,25 @@ export default function Strings() {
                       </>
                     )}
 
-                    <td style={tdStyle}>
+                    <td
+                      style={{
+                        border: "1px solid #ccc",
+                        padding: "8px",
+                        textAlign: "center",
+                        whiteSpace: "nowrap",
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                      }}
+                    >
                       {isEditingId === entry.id ? (
-                        <div>
+                        <div
+                          style={{
+                            display: "flex",
+                            gap: "8px",
+                            justifyContent: "center",
+                            minWidth: "200px",
+                          }}
+                        >
                           <button onClick={handleUpdate}>
                             <i className="fa-solid fa-check"></i>
                           </button>
@@ -302,11 +319,17 @@ export default function Strings() {
                           </button>
                         </div>
                       ) : (
-                        <div>
+                        <div
+                          style={{
+                            display: "flex",
+                            gap: "2px",
+                            justifyContent: "center",
+                          }}
+                        >
                           <button
-                            onClick={() => {
-                              handleToggleCheck(entry.id, entry.completed);
-                            }}
+                            onClick={() =>
+                              handleToggleCheck(entry.id, entry.completed)
+                            }
                           >
                             {entry.completed ? (
                               <i className="fa-solid fa-xmark"></i>

@@ -115,6 +115,12 @@ export const useWorkshopHandlers = (initialData) => {
   };
 
 const handleEdit = (id) => {
+  if (id === null) {
+    setIsEditingId(null);
+    setEditData({});
+    return;
+  }
+
   const entryToEdit = submittedData.find((entry) => entry.id === id);
   if (entryToEdit) {
     setEditData({ ...entryToEdit });
@@ -123,6 +129,7 @@ const handleEdit = (id) => {
     console.warn("⚠️ Entry to edit not found for id:", id);
   }
 };
+
 
 
   const handleEditChange = (e) => {
