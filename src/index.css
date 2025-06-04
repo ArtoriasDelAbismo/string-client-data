@@ -133,3 +133,7 @@ button:focus-visible {
 .css-y7ab46-MuiPaper-root-MuiDrawer-paper{
   background-color: #555859;
 }
+
+.table-body input {
+  max-width: 100px;
+}

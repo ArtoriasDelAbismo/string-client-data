@@ -192,11 +192,11 @@ export default function Strings() {
                   <th style={thStyle}>Mail</th>
                   {!isEditing && <th style={thStyle}>Date</th>}
                   {!isEditing && <th style={thStyle}>Time</th>}
-                  <th style={thStyle}>Done/Delete</th>
+                  <th style={thStyle}>Done/Edit</th>
                 </tr>
               </thead>
 
-              <tbody>
+              <tbody className="table-body">
                 {submittedData.map((entry) => (
                   <tr
                     key={entry.id}

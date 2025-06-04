@@ -118,7 +118,7 @@ export default function Workshop() {
                   onChange={handleChange}
                   style={{
                     width: "100%",
-                    maxWidth: "140px",
+                    maxWidth: "150px",
                     boxSizing: "border-box",
                     fontSize: "14px",
                   }}
@@ -277,7 +277,7 @@ export default function Workshop() {
                 <th style={thStyle}>Done/Edit</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody className="table-body">
               {submittedData.map((entry) => (
                 <tr
                   key={entry.id}
