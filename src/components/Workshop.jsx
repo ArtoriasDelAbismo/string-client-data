@@ -8,6 +8,13 @@ export default function Workshop() {
     formData,
     submittedData,
     searchTerm,
+    isEditingId,
+    setIsEditingId,
+    editData,
+    setEditData,
+    handleEdit,
+    handleEditChange,
+    handleUpdate,
     handleChange,
     handleComplete,
     handleDelete,
@@ -28,7 +35,7 @@ export default function Workshop() {
     time: "",
   });
 
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
 
   const fissureImages = [
     { label: "00", url: "/repair-places/12.png" },
@@ -51,10 +58,10 @@ export default function Workshop() {
 
   useEffect(() => {
     const fetchFilteredData = async () => {
-      setLoading(true)
+      setLoading(true);
       const results = await fetchWorkshopEntry(searchTerm, page);
       setSubmittedData(results);
-      setLoading(false)
+      setLoading(false);
     };
     fetchFilteredData();
   }, [searchTerm, page]);
@@ -71,6 +78,8 @@ export default function Workshop() {
     padding: "8px",
     textAlign: "center",
   };
+
+  const isEditing = isEditingId !== null;
 
   return (
     <>
@@ -259,8 +268,8 @@ export default function Workshop() {
                 <th style={thStyle}>Fissure Site</th>
                 <th style={thStyle}>Notes</th>
                 <th style={thStyle}>Date</th>
-                <th style={thStyle}>Time</th>
-                <th style={thStyle}>Done/Delete</th>
+                {!isEditing && <th style={thStyle}>Date</th>}
+                {!isEditing && <th style={thStyle}>Time</th>}
               </tr>
             </thead>
             <tbody>
@@ -268,16 +277,78 @@ export default function Workshop() {
                 <tr
                   key={entry.id}
                   style={{
-                    backgroundColor: entry.completed ? "#419b45" : "transparent",
+                    backgroundColor: entry.completed
+                      ? "#419b45"
+                      : "transparent",
                     fontSize: "small",
                   }}
                 >
-                  <td style={tdStyle}>{entry.name}</td>
-                  <td style={tdStyle}>{entry.lastName}</td>
-                  <td style={tdStyle}>{entry.mail}</td>
-                  <td style={tdStyle}>{entry.phone}</td>
-                  <td style={tdStyle}>{entry.racket}</td>
-                  <td style={tdStyle}>{entry.service}</td>
+                  <td style={tdStyle}>
+                    {isEditingId === entry.id ? (
+                      <input
+                        name="name"
+                        value={editData.name}
+                        onChange={handleEditChange}
+                      />
+                    ) : (
+                      entry.name
+                    )}
+                  </td>
+                  <td style={tdStyle}>
+                    {isEditingId === entry.id ? (
+                      <input
+                        name="lastName"
+                        value={editData.lastName}
+                        onChange={handleEditChange}
+                      />
+                    ) : (
+                      entry.lastName
+                    )}
+                  </td>
+                  <td style={tdStyle}>
+                    {isEditingId === entry.id ? (
+                      <input
+                        name="mail"
+                        value={editData.mail}
+                        onChange={handleEditChange}
+                      />
+                    ) : (
+                      entry.mail
+                    )}
+                  </td>
+                  <td style={tdStyle}>
+                    {isEditingId === entry.id ? (
+                      <input
+                        name="phone"
+                        value={editData.phone}
+                        onChange={handleEditChange}
+                      />
+                    ) : (
+                      entry.phone
+                    )}
+                  </td>
+                  <td style={tdStyle}>
+                    {isEditingId === entry.id ? (
+                      <input
+                        name="racket"
+                        value={editData.racket}
+                        onChange={handleEditChange}
+                      />
+                    ) : (
+                      entry.racket
+                    )}
+                  </td>
+                  <td style={tdStyle}>
+                    {isEditingId === entry.id ? (
+                      <input
+                        name="service"
+                        value={editData.service}
+                        onChange={handleEditChange}
+                      />
+                    ) : (
+                      entry.service
+                    )}
+                  </td>
                   <td style={tdStyle}>
                     {entry.fissureSite && (
                       <img
@@ -292,53 +363,73 @@ export default function Workshop() {
                       />
                     )}
                   </td>
-                  <td style={tdStyle}>{entry.notes}</td>
-
-                  <td style={tdStyle}>{entry.date}</td>
-                  <td style={tdStyle}>{entry.time}</td>
                   <td style={tdStyle}>
-                    <div>
-                      <button
-                        onClick={() => {
-                          handleToggleCheck(entry.id, entry.completed);
-                        }}
-                      >
-                        {entry.completed ? (
-                          <i className="fa-solid fa-xmark"></i>
-                        ) : (
-                          <i className="fa-solid fa-check"></i>
-                        )}
-                      </button>
-                      <button>
-                        <a
-                          href={
-                            entry.completed
-                              ? `mailto:${entry.mail}?subject=Servicio&body=Hola ${entry.name}, tu servicio de ${entry.service} está listo para ser retirado.`
-                              : undefined
-                          }
-                          style={{
-                            pointerEvents:
-                              entry.completed && !entry.emailSent
-                                ? "auto"
-                                : "none",
-                            opacity:
-                              entry.completed && !entry.emailSent ? 1 : 0.5,
+                    {isEditingId === entry.id ? (
+                      <input
+                        name="notes"
+                        value={editData.notes}
+                        onChange={handleEditChange}
+                      />
+                    ) : (
+                      entry.notes
+                    )}
+                  </td>
+                  {!isEditing && (
+                    <>
+                      <td style={tdStyle}>{entry.date}</td>
+                      <td style={tdStyle}>{entry.time}</td>
+                    </>
+                  )}
+                  <td style={tdStyle}>
+                    {isEditingId === entry.id ? (
+                      <div>
+                        <button onClick={handleUpdate}>
+                          <i className="fa-solid fa-check"></i> Confirm
+                        </button>
+                      </div>
+                    ) : (
+                      <div>
+                        <button
+                          onClick={() => {
+                            handleToggleCheck(entry.id, entry.completed);
                           }}
                         >
-                          <i className="fa-solid fa-envelope"></i>
-                        </a>
-                      </button>
+                          {entry.completed ? (
+                            <i className="fa-solid fa-xmark"></i>
+                          ) : (
+                            <i className="fa-solid fa-check"></i>
+                          )}
+                        </button>
+                        <button>
+                          <a
+                            href={
+                              entry.completed
+                                ? `mailto:${entry.mail}?subject=Servicio&body=Hola ${entry.name}, tu servicio de ${entry.service} está listo para ser retirado.`
+                                : undefined
+                            }
+                            style={{
+                              pointerEvents:
+                                entry.completed && !entry.emailSent
+                                  ? "auto"
+                                  : "none",
+                              opacity:
+                                entry.completed && !entry.emailSent ? 1 : 0.5,
+                            }}
+                          >
+                            <i className="fa-solid fa-envelope"></i>
+                          </a>
+                        </button>
 
-                      <button onClick={() => handleDelete(entry.id)}>
-                        <i className="fa-solid fa-trash"></i>
-                      </button>
-                    </div>
+                        <button onClick={() => handleEdit(entry.id)}>
+                          <i className="fa-solid fa-pen-to-square"></i>
+                        </button>
+                      </div>
+                    )}
                   </td>
                 </tr>
               ))}
             </tbody>
           </table>
-
         )}
 
         {modalImage && (

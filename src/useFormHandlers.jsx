@@ -1,12 +1,17 @@
 import { useState } from "react";
 import { addEntry } from "./db";
 import { supabase } from "./supaBase";
+import { updateEntry } from "./db";
 
 export const useFormHandlers = (initialData) => {
   const [formData, setFormData] = useState(initialData);
   const [submittedData, setSubmittedData] = useState([]);
   const [nextId, setNextId] = useState(0);
   const [searchTerm, setSearchTerm] = useState("");
+  const [isEditingId, setIsEditingId] = useState(null);
+  const [editData, setEditData] = useState({});
+  const [entries, setEntries] = useState(null)
+
 
   const handleChange = (e) => {
     setFormData((prev) => ({
@@ -106,15 +111,52 @@ export const useFormHandlers = (initialData) => {
     }
   };
 
+  const handleEdit = (id) => {
+    const entryToEdit = submittedData.find((entry) => entry.id === id)
+    setIsEditingId(id)
+    setEditData({...entryToEdit})
+  }
+
+  const handleEditChange = (e) => {
+  const { name, value } = e.target;
+  setEditData((prev) => ({
+    ...prev,
+    [name]: value,
+  }));
+};
+
+const handleUpdate = async () => {
+  console.log("🚀 Updating entry:", editData); 
+  const updated = await updateEntry(editData); 
+  if (updated) {
+    const updatedList = submittedData.map((item) =>
+      item.id === editData.id ? editData : item
+    );
+    setSubmittedData(updatedList);
+    setIsEditingId(null);
+  } else {
+    console.error("❌ Update failed: updateEntry returned false");
+  }
+};
+
+
+
+
+
   return {
     formData,
     submittedData,
     nextId,
     searchTerm,
+    isEditingId,
+    editData,
     handleChange,
+    handleEdit,
+    handleEditChange,
     handleComplete,
     handleSubmit,
     handleSearch,
+    handleUpdate,
     setFormData,
     setNextId,
     setSearchTerm,

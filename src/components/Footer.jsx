@@ -1,4 +1,5 @@
 import React from "react";
+import { feature } from "../features";
 
 export default function Footer() {
   return (
@@ -23,6 +24,9 @@ export default function Footer() {
           </a>{" "}
           © 2025
         </p>
+      </div>
+      <div style={{position:'absolute', bottom:'0', color:'#555859'}}>
+        <p>Latest feature: {feature}</p>
       </div>
     </footer>
   );

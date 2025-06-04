@@ -59,6 +59,24 @@ export const fetchEntry = async (searchTerm = "", page = 1) => {
   }
 };
 
+export const updateEntry = async (entry) => {
+  const { data, error } = await supabase
+    .from("string-client-data")
+    .update(entry)
+    .eq("id", entry.id)
+    .select();
+
+  if (error) {
+    console.error("❌ Supabase update error:", error.message);
+    return false;
+  }
+
+  return data;
+};
+
+
+
+
 
 {
   /* Workshop database */
@@ -116,6 +134,21 @@ export const fetchWorkshopEntry = async (searchTerm = "", page = 1) => {
     return [];
   }
 };
+
+export const updateWorkshopEntry = async (entry) => {
+  const { data, error } = await supabase
+  .from('workshop-data')
+  .update(entry)
+  .eq('id', entry.id)
+  .select()
+
+  if (error) {
+    console.log('Error updating entry: ', error.message);
+    return false
+  }
+
+  return data
+}
 
 
 export default { addEntry, addWorkshopEntry };

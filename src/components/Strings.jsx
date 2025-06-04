@@ -11,8 +11,12 @@ export default function Strings() {
     handleChange,
     handleComplete,
     handleSubmit,
+    isEditingId,
+    editData,
+    handleUpdate,
     handleEdit,
     handleToggleCheck,
+    handleEditChange,
     setNextId,
     setSearchTerm,
     setSubmittedData,
@@ -36,7 +40,6 @@ export default function Strings() {
       setLoading(true);
       const results = await fetchEntry(searchTerm, page);
 
-      // Ensure every entry has a `completed` boolean
       const sanitizedResults = results.map((entry) => ({
         ...entry,
         completed: entry.completed ?? false,
@@ -59,13 +62,22 @@ export default function Strings() {
     padding: "8px",
     backgroundColor: "#f2f2f2",
     textAlign: "center",
+    maxWidth: "150px",
+    whiteSpace: "nowrap",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
   };
 
   const tdStyle = {
     border: "1px solid #ccc",
     padding: "8px",
     textAlign: "center",
+    maxWidth: "150px",
+    whiteSpace: "nowrap",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
   };
+  const isEditing = isEditingId !== null;
 
   return (
     <>
@@ -102,7 +114,12 @@ export default function Strings() {
                   type={type}
                   value={formData[name]}
                   onChange={handleChange}
-                  style={{ height: "35px", borderRadius: "4px" }}
+                  style={{
+                    width: "100%",
+                    maxWidth: "140px",
+                    boxSizing: "border-box",
+                    fontSize: "14px",
+                  }}
                   required
                 />
               </label>
@@ -151,13 +168,15 @@ export default function Strings() {
         {loading ? (
           <div className="spinner"></div>
         ) : (
-          <div className="table-container">
+          <div
+            className="table-container"
+            style={{ overflowX: "auto", maxWidth: "100%" }}
+          >
             <table
               className="responsive-table"
               style={{
+                minWidth: "1200px",
                 width: "100%",
-                borderCollapse: "collapse",
-                minWidth: "1004px",
               }}
             >
               <thead style={{ color: "black" }}>
@@ -170,11 +189,12 @@ export default function Strings() {
                   <th style={thStyle}>Tension</th>
                   <th style={thStyle}>Racket</th>
                   <th style={thStyle}>Mail</th>
-                  <th style={thStyle}>Date</th>
-                  <th style={thStyle}>Time</th>
+                  {!isEditing && <th style={thStyle}>Date</th>}
+                  {!isEditing && <th style={thStyle}>Time</th>}
                   <th style={thStyle}>Done/Delete</th>
                 </tr>
               </thead>
+
               <tbody>
                 {submittedData.map((entry) => (
                   <tr
@@ -186,44 +206,133 @@ export default function Strings() {
                     }}
                   >
                     <td style={tdStyle}>{entry.id}</td>
-                    <td style={tdStyle}>{entry.name}</td>
-                    <td style={tdStyle}>{entry.lastName}</td>
-                    <td style={tdStyle}>{entry.string}</td>
-                    <td style={tdStyle}>{entry.caliber}</td>
-                    <td style={tdStyle}>{entry.tension}</td>
-                    <td style={tdStyle}>{entry.racket}</td>
-                    <td style={tdStyle}>{entry.mail}</td>
-                    <td style={tdStyle}>{entry.date}</td>
-                    <td style={tdStyle}>{entry.time}</td>
                     <td style={tdStyle}>
-                      <div>
-                        <button
-                          onClick={() => {
-                            handleToggleCheck(entry.id, entry.completed);
-                          }}
-                        >
-                          {entry.completed ? (
-                            <i className="fa-solid fa-xmark"></i>
-                          ) : (
+                      {isEditingId === entry.id ? (
+                        <input
+                          name="name"
+                          value={editData.name}
+                          onChange={handleEditChange}
+                        />
+                      ) : (
+                        entry.name
+                      )}
+                    </td>
+                    <td style={tdStyle}>
+                      {isEditingId === entry.id ? (
+                        <input
+                          name="lastName"
+                          value={editData.lastName}
+                          onChange={handleEditChange}
+                        />
+                      ) : (
+                        entry.lastName
+                      )}
+                    </td>
+                    <td style={tdStyle}>
+                      {isEditingId === entry.id ? (
+                        <input
+                          name="string"
+                          value={editData.string}
+                          onChange={handleEditChange}
+                        />
+                      ) : (
+                        entry.string
+                      )}
+                    </td>
+                    <td style={tdStyle}>
+                      {isEditingId === entry.id ? (
+                        <input
+                          name="caliber"
+                          value={editData.caliber}
+                          onChange={handleEditChange}
+                        />
+                      ) : (
+                        entry.caliber
+                      )}
+                    </td>
+                    <td style={tdStyle}>
+                      {isEditingId === entry.id ? (
+                        <input
+                          name="tension"
+                          value={editData.tension}
+                          onChange={handleEditChange}
+                        />
+                      ) : (
+                        entry.tension
+                      )}
+                    </td>
+                    <td style={tdStyle}>
+                      {isEditingId === entry.id ? (
+                        <input
+                          name="racket"
+                          value={editData.racket}
+                          onChange={handleEditChange}
+                        />
+                      ) : (
+                        entry.racket
+                      )}
+                    </td>
+                    <td style={tdStyle}>
+                      {isEditingId === entry.id ? (
+                        <input
+                          name="mail"
+                          value={editData.mail}
+                          onChange={handleEditChange}
+                        />
+                      ) : (
+                        entry.mail
+                      )}
+                    </td>
+
+                    {!isEditing && (
+                      <>
+                        <td style={tdStyle}>{entry.date}</td>
+                        <td style={tdStyle}>{entry.time}</td>
+                      </>
+                    )}
+
+                    <td style={tdStyle}>
+                      {isEditingId === entry.id ? (
+                        <div>
+                          <button onClick={handleUpdate}>
                             <i className="fa-solid fa-check"></i>
-                          )}
-                        </button>
-                        <button>
-                          <a
-                            href={`mailto:${entry.mail}?subject=Encordado&body=Hola ${entry.name}, tu raqueta encordada con ${entry.string} está lista para ser retirada.`}
-                            onClick={() => handleComplete(entry.id)}
-                            style={{
-                              pointerEvents: !entry.completed ? "none" : "auto",
-                              opacity: !entry.completed ? 0.5 : 1,
+                          </button>
+                          <button onClick={() => handleEdit(null)}>
+                            <i className="fa-solid fa-xmark"></i>
+                          </button>
+                        </div>
+                      ) : (
+                        <div>
+                          <button
+                            onClick={() => {
+                              handleToggleCheck(entry.id, entry.completed);
                             }}
                           >
-                            <i className="fa-solid fa-envelope"></i>
-                          </a>
-                        </button>
-                        <button onClick={() => handleEdit(entry.id)}>
-                          <i class="fa-solid fa-pen-to-square"></i>
-                        </button>
-                      </div>
+                            {entry.completed ? (
+                              <i className="fa-solid fa-xmark"></i>
+                            ) : (
+                              <i className="fa-solid fa-check"></i>
+                            )}
+                          </button>
+                          <button>
+                            <a
+                              href={`mailto:${entry.mail}?subject=Encordado&body=Hola ${entry.name}, tu raqueta encordada con ${entry.string} está lista para ser retirada.`}
+                              onClick={() => handleComplete(entry.id)}
+                              style={{
+                                pointerEvents: !entry.completed
+                                  ? "none"
+                                  : "auto",
+                                opacity: !entry.completed ? 0.5 : 1,
+                              }}
+                            >
+                              <i className="fa-solid fa-envelope"></i>
+                            </a>
+                          </button>
+                          <button onClick={() => handleEdit(entry.id)}>
+                            <i className="fa-solid fa-pen-to-square"></i>
+                          </button>
+                        </div>
+                      )}
                     </td>
                   </tr>
                 ))}
