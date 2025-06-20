@@ -25,8 +25,8 @@ export default function Footer() {
           © 2025
         </p>
       </div>
-      <div style={{position:'absolute', bottom:'0', color:'#555859'}}>
-        <p>Latest feature: {feature}</p>
+      <div style={{position:'absolute', bottom:'0'}}>
+        <p style={{display:'flex', gap:'5px'}}><strong>Latest feature:</strong> {feature.join(' - ')}</p>
       </div>
     </footer>
   );

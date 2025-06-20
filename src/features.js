@@ -1,1 +1,1 @@
-export const feature = "Edit function"
+export const feature = ['Font color', 'Fissure Images Update']
