@@ -92,7 +92,7 @@ export default function Navbar() {
                 <Link
                   key={label}
                   to={to}
-                  style={{ color: "#555859", textDecoration: "none" }}
+                  style={{ color: "#ffff", textDecoration: "none" }}
                 >
                   {label}
                 </Link>
