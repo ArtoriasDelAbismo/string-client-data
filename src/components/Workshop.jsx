@@ -38,18 +38,18 @@ export default function Workshop() {
   const [loading, setLoading] = useState(false);
 
   const fissureImages = [
-    { label: "00", url: "/repair-places/12.png" },
-    { label: "13:30", url: "/repair-places/1:5.png" },
-    { label: "15", url: "/repair-places/3.png" },
-    { label: "16:30", url: "/repair-places/4:5.png" },
-    { label: "18", url: "/repair-places/6.png" },
-    { label: "19:30", url: "/repair-places/7:5.png" },
-    { label: "21", url: "/repair-places/9.png" },
-    { label: "22:30", url: "/repair-places/10:5.png" },
-    { label: "Left-heart", url: "/repair-places/left-heart.png" },
-    { label: "Right-heart", url: "/repair-places/right-heart.png" },
-    { label: "Core-heart", url: "/repair-places/core-heart.png" },
-    { label: "Bottom-cap", url: "/repair-places/bottom-cap.png" },
+    { label: "0", url: "/repair-places/0.png" },
+    { label: "1", url: "/repair-places/1.png" },
+    { label: "2", url: "/repair-places/2.png" },
+    { label: "3", url: "/repair-places/3.png" },
+    { label: "4", url: "/repair-places/4.png" },
+    { label: "5", url: "/repair-places/5.png" },
+    { label: "6", url: "/repair-places/6.png" },
+    { label: "cap", url: "/repair-places/cap.png" },
+    { label: "grip", url: "/repair-places/grip.png" },
+    { label: "heart-bottom", url: "/repair-places/heart-bottom.png" },
+    { label: "heart1", url: "/repair-places/heart1.png" },
+    { label: "heart2", url: "/repair-places/heart2.png" },
   ];
 
   const [page, setPage] = useState(1);
@@ -168,7 +168,7 @@ export default function Workshop() {
           >
             <div
               style={{
-                maxWidth: "675px",
+                maxWidth: "680px",
                 background: "white",
                 padding: "20px",
                 borderRadius: "8px",
@@ -277,7 +277,7 @@ export default function Workshop() {
                 <th style={thStyle}>Done/Edit</th>
               </tr>
             </thead>
-            <tbody className="table-body">
+            <tbody className="table-body" >
               {submittedData.map((entry) => (
                 <tr
                   key={entry.id}
@@ -387,7 +387,7 @@ export default function Workshop() {
                   )}
                   <td
                     style={{
-                      tdStyle,
+                      tdStyle
                     }}
                   >
                     {isEditingId === entry.id ? (
