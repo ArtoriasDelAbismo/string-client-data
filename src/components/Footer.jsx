@@ -1,5 +1,6 @@
 import React from "react";
 import { feature } from "../features";
+import { bugFix } from "../features";
 
 export default function Footer() {
   return (
@@ -14,7 +15,8 @@ export default function Footer() {
         alignItems: "center",
         left: "0",
         fontSize: "small",
-        backgroundColor: "#242424",
+        backgroundColor: "#dbdbdb",
+        color: "black",
       }}
     >
       <div>
@@ -24,9 +26,19 @@ export default function Footer() {
           </a>{" "}
           © 2025
         </p>
-      </div>
-      <div style={{position:'absolute', bottom:'0'}}>
-        <p style={{display:'flex', gap:'5px'}}><strong>Latest feature:</strong> {feature.join(' - ')}</p>
+        <div style={{display:'flex', gap:'15px'}}>
+          <div>
+            <p style={{ display: "flex", gap: "5px" }}>
+              <strong>Latest feature:</strong> {feature.join(" - ")}
+            </p>
+          </div>
+          <div>
+            <p style={{ display: "flex", gap: "5px" }}>
+              <strong>Latest bug fix:</strong> {bugFix.join(" - ")}
+            </p>
+          </div>
+
+        </div>
       </div>
     </footer>
   );
