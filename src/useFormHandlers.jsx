@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { addEntry } from "./db";
 import { supabase } from "./supaBase";
 import { updateEntry } from "./db";
+import { fetchEntry } from "./db";
 
 export const useFormHandlers = (initialData) => {
   const [formData, setFormData] = useState(initialData);
@@ -10,8 +11,30 @@ export const useFormHandlers = (initialData) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [isEditingId, setIsEditingId] = useState(null);
   const [editData, setEditData] = useState({});
-  const [entries, setEntries] = useState(null)
+  const [entries, setEntries] = useState(null);
+  const [page, setPage] = useState(1);
 
+  useEffect(() => {
+    const fetchFilteredData = async () => {
+      const results = await fetchEntry(searchTerm);
+      const sanitizedResults = results
+        .map((entry) => ({
+          ...entry,
+          completed: entry.completed ?? false,
+        }))
+        .sort((a, b) => b.id - a.id);
+
+      setSubmittedData(sanitizedResults);
+
+      const maxId = sanitizedResults.reduce(
+        (max, item) => Math.max(max, item.id),
+        0
+      );
+      setNextId(maxId + 1);
+    };
+
+    fetchFilteredData();
+  }, [searchTerm]);
 
   const handleChange = (e) => {
     setFormData((prev) => ({
@@ -26,30 +49,35 @@ export const useFormHandlers = (initialData) => {
     const currentTime = now.toTimeString().split(" ")[0].slice(0, 5); // hh:mm
 
     const newEntry = {
-      id: nextId,
       ...formData,
       date: currentDate,
       time: currentTime,
-
       completed: false,
     };
 
-    setSubmittedData((prev) => [...prev, newEntry]);
-    setNextId((prev) => prev + 1);
+    try {
+      // Wait for DB insertion and get actual saved entry with id
+      const [savedEntry] = await addEntry(newEntry);
 
-    await addEntry(newEntry);
+      // Update UI state with savedEntry (includes id assigned by DB)
+      setSubmittedData((prev) => [savedEntry, ...prev]);
+      setPage(1);
 
-    setFormData({
-      name: "",
-      lastName: "",
-      string: "",
-      caliber: "",
-      tension: "",
-      racket:"",
-      mail: "",
-      date: "",
-      time: "",
-    });
+      setFormData({
+        name: "",
+        lastName: "",
+        string: "",
+        caliber: "",
+        tension: "",
+        racket: "",
+        mail: "",
+        date: "",
+        time: "",
+      });
+    } catch (error) {
+      console.error("Failed to add entry: ", error);
+      // handle error in UI if needed
+    }
   };
 
   const handleComplete = (id) => {
@@ -69,7 +97,6 @@ export const useFormHandlers = (initialData) => {
       console.error("❌ Failed to delete entry:", error.message);
       return;
     }
-
 
     setSubmittedData((prev) => prev.filter((entry) => entry.id !== id));
     console.log("🗑️ Successfully deleted entry with ID:", id);
@@ -112,36 +139,32 @@ export const useFormHandlers = (initialData) => {
   };
 
   const handleEdit = (id) => {
-    const entryToEdit = submittedData.find((entry) => entry.id === id)
-    setIsEditingId(id)
-    setEditData({...entryToEdit})
-  }
+    const entryToEdit = submittedData.find((entry) => entry.id === id);
+    setIsEditingId(id);
+    setEditData({ ...entryToEdit });
+  };
 
   const handleEditChange = (e) => {
-  const { name, value } = e.target;
-  setEditData((prev) => ({
-    ...prev,
-    [name]: value,
-  }));
-};
+    const { name, value } = e.target;
+    setEditData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
 
-const handleUpdate = async () => {
-  console.log("🚀 Updating entry:", editData); 
-  const updated = await updateEntry(editData); 
-  if (updated) {
-    const updatedList = submittedData.map((item) =>
-      item.id === editData.id ? editData : item
-    );
-    setSubmittedData(updatedList);
-    setIsEditingId(null);
-  } else {
-    console.error("❌ Update failed: updateEntry returned false");
-  }
-};
-
-
-
-
+  const handleUpdate = async () => {
+    console.log("🚀 Updating entry:", editData);
+    const updated = await updateEntry(editData);
+    if (updated) {
+      const updatedList = submittedData.map((item) =>
+        item.id === editData.id ? editData : item
+      );
+      setSubmittedData(updatedList);
+      setIsEditingId(null);
+    } else {
+      console.error("❌ Update failed: updateEntry returned false");
+    }
+  };
 
   return {
     formData,
@@ -162,5 +185,7 @@ const handleUpdate = async () => {
     setSearchTerm,
     setSubmittedData,
     handleToggleCheck,
+    page,
+    setPage,
   };
 };
