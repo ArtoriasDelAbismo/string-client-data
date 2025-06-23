@@ -5,22 +5,31 @@ import { supabase } from "./supaBase";
 }
 
 export const addEntry = async (entry) => {
+  const entryToInsert = { ...entry };
+  delete entryToInsert.id;  // remove id to let DB auto-generate
+
+  console.log("Inserting entry to DB:", entryToInsert);
+  
   try {
     const { data, error } = await supabase
       .from("string-client-data")
-      .insert(entry)
+      .insert(entryToInsert)
       .select();
 
     if (error) {
       console.log("Error adding new entry ", error);
-      return;
+      throw error;
     }
 
     console.log("Added new entry: ", data);
+    return data;
   } catch (error) {
     console.error("Unexpected error adding new entry: ", error);
+    throw error;
   }
 };
+
+
 
 const PAGE_SIZE = 10;
 
@@ -30,7 +39,7 @@ export const fetchEntry = async (searchTerm = "", page = 1) => {
     let query = supabase
       .from("string-client-data")
       .select(baseSelect)
-      .order("id", { ascending: true })
+      .order("id", { ascending: false })
       .range((page - 1) * PAGE_SIZE, page * PAGE_SIZE - 1);
 
     if (searchTerm) {
@@ -38,7 +47,7 @@ export const fetchEntry = async (searchTerm = "", page = 1) => {
         .from("string-client-data")
         .select(baseSelect)
         .or(`name.ilike.%${searchTerm}%,lastName.ilike.%${searchTerm}%`)
-        .order("id", { ascending: true })
+        .order("id", { ascending: false })
         .range((page - 1) * PAGE_SIZE, page * PAGE_SIZE - 1);
     }
 
@@ -62,7 +71,7 @@ export const fetchEntry = async (searchTerm = "", page = 1) => {
 export const updateEntry = async (entry) => {
   const { data, error } = await supabase
     .from("string-client-data")
-    .update(entry)
+    .update([entry])
     .eq("id", entry.id)
     .select();
 
@@ -87,7 +96,7 @@ export const addWorkshopEntry = async (entry) => {
     console.log("Inserting entry:", entry);
     const { data, error } = await supabase
       .from("workshop-data")
-      .insert(entry)
+      .insert([entry])
       .select();
 
     if (error) {
@@ -107,7 +116,7 @@ export const fetchWorkshopEntry = async (searchTerm = "", page = 1) => {
     let query = supabase
       .from("workshop-data")
       .select(baseSelect)
-      .order("id", { ascending: true })
+      .order("id", { ascending: false })
       .range((page - 1) * PAGE_SIZE, page * PAGE_SIZE - 1);
 
     if (searchTerm) {
@@ -115,7 +124,7 @@ export const fetchWorkshopEntry = async (searchTerm = "", page = 1) => {
         .from("workshop-data")
         .select(baseSelect)
         .or(`name.ilike.%${searchTerm}%,lastName.ilike.%${searchTerm}%`)
-        .order("id", { ascending: true })
+        .order("id", { ascending: false })
         .range((page - 1) * PAGE_SIZE, page * PAGE_SIZE - 1);
     }
 
