@@ -5,7 +5,6 @@
 
   color-scheme: light dark;
   color: rgb(255, 255, 255);
-  background-color: #242424;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -93,6 +92,11 @@ button:focus-visible {
   }
 }
 
+table {
+  background-color: white;
+  color: black;
+}
+
 
 .table-container {
   width: 100%;
@@ -113,7 +117,7 @@ button:focus-visible {
   table {
     min-width: unset;
     font-size: 14px;
-    background-color: #213547;
+    background-color: #ffffff;
   }
 
   th, td {
