@@ -20,12 +20,6 @@ export default function Footer() {
       }}
     >
       <div>
-        <p>
-          <a href="https://journadev.netlify.app/" target="_blank">
-            Journadev
-          </a>{" "}
-          © 2025
-        </p>
         <div style={{display:'flex', gap:'15px'}}>
           <div>
             <p style={{ display: "flex", gap: "5px" }}>
@@ -39,6 +33,15 @@ export default function Footer() {
           </div>
 
         </div>
+
+        <p>
+          <a href="https://journadev.netlify.app/" target="_blank">
+            Journadev
+          </a>{" "}
+          © 2025
+        </p>
+
+
       </div>
     </footer>
   );
