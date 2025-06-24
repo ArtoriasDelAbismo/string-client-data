@@ -1,2 +1,2 @@
-export const feature = ['Table background color']
-export const bugFix = ['Pagination']
+export const feature = ['Tension dropdown menu']
+export const bugFix = ['string to integers']
