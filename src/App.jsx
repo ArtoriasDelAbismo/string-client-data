@@ -5,8 +5,6 @@ import Workshop from "./components/Workshop.jsx";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import Login from "./components/Login.jsx";
-import { useState } from "react";
-import OrderForm from "./components/OrderForm.jsx";
 
 function App() {
   return (
@@ -39,14 +37,7 @@ function App() {
             </ProtectedRoute>
           }
         />
-        <Route
-          path="/OrderForm"
-          element={
-            <ProtectedRoute>
-              <OrderForm />
-            </ProtectedRoute>
-          }
-        />
+
       </Routes>
     </Router>
   );
