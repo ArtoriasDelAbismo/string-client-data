@@ -6,11 +6,9 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import Login from "./components/Login.jsx";
 import { useState } from "react";
-
+import OrderForm from "./components/OrderForm.jsx";
 
 function App() {
-
-
   return (
     <Router>
       <Routes>
@@ -18,25 +16,38 @@ function App() {
         <Route
           path="/"
           element={
-            <ProtectedRoute>  
-              <Home  />
+            <ProtectedRoute>
+              <Home />
             </ProtectedRoute>
           }
         />
 
-        <Route path="/strings" element={
-          <ProtectedRoute>
-            <Strings />
-          </ProtectedRoute>
-          } />
+        <Route
+          path="/strings"
+          element={
+            <ProtectedRoute>
+              <Strings />
+            </ProtectedRoute>
+          }
+        />
 
-        <Route path="/workshop" element={
-          <ProtectedRoute>
-            <Workshop />
-          </ProtectedRoute>
-          } />
+        <Route
+          path="/workshop"
+          element={
+            <ProtectedRoute>
+              <Workshop />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/OrderForm"
+          element={
+            <ProtectedRoute>
+              <OrderForm />
+            </ProtectedRoute>
+          }
+        />
       </Routes>
-
     </Router>
   );
 }

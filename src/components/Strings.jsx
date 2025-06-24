@@ -3,8 +3,15 @@ import { useFormHandlers } from "../useFormHandlers";
 import { fetchEntry } from "../db";
 import Navbar from "./Navbar";
 import { caliberOptions } from "../data";
+import { tensionOptions } from "../data";
 
 export default function Strings() {
+
+  const selectFields = {
+    caliber: caliberOptions,
+    tension: tensionOptions
+  }
+
   const {
     formData,
     submittedData,
@@ -110,38 +117,41 @@ export default function Strings() {
             <div key={name}>
               <label>
                 <h2>{label}</h2>
-                {name === "caliber" ? (
-        <select
-          name="caliber"
-          value={formData.caliber}
-          onChange={handleChange}
-          style={{
-            width: "100%",
-            maxWidth: "140px",
-            boxSizing: "border-box",
-            fontSize: "14px",
-          }}
-          required
-        >
-          <option value="">Select</option>
-          {caliberOptions.map((option) => (
-            <option key={option} value={option}>{option}</option>
-          ))}
-        </select>
-      ) : (
-                <input
-                  name={name}
-                  type={type}
-                  value={formData[name]}
-                  onChange={handleChange}
-                  style={{
-                    width: "100%",
-                    maxWidth: "140px",
-                    boxSizing: "border-box",
-                    fontSize: "14px",
-                  }}
-                  required
-                />)}
+                {selectFields[name] ? (
+                  <select
+                    name={name}
+                    value={formData[name]}
+                    onChange={handleChange}
+                    style={{
+                      width: "100%",
+                      maxWidth: "140px",
+                      boxSizing: "border-box",
+                      fontSize: "14px",
+                    }}
+                    required
+                  >
+                    <option value="">Select</option>
+                    {selectFields[name].map((option) => (
+                      <option key={option} value={option}>
+                        {option}
+                      </option>
+                    ))}
+                  </select>
+                ) : (
+                  <input
+                    name={name}
+                    type={type}
+                    value={formData[name]}
+                    onChange={handleChange}
+                    style={{
+                      width: "100%",
+                      maxWidth: "140px",
+                      boxSizing: "border-box",
+                      fontSize: "14px",
+                    }}
+                    required
+                  />
+                )}
               </label>
             </div>
           ))}
@@ -262,36 +272,48 @@ export default function Strings() {
                     </td>
                     <td style={tdStyle}>
                       {isEditingId === entry.id ? (
-<div key="caliber">
-  <label>
-    <select
-      name="caliber"
-      value={formData.caliber}
-      onChange={handleChange}
-      style={{ width: "140px", fontSize: "14px" }}
-      required
-    >
-      <option value="">Select caliber</option>
-      {caliberOptions.map((option) => (
-        <option key={option} value={option}>
-          {option}
-        </option>
-      ))}
-    </select>
-  </label>
-</div>
-
+                        <div key="caliber">
+                          <label>
+                            <select
+                              name="caliber"
+                              value={formData.caliber}
+                              onChange={handleChange}
+                              style={{ width: "140px", fontSize: "14px" }}
+                              required
+                            >
+                              <option value="">Select caliber</option>
+                              {caliberOptions.map((option) => (
+                                <option key={option} value={option}>
+                                  {option}
+                                </option>
+                              ))}
+                            </select>
+                          </label>
+                        </div>
                       ) : (
                         entry.caliber
                       )}
                     </td>
                     <td style={tdStyle}>
                       {isEditingId === entry.id ? (
-                        <input
-                          name="tension"
-                          value={editData.tension}
-                          onChange={handleEditChange}
-                        />
+                        <div key="tension">
+                          <label>
+                            <select
+                              name="tension"
+                              value={formData.tension}
+                              onChange={handleChange}
+                              style={{ width: "140px", fontSize: "14px" }}
+                              required
+                            >
+                              <option value="">Select tension</option>
+                              {tensionOptions.map((option) => (
+                                <option key={option} value={option}>
+                                  {option}
+                                </option>
+                              ))}
+                            </select>
+                          </label>
+                        </div>
                       ) : (
                         entry.tension
                       )}
