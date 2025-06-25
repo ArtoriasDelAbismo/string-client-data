@@ -414,37 +414,28 @@ export default function Workshop() {
                           justifyContent: "center",
                         }}
                       >
-                        <button
-                          onClick={() => {
-                            handleToggleCheck(entry.id, entry.completed);
-                          }}
-                        >
-                          {entry.completed ? (
-                            <i className="fa-solid fa-xmark"></i>
+                          {!entry.completed ? (
+                            <button
+                              onClick={() => {
+                                handleComplete(entry.id);
+                                handleToggleCheck(entry.id, entry.completed);
+                              }}
+                            >
+                              <a
+                                href={`mailto:${entry.mail}?subject=Reparación&body=Hola ${entry.name}, tu servicio de ${entry.service} está listo para ser retirada.`}
+                              >
+                                <i className="fa-solid fa-check"></i>
+                              </a>
+                            </button>
                           ) : (
-                            <i className="fa-solid fa-check"></i>
+                            <button
+                              onClick={() =>
+                                handleToggleCheck(entry.id, entry.completed)
+                              }
+                            >
+                              <i className="fa-solid fa-xmark"></i>
+                            </button>
                           )}
-                        </button>
-                        <button>
-                          <a
-                            href={
-                              entry.completed
-                                ? `mailto:${entry.mail}?subject=Servicio&body=Hola ${entry.name}, tu servicio de ${entry.service} está listo para ser retirado.`
-                                : undefined
-                            }
-                            style={{
-                              pointerEvents:
-                                entry.completed && !entry.emailSent
-                                  ? "auto"
-                                  : "none",
-                              opacity:
-                                entry.completed && !entry.emailSent ? 1 : 0.5,
-                            }}
-                          >
-                            <i className="fa-solid fa-envelope"></i>
-                          </a>
-                        </button>
-
                         <button onClick={() => handleEdit(entry.id)}>
                           <i className="fa-solid fa-pen-to-square"></i>
                         </button>
