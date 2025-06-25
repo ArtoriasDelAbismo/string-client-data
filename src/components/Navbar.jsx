@@ -46,7 +46,6 @@ export default function Navbar() {
       label: "Smart Manager",
       href: "https://tierrabatida.com.ar/wp-admin/admin.php?page=smart-manager",
     },
-    { label: "Order", to: "/OrderForm" }
   ];
 
   const drawerList = (
