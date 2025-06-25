@@ -4,6 +4,8 @@ import { fetchEntry } from "../db";
 import Navbar from "./Navbar";
 import { caliberOptions } from "../data";
 import { tensionOptions } from "../data";
+import { countTotalEntries } from "../db";
+import Footer from "./Footer";
 
 export default function Strings() {
   const selectFields = {
@@ -41,6 +43,7 @@ export default function Strings() {
 
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
+  const [totalCount, setTotalCount] = useState()
 
   useEffect(() => {
     const fetchFilteredData = async () => {
@@ -63,6 +66,18 @@ export default function Strings() {
     };
     fetchFilteredData();
   }, [searchTerm, page]);
+
+  useEffect(() => {
+    const getTotalCount = async() => {
+      const count = await countTotalEntries()
+      setTotalCount(count)
+      console.log(totalCount);
+      
+    }
+
+    getTotalCount()
+
+  }, [])
 
   const thStyle = {
     border: "1px solid #ccc",
@@ -89,12 +104,14 @@ export default function Strings() {
   return (
     <>
       <Navbar />
+
       <form
         style={{ marginTop: "100px" }}
         onSubmit={(e) => {
           e.preventDefault();
           handleSubmit();
         }}
+
       >
         <div
           style={{
@@ -414,7 +431,11 @@ export default function Strings() {
                 ))}
               </tbody>
             </table>
+                      <div style={{display:'flex', justifyContent:'end'}}>
+          <p>Total strings database entries: {totalCount}</p>
+    </div>
           </div>
+
         )}
 
         {/* Pagination */}
@@ -434,6 +455,7 @@ export default function Strings() {
           </button>
         </div>
       </div>
+
     </>
   );
 }
