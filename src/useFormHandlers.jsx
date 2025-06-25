@@ -56,10 +56,8 @@ export const useFormHandlers = (initialData) => {
     };
 
     try {
-      // Wait for DB insertion and get actual saved entry with id
       const [savedEntry] = await addEntry(newEntry);
 
-      // Update UI state with savedEntry (includes id assigned by DB)
       setSubmittedData((prev) => [savedEntry, ...prev]);
       setPage(1);
 
@@ -76,7 +74,6 @@ export const useFormHandlers = (initialData) => {
       });
     } catch (error) {
       console.error("Failed to add entry: ", error);
-      // handle error in UI if needed
     }
   };
 
