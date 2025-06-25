@@ -57,7 +57,7 @@ export default function Navbar() {
       <List>
         {menuItems.map(({ label, to, href }) => (
           <ListItem
-            sx={{ color: "white" }}
+            sx={{ color: "white", fontSize:'small' }}
             button
             key={label}
             component={to ? Link : "a"}
@@ -92,7 +92,7 @@ export default function Navbar() {
                 <Link
                   key={label}
                   to={to}
-                  style={{ color: "#ffff", textDecoration: "none" }}
+                  style={{ color: "#ffff", textDecoration: "none", fontSize:'small' }}
                 >
                   {label}
                 </Link>
@@ -102,7 +102,7 @@ export default function Navbar() {
                   href={href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  style={{ color: "#fff", textDecoration: "none" }}
+                  style={{ color: "#fff", textDecoration: "none", fontSize:'small' }}
                 >
                   {label}
                 </a>
