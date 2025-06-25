@@ -160,4 +160,20 @@ export const updateWorkshopEntry = async (entry) => {
 }
 
 
+/* Entries counter */
+
+export const countTotalEntries = async () => {
+  const { count, error } = await supabase
+    .from("string-client-data")
+    .select("*", { count: "exact", head: true });
+
+  if (error) {
+    console.error("Error counting entries:", error);
+    return 0; 
+  }
+
+  return count;
+};
+
+
 export default { addEntry, addWorkshopEntry };
