@@ -422,7 +422,7 @@ export default function Workshop() {
                               }}
                             >
                               <a
-                                href={`mailto:${entry.mail}?subject=Reparación&body=Hola ${entry.name}, tu servicio de ${entry.service} está listo para ser retirada.`}
+                                href={`mailto:${entry.mail}?subject=Reparación&body=Hola ${entry.name}, tu servicio de ${entry.service} está listo para ser retirado.`}
                               >
                                 <i className="fa-solid fa-check"></i>
                               </a>
