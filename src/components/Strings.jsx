@@ -6,11 +6,10 @@ import { caliberOptions } from "../data";
 import { tensionOptions } from "../data";
 
 export default function Strings() {
-
   const selectFields = {
     caliber: caliberOptions,
-    tension: tensionOptions
-  }
+    tension: tensionOptions,
+  };
 
   const {
     formData,
@@ -168,7 +167,7 @@ export default function Strings() {
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          width: "1200px",
+          width: "1250px",
         }}
       >
         <h3>Submitted Data:</h3>
@@ -382,31 +381,29 @@ export default function Strings() {
                             justifyContent: "center",
                           }}
                         >
-                          <button
-                            onClick={() =>
-                              handleToggleCheck(entry.id, entry.completed)
-                            }
-                          >
-                            {entry.completed ? (
-                              <i className="fa-solid fa-xmark"></i>
-                            ) : (
-                              <i className="fa-solid fa-check"></i>
-                            )}
-                          </button>
-                          <button>
-                            <a
-                              href={`mailto:${entry.mail}?subject=Encordado&body=Hola ${entry.name}, tu raqueta encordada con ${entry.string} está lista para ser retirada.`}
-                              onClick={() => handleComplete(entry.id)}
-                              style={{
-                                pointerEvents: !entry.completed
-                                  ? "none"
-                                  : "auto",
-                                opacity: !entry.completed ? 0.5 : 1,
+                          {!entry.completed ? (
+                            <button
+                              onClick={() => {
+                                handleComplete(entry.id);
+                                handleToggleCheck(entry.id, entry.completed);
                               }}
                             >
-                              <i className="fa-solid fa-envelope"></i>
-                            </a>
-                          </button>
+                              <a
+                                href={`mailto:${entry.mail}?subject=Encordado&body=Hola ${entry.name}, tu raqueta encordada con ${entry.string} está lista para ser retirada.`}
+                              >
+                                <i className="fa-solid fa-check"></i>
+                              </a>
+                            </button>
+                          ) : (
+                            <button
+                              onClick={() =>
+                                handleToggleCheck(entry.id, entry.completed)
+                              }
+                            >
+                              <i className="fa-solid fa-xmark"></i>
+                            </button>
+                          )}
+
                           <button onClick={() => handleEdit(entry.id)}>
                             <i className="fa-solid fa-pen-to-square"></i>
                           </button>
