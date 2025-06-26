@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useWorkshopHandlers } from "../useWorkshopHandlers";
 import { fetchWorkshopEntry } from "../db";
 import Navbar from "./Navbar";
+import { countTotalWorkshopEntries } from "../db";
 
 export default function Workshop() {
   const {
@@ -23,8 +24,8 @@ export default function Workshop() {
     setSubmittedData,
     handleToggleCheck,
   } = useWorkshopHandlers({
-    name: "",
     lastName: "",
+    fullname: "",
     service: "",
     fissureSite: "",
     mail: "",
@@ -36,6 +37,7 @@ export default function Workshop() {
   });
 
   const [loading, setLoading] = useState(false);
+  const [totalCount, setTotalCount] = useState(0);
 
   const fissureImages = [
     { label: "0", url: "/repair-places/0.png" },
@@ -65,6 +67,16 @@ export default function Workshop() {
     };
     fetchFilteredData();
   }, [searchTerm, page]);
+
+  useEffect(() => {
+    const getTotalCount = async () => {
+      const count = countTotalWorkshopEntries()
+      setTotalCount(count)
+      console.log(totalCount);
+      
+    }
+    getTotalCount()
+  }, [])
 
   const thStyle = {
     border: "1px solid #ccc",
@@ -100,8 +112,7 @@ export default function Workshop() {
           }}
         >
           {[
-            { label: "Name", name: "name", type: "text" },
-            { label: "Last Name", name: "lastName", type: "text" },
+            { label: "Full name", name: "fullname", type: "text" },
             { label: "Mail", name: "mail", type: "email" },
             { label: "Phone", name: "phone", type: "text" },
             { label: "Racket", name: "racket", type: "text" },
@@ -255,6 +266,8 @@ export default function Workshop() {
         {loading ? (
           <div className="spinner"></div>
         ) : (
+          <div>
+
           <table
             style={{
               width: "100%",
@@ -264,8 +277,7 @@ export default function Workshop() {
           >
             <thead style={{ color: "black" }}>
               <tr>
-                <th style={thStyle}>Name</th>
-                <th style={thStyle}>Last Name</th>
+                <th style={thStyle}>Full Name</th>
                 <th style={thStyle}>Mail</th>
                 <th style={thStyle}>Phone</th>
                 <th style={thStyle}>Racket</th>
@@ -291,23 +303,12 @@ export default function Workshop() {
                   <td style={tdStyle}>
                     {isEditingId === entry.id ? (
                       <input
-                        name="name"
-                        value={editData.name}
+                        name="fullname"
+                        value={editData.fullname}
                         onChange={handleEditChange}
                       />
                     ) : (
-                      entry.name
-                    )}
-                  </td>
-                  <td style={tdStyle}>
-                    {isEditingId === entry.id ? (
-                      <input
-                        name="lastName"
-                        value={editData.lastName}
-                        onChange={handleEditChange}
-                      />
-                    ) : (
-                      entry.lastName
+                      entry.fullname
                     )}
                   </td>
                   <td style={tdStyle}>
@@ -437,7 +438,7 @@ export default function Workshop() {
                             </button>
                           )}
                         <button onClick={() => handleEdit(entry.id)}>
-                          <i className="fa-solid fa-pen-to-square"></i>
+                          <i className="fa-solid fa-pen-to-square"></i> 
                         </button>
                       </div>
                     )}
@@ -446,6 +447,10 @@ export default function Workshop() {
               ))}
             </tbody>
           </table>
+          <div style={{display:'flex', justifyContent:'end'}}>
+            <p>Total workshop database entries: {totalCount}</p>
+          </div>
+          </div>
         )}
 
         {modalImage && (

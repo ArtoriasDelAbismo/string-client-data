@@ -35,7 +35,7 @@ const PAGE_SIZE = 10;
 
 export const fetchEntry = async (searchTerm = "", page = 1) => {
   try {
-    const baseSelect = "id, name, lastName, string, caliber, tension, racket, mail, date, time, completed";
+    const baseSelect = "id, fullname, string, caliber, tension, racket, mail, date, time, completed";
     let query = supabase
       .from("string-client-data")
       .select(baseSelect)
@@ -112,7 +112,7 @@ export const addWorkshopEntry = async (entry) => {
 
 export const fetchWorkshopEntry = async (searchTerm = "", page = 1) => {
   try {
-    const baseSelect = "id, name, lastName, mail, phone, racket, service, fissureSite, notes, date, time, completed, emailSent";
+    const baseSelect = "id, fullname, mail, phone, racket, service, fissureSite, notes, date, time, completed, emailSent";
     let query = supabase
       .from("workshop-data")
       .select(baseSelect)
@@ -174,6 +174,18 @@ export const countTotalEntries = async () => {
 
   return count;
 };
+
+export const countTotalWorkshopEntries = async () => {
+  const { count, error } = await supabase
+  .from('workshop-data')
+  .select("*", { count: "exact", head: true })
+
+  if (error) {
+    console.error('Error counting entries: ', error);
+    return 0
+  }
+  return count
+}
 
 
 export default { addEntry, addWorkshopEntry };

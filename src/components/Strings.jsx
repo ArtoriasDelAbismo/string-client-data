@@ -5,7 +5,6 @@ import Navbar from "./Navbar";
 import { caliberOptions } from "../data";
 import { tensionOptions } from "../data";
 import { countTotalEntries } from "../db";
-import Footer from "./Footer";
 
 export default function Strings() {
   const selectFields = {
@@ -30,8 +29,7 @@ export default function Strings() {
     setSearchTerm,
     setSubmittedData,
   } = useFormHandlers({
-    name: "",
-    lastName: "",
+    fullname: "",
     string: "",
     caliber: "",
     tension: "",
@@ -122,8 +120,7 @@ export default function Strings() {
           }}
         >
           {[
-            { label: "Name", name: "name", type: "text" },
-            { label: "Last Name", name: "lastName", type: "text" },
+            { label: "Full Name", name: "fullname", type: "text" },
             { label: "String", name: "string", type: "text" },
             { label: "Caliber", name: "caliber", type: "text" },
             { label: "Tension", name: "tension", type: "text" },
@@ -229,8 +226,7 @@ export default function Strings() {
               <thead style={{ color: "black" }}>
                 <tr>
                   <th style={thStyle}>ID</th>
-                  <th style={thStyle}>Name</th>
-                  <th style={thStyle}>Last Name</th>
+                  <th style={thStyle}>Full Name</th>
                   <th style={thStyle}>String</th>
                   <th style={thStyle}>Caliber</th>
                   <th style={thStyle}>Tension</th>
@@ -253,26 +249,17 @@ export default function Strings() {
                     }}
                   >
                     <td style={tdStyle}>{entry.id}</td>
+
+
                     <td style={tdStyle}>
                       {isEditingId === entry.id ? (
                         <input
-                          name="name"
-                          value={editData.name}
+                          name="fullname"
+                          value={editData.fullname}
                           onChange={handleEditChange}
                         />
                       ) : (
-                        entry.name
-                      )}
-                    </td>
-                    <td style={tdStyle}>
-                      {isEditingId === entry.id ? (
-                        <input
-                          name="lastName"
-                          value={editData.lastName}
-                          onChange={handleEditChange}
-                        />
-                      ) : (
-                        entry.lastName
+                        entry.fullname
                       )}
                     </td>
                     <td style={tdStyle}>
@@ -406,7 +393,7 @@ export default function Strings() {
                               }}
                             >
                               <a
-                                href={`mailto:${entry.mail}?subject=Encordado&body=Hola ${entry.name}, tu raqueta encordada con ${entry.string} está lista para ser retirada.`}
+                                href={`mailto:${entry.mail}?subject=Encordado&body=Hola ${entry.fullname}, tu raqueta encordada con ${entry.string} está lista para ser retirada.`}
                               >
                                 <i className="fa-solid fa-check"></i>
                               </a>
