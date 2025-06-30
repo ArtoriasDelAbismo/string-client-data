@@ -62,8 +62,7 @@ export const useFormHandlers = (initialData) => {
       setPage(1);
 
       setFormData({
-        name: "",
-        lastName: "",
+        fullname: "",
         string: "",
         caliber: "",
         tension: "",
