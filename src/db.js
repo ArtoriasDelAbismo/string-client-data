@@ -46,7 +46,7 @@ export const fetchEntry = async (searchTerm = "", page = 1) => {
       query = supabase
         .from("string-client-data")
         .select(baseSelect)
-        .or(`name.ilike.%${searchTerm}%,lastName.ilike.%${searchTerm}%`)
+        .or(`fullname.ilike.%${searchTerm}%,string.ilike.%${searchTerm}%,racket.ilike.%${searchTerm}%`)
         .order("id", { ascending: false })
         .range((page - 1) * PAGE_SIZE, page * PAGE_SIZE - 1);
     }

@@ -12,58 +12,41 @@ export default function Strings() {
     tension: tensionOptions,
   };
 
-  const {
-    formData,
-    submittedData,
-    searchTerm,
-    handleChange,
-    handleComplete,
-    handleSubmit,
-    isEditingId,
-    editData,
-    handleUpdate,
-    handleEdit,
-    handleToggleCheck,
-    handleEditChange,
-    setNextId,
-    setSearchTerm,
-    setSubmittedData,
-  } = useFormHandlers({
-    fullname: "",
-    string: "",
-    caliber: "",
-    tension: "",
-    racket: "",
-    mail: "",
-    date: "",
-    time: "",
-  });
+const {
+  formData,
+  submittedData,
+  searchTerm,
+  handleChange,
+  handleComplete,
+  handleSubmit,
+  isEditingId,
+  editData,
+  handleUpdate,
+  handleEdit,
+  handleToggleCheck,
+  handleEditChange,
+  setNextId,
+  setSearchTerm,
+  setSubmittedData,
+  page,
+  setPage,
+} = useFormHandlers({
+  fullname: "",
+  string: "",
+  caliber: "",
+  tension: "",
+  racket: "",
+  mail: "",
+  date: "",
+  time: "",
+});
 
-  const [page, setPage] = useState(1);
+
+
   const [loading, setLoading] = useState(false);
   const [totalCount, setTotalCount] = useState()
+  
 
-  useEffect(() => {
-    const fetchFilteredData = async () => {
-      setLoading(true);
-      const results = await fetchEntry(searchTerm, page);
-
-      const sanitizedResults = results.map((entry) => ({
-        ...entry,
-        completed: entry.completed ?? false,
-      }));
-
-      setSubmittedData(sanitizedResults);
-
-      const maxId = sanitizedResults.reduce(
-        (max, item) => Math.max(max, item.id),
-        0
-      );
-      setNextId(maxId + 1);
-      setLoading(false);
-    };
-    fetchFilteredData();
-  }, [searchTerm, page]);
 
   useEffect(() => {
     const getTotalCount = async() => {

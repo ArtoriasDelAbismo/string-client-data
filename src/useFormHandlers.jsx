@@ -12,7 +12,10 @@ export const useFormHandlers = (initialData) => {
   const [isEditingId, setIsEditingId] = useState(null);
   const [editData, setEditData] = useState({});
   const [entries, setEntries] = useState(null);
-  const [page, setPage] = useState(1);
+const [page, setPage] = useState(1);
+
+
+
 
   useEffect(() => {
     const fetchFilteredData = async () => {
@@ -161,6 +164,29 @@ export const useFormHandlers = (initialData) => {
       console.error("❌ Update failed: updateEntry returned false");
     }
   };
+
+  useEffect(() => {
+  const fetchFilteredData = async () => {
+    const results = await fetchEntry(searchTerm, page);
+    const sanitizedResults = results
+      .map((entry) => ({
+        ...entry,
+        completed: entry.completed ?? false,
+      }))
+      .sort((a, b) => b.id - a.id);
+
+    setSubmittedData(sanitizedResults);
+
+    const maxId = sanitizedResults.reduce(
+      (max, item) => Math.max(max, item.id),
+      0
+    );
+    setNextId(maxId + 1);
+  };
+
+  fetchFilteredData();
+}, [searchTerm, page]); 
+
 
   return {
     formData,
