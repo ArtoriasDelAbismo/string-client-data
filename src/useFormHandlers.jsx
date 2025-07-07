@@ -1,43 +1,34 @@
 import { useEffect, useState } from "react";
-import { addEntry } from "./db";
+import { addEntry, updateEntry, fetchEntry, countTotalEntries } from "./db";
 import { supabase } from "./supaBase";
-import { updateEntry } from "./db";
-import { fetchEntry } from "./db";
 
 export const useFormHandlers = (initialData) => {
   const [formData, setFormData] = useState(initialData);
   const [submittedData, setSubmittedData] = useState([]);
-  const [nextId, setNextId] = useState(0);
   const [searchTerm, setSearchTerm] = useState("");
   const [isEditingId, setIsEditingId] = useState(null);
   const [editData, setEditData] = useState({});
-  const [entries, setEntries] = useState(null);
-const [page, setPage] = useState(1);
+  const [page, setPage] = useState(1);
+  const [totalCount, setTotalCount] = useState(0); // State for total entries
 
-
-
-
+  // Single, consolidated useEffect for fetching data and count
   useEffect(() => {
-    const fetchFilteredData = async () => {
-      const results = await fetchEntry(searchTerm);
-      const sanitizedResults = results
-        .map((entry) => ({
-          ...entry,
-          completed: entry.completed ?? false,
-        }))
-        .sort((a, b) => b.id - a.id);
-
+    const fetchDataAndCount = async () => {
+      // Fetch the data for the current page and search term
+      const results = await fetchEntry(searchTerm, page);
+      const sanitizedResults = results.map((entry) => ({
+        ...entry,
+        completed: entry.completed ?? false,
+      }));
       setSubmittedData(sanitizedResults);
 
-      const maxId = sanitizedResults.reduce(
-        (max, item) => Math.max(max, item.id),
-        0
-      );
-      setNextId(maxId + 1);
+      // Fetch the total count based on the same search term
+      const count = await countTotalEntries(searchTerm);
+      setTotalCount(count);
     };
 
-    fetchFilteredData();
-  }, [searchTerm]);
+    fetchDataAndCount();
+  }, [searchTerm, page]);
 
   const handleChange = (e) => {
     setFormData((prev) => ({
@@ -48,8 +39,8 @@ const [page, setPage] = useState(1);
 
   const handleSubmit = async () => {
     const now = new Date();
-    const currentDate = now.toISOString().split("T")[0]; // yyyy-mm-dd
-    const currentTime = now.toTimeString().split(" ")[0].slice(0, 5); // hh:mm
+    const currentDate = now.toISOString().split("T")[0];
+    const currentTime = now.toTimeString().split(" ")[0].slice(0, 5);
 
     const newEntry = {
       ...formData,
@@ -60,20 +51,16 @@ const [page, setPage] = useState(1);
 
     try {
       const [savedEntry] = await addEntry(newEntry);
+      // Go back to the first page to see the new entry
+      if (page !== 1) {
+        setPage(1);
+      } else {
+        // If already on page 1, just add the new entry to the top
+        setSubmittedData((prev) => [savedEntry, ...prev]);
+        setTotalCount((prev) => prev + 1);
+      }
 
-      setSubmittedData((prev) => [savedEntry, ...prev]);
-      setPage(1);
-
-      setFormData({
-        fullname: "",
-        string: "",
-        caliber: "",
-        tension: "",
-        racket: "",
-        mail: "",
-        date: "",
-        time: "",
-      });
+      setFormData(initialData); // Reset form
     } catch (error) {
       console.error("Failed to add entry: ", error);
     }
@@ -98,21 +85,16 @@ const [page, setPage] = useState(1);
     }
 
     setSubmittedData((prev) => prev.filter((entry) => entry.id !== id));
+    setTotalCount((prev) => prev - 1); // Decrement total count
     console.log("🗑️ Successfully deleted entry with ID:", id);
   };
 
   const handleSearch = (e) => {
     setSearchTerm(e.target.value.toLowerCase());
+    setPage(1); // Reset to page 1 on new search
   };
 
   const handleToggleCheck = async (id, currentStatus) => {
-    console.log(
-      "🔄 handleToggleCheck called with id:",
-      id,
-      "currentStatus:",
-      currentStatus
-    );
-
     if (!Number.isInteger(id) || id < 0) {
       console.error("🚫 Invalid ID passed to handleToggleCheck:", id);
       return;
@@ -127,8 +109,6 @@ const [page, setPage] = useState(1);
     if (error) {
       console.error("❌ Failed to update:", error.message);
     } else {
-      console.log("✅ Toggled row:", data);
-
       setSubmittedData((prev) =>
         prev.map((entry) =>
           entry.id === id ? { ...entry, completed: !currentStatus } : entry
@@ -152,7 +132,6 @@ const [page, setPage] = useState(1);
   };
 
   const handleUpdate = async () => {
-    console.log("🚀 Updating entry:", editData);
     const updated = await updateEntry(editData);
     if (updated) {
       const updatedList = submittedData.map((item) =>
@@ -165,36 +144,15 @@ const [page, setPage] = useState(1);
     }
   };
 
-  useEffect(() => {
-  const fetchFilteredData = async () => {
-    const results = await fetchEntry(searchTerm, page);
-    const sanitizedResults = results
-      .map((entry) => ({
-        ...entry,
-        completed: entry.completed ?? false,
-      }))
-      .sort((a, b) => b.id - a.id);
-
-    setSubmittedData(sanitizedResults);
-
-    const maxId = sanitizedResults.reduce(
-      (max, item) => Math.max(max, item.id),
-      0
-    );
-    setNextId(maxId + 1);
-  };
-
-  fetchFilteredData();
-}, [searchTerm, page]); 
-
-
   return {
     formData,
     submittedData,
-    nextId,
     searchTerm,
     isEditingId,
     editData,
+    page,
+    totalCount, // Return totalCount
+    setPage,
     handleChange,
     handleEdit,
     handleEditChange,
@@ -203,11 +161,8 @@ const [page, setPage] = useState(1);
     handleSearch,
     handleUpdate,
     setFormData,
-    setNextId,
     setSearchTerm,
     setSubmittedData,
     handleToggleCheck,
-    page,
-    setPage,
   };
 };

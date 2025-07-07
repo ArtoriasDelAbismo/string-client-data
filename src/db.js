@@ -1,15 +1,15 @@
 import { supabase } from "./supaBase";
 
+export const PAGE_SIZE = 10;
+
 {
-  /* Strings database */
+  /* --- Strings Database --- */
 }
 
 export const addEntry = async (entry) => {
   const entryToInsert = { ...entry };
-  delete entryToInsert.id;  // remove id to let DB auto-generate
+  delete entryToInsert.id; // remove id to let DB auto-generate
 
-  console.log("Inserting entry to DB:", entryToInsert);
-  
   try {
     const { data, error } = await supabase
       .from("string-client-data")
@@ -17,120 +17,130 @@ export const addEntry = async (entry) => {
       .select();
 
     if (error) {
-      console.log("Error adding new entry ", error);
+      console.error("Error adding new string entry:", error.message);
       throw error;
     }
-
-    console.log("Added new entry: ", data);
     return data;
   } catch (error) {
-    console.error("Unexpected error adding new entry: ", error);
+    console.error("Unexpected error adding new string entry:", error);
     throw error;
   }
 };
 
-
-
-const PAGE_SIZE = 10;
-
 export const fetchEntry = async (searchTerm = "", page = 1) => {
   try {
     const baseSelect = "id, fullname, string, caliber, tension, racket, mail, date, time, completed";
-    let query = supabase
-      .from("string-client-data")
-      .select(baseSelect)
+    let query = supabase.from("string-client-data").select(baseSelect);
+
+    if (searchTerm) {
+      query = query.or(`fullname.ilike.%${searchTerm}%,string.ilike.%${searchTerm}%,racket.ilike.%${searchTerm}%`);
+    }
+
+    query = query
       .order("id", { ascending: false })
       .range((page - 1) * PAGE_SIZE, page * PAGE_SIZE - 1);
 
-    if (searchTerm) {
-      query = supabase
-        .from("string-client-data")
-        .select(baseSelect)
-        .or(`fullname.ilike.%${searchTerm}%,string.ilike.%${searchTerm}%,racket.ilike.%${searchTerm}%`)
-        .order("id", { ascending: false })
-        .range((page - 1) * PAGE_SIZE, page * PAGE_SIZE - 1);
-    }
-
     const { data, error } = await query;
+
     if (error) {
-      console.error("Error fetching data:", error);
+      console.error("Error fetching string data:", error);
       return [];
     }
 
-    // Sanitize to ensure `completed` is boolean
     return data.map((entry) => ({
       ...entry,
       completed: entry.completed ?? false,
     }));
   } catch (err) {
-    console.error("Unexpected error fetching data:", err);
+    console.error("Unexpected error fetching string data:", err);
     return [];
   }
 };
 
 export const updateEntry = async (entry) => {
-  const { data, error } = await supabase
-    .from("string-client-data")
-    .update([entry])
-    .eq("id", entry.id)
-    .select();
+  try {
+    const { data, error } = await supabase
+      .from("string-client-data")
+      .update(entry) // Standardized: pass object directly
+      .eq("id", entry.id)
+      .select();
 
-  if (error) {
-    console.error("❌ Supabase update error:", error.message);
+    if (error) {
+      console.error("❌ Supabase string update error:", error.message);
+      return false;
+    }
+    return data;
+  } catch (err) {
+    console.error("Unexpected error updating string entry:", err);
     return false;
   }
-
-  return data;
 };
 
+export const countTotalEntries = async (searchTerm = "") => {
+  try {
+    let query = supabase
+      .from("string-client-data")
+      .select("*", { count: "exact", head: true });
 
+    if (searchTerm) {
+      query = query.or(`fullname.ilike.%${searchTerm}%,string.ilike.%${searchTerm}%,racket.ilike.%${searchTerm}%`);
+    }
 
+    const { count, error } = await query;
 
+    if (error) {
+      console.error("Error counting string entries:", error);
+      return 0;
+    }
+    return count;
+  } catch (err) {
+    console.error("Unexpected error counting string entries:", err);
+    return 0;
+  }
+};
 
 {
-  /* Workshop database */
+  /* --- Workshop Database --- */
 }
 
 export const addWorkshopEntry = async (entry) => {
   try {
-    console.log("Inserting entry:", entry);
     const { data, error } = await supabase
       .from("workshop-data")
-      .insert([entry])
+      .insert(entry)
       .select();
 
     if (error) {
-      console.log("Error adding new entry ", error);
-      return;
+      console.error("Error adding new workshop entry:", error.message);
+      throw error;
     }
-
-    console.log("Added new entry: ", data);
+    return data;
   } catch (error) {
-    console.error("Unexpected error adding new entry: ", error);
+    console.error("Unexpected error adding new workshop entry:", error);
+    throw error;
   }
 };
 
 export const fetchWorkshopEntry = async (searchTerm = "", page = 1) => {
   try {
     const baseSelect = "id, fullname, mail, phone, racket, service, fissureSite, notes, date, time, completed, emailSent";
-    let query = supabase
-      .from("workshop-data")
-      .select(baseSelect)
+    let query = supabase.from("workshop-data").select(baseSelect);
+
+    if (searchTerm) {
+      // Note: The original code had `name.ilike` and `lastName.ilike`.
+      // Assuming the column is `fullname` like in the strings table.
+      // If not, adjust this line accordingly.
+      query = query.or(`fullname.ilike.%${searchTerm}%`);
+    }
+
+    query = query
       .order("id", { ascending: false })
       .range((page - 1) * PAGE_SIZE, page * PAGE_SIZE - 1);
 
-    if (searchTerm) {
-      query = supabase
-        .from("workshop-data")
-        .select(baseSelect)
-        .or(`name.ilike.%${searchTerm}%,lastName.ilike.%${searchTerm}%`)
-        .order("id", { ascending: false })
-        .range((page - 1) * PAGE_SIZE, page * PAGE_SIZE - 1);
-    }
-
     const { data, error } = await query;
+
     if (error) {
-      console.error("Error fetching data:", error);
+      console.error("Error fetching workshop data:", error);
       return [];
     }
 
@@ -139,53 +149,51 @@ export const fetchWorkshopEntry = async (searchTerm = "", page = 1) => {
       completed: entry.completed ?? false,
     }));
   } catch (err) {
-    console.error("Unexpected error fetching data:", err);
+    console.error("Unexpected error fetching workshop data:", err);
     return [];
   }
 };
 
 export const updateWorkshopEntry = async (entry) => {
-  const { data, error } = await supabase
-  .from('workshop-data')
-  .update(entry)
-  .eq('id', entry.id)
-  .select()
+  try {
+    const { data, error } = await supabase
+      .from('workshop-data')
+      .update(entry)
+      .eq('id', entry.id)
+      .select();
 
-  if (error) {
-    console.log('Error updating entry: ', error.message);
-    return false
+    if (error) {
+      console.error('Error updating workshop entry:', error.message);
+      return false;
+    }
+    return data;
+  } catch (err) {
+    console.error("Unexpected error updating workshop entry:", err);
+    return false;
   }
-
-  return data
-}
-
-
-/* Entries counter */
-
-export const countTotalEntries = async () => {
-  const { count, error } = await supabase
-    .from("string-client-data")
-    .select("*", { count: "exact", head: true });
-
-  if (error) {
-    console.error("Error counting entries:", error);
-    return 0; 
-  }
-
-  return count;
 };
 
-export const countTotalWorkshopEntries = async () => {
-  const { count, error } = await supabase
-  .from('workshop-data')
-  .select("*", { count: "exact", head: true })
+export const countTotalWorkshopEntries = async (searchTerm = "") => {
+  try {
+    let query = supabase
+      .from('workshop-data')
+      .select("*", { count: "exact", head: true });
 
-  if (error) {
-    console.error('Error counting entries: ', error);
-    return 0
+    if (searchTerm) {
+      query = query.or(`fullname.ilike.%${searchTerm}%`);
+    }
+
+    const { count, error } = await query;
+
+    if (error) {
+      console.error('Error counting workshop entries:', error);
+      return 0;
+    }
+    return count;
+  } catch (err) {
+    console.error("Unexpected error counting workshop entries:", err);
+    return 0;
   }
-  return count
-}
-
+};
 
 export default { addEntry, addWorkshopEntry };

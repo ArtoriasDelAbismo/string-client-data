@@ -1,10 +1,8 @@
-import React, { useEffect, useState } from "react";
-import { useFormHandlers } from "../useFormHandlers";
-import { fetchEntry } from "../db";
+import React, { useState } from "react";
+import { useFormHandlers } from "../useFormHandlers.jsx";
 import Navbar from "./Navbar";
-import { caliberOptions } from "../data";
-import { tensionOptions } from "../data";
-import { countTotalEntries } from "../db";
+import { caliberOptions, tensionOptions } from "../data";
+import { PAGE_SIZE } from "../db";
 
 export default function Strings() {
   const selectFields = {
@@ -12,53 +10,35 @@ export default function Strings() {
     tension: tensionOptions,
   };
 
-const {
-  formData,
-  submittedData,
-  searchTerm,
-  handleChange,
-  handleComplete,
-  handleSubmit,
-  isEditingId,
-  editData,
-  handleUpdate,
-  handleEdit,
-  handleToggleCheck,
-  handleEditChange,
-  setNextId,
-  setSearchTerm,
-  setSubmittedData,
-  page,
-  setPage,
-} = useFormHandlers({
-  fullname: "",
-  string: "",
-  caliber: "",
-  tension: "",
-  racket: "",
-  mail: "",
-  date: "",
-  time: "",
-});
-
-
+  const {
+    formData,
+    submittedData,
+    searchTerm,
+    handleChange,
+    handleComplete,
+    handleSubmit,
+    isEditingId,
+    editData,
+    handleUpdate,
+    handleEdit,
+    handleToggleCheck,
+    handleEditChange,
+    setSearchTerm,
+    page,
+    setPage,
+    totalCount, // Get totalCount from the hook
+  } = useFormHandlers({
+    fullname: "",
+    string: "",
+    caliber: "",
+    tension: "",
+    racket: "",
+    mail: "",
+    date: "",
+    time: "",
+  });
 
   const [loading, setLoading] = useState(false);
-  const [totalCount, setTotalCount] = useState()
-  
-
-
-  useEffect(() => {
-    const getTotalCount = async() => {
-      const count = await countTotalEntries()
-      setTotalCount(count)
-      console.log(totalCount);
-      
-    }
-
-    getTotalCount()
-
-  }, [])
 
   const thStyle = {
     border: "1px solid #ccc",
@@ -92,7 +72,6 @@ const {
           e.preventDefault();
           handleSubmit();
         }}
-
       >
         <div
           style={{
@@ -233,7 +212,6 @@ const {
                   >
                     <td style={tdStyle}>{entry.id}</td>
 
-
                     <td style={tdStyle}>
                       {isEditingId === entry.id ? (
                         <input
@@ -258,48 +236,40 @@ const {
                     </td>
                     <td style={tdStyle}>
                       {isEditingId === entry.id ? (
-                        <div key="caliber">
-                          <label>
-                            <select
-                              name="caliber"
-                              value={formData.caliber}
-                              onChange={handleChange}
-                              style={{ width: "140px", fontSize: "14px" }}
-                              required
-                            >
-                              <option value="">Select caliber</option>
-                              {caliberOptions.map((option) => (
-                                <option key={option} value={option}>
-                                  {option}
-                                </option>
-                              ))}
-                            </select>
-                          </label>
-                        </div>
+                        <select
+                          name="caliber"
+                          value={editData.caliber}
+                          onChange={handleEditChange}
+                          style={{ width: "140px", fontSize: "14px" }}
+                          required
+                        >
+                          <option value="">Select caliber</option>
+                          {caliberOptions.map((option) => (
+                            <option key={option} value={option}>
+                              {option}
+                            </option>
+                          ))}
+                        </select>
                       ) : (
                         entry.caliber
                       )}
                     </td>
                     <td style={tdStyle}>
                       {isEditingId === entry.id ? (
-                        <div key="tension">
-                          <label>
-                            <select
-                              name="tension"
-                              value={formData.tension}
-                              onChange={handleChange}
-                              style={{ width: "140px", fontSize: "14px" }}
-                              required
-                            >
-                              <option value="">Select tension</option>
-                              {tensionOptions.map((option) => (
-                                <option key={option} value={option}>
-                                  {option}
-                                </option>
-                              ))}
-                            </select>
-                          </label>
-                        </div>
+                        <select
+                          name="tension"
+                          value={editData.tension}
+                          onChange={handleEditChange}
+                          style={{ width: "140px", fontSize: "14px" }}
+                          required
+                        >
+                          <option value="">Select tension</option>
+                          {tensionOptions.map((option) => (
+                            <option key={option} value={option}>
+                              {option}
+                            </option>
+                          ))}
+                        </select>
                       ) : (
                         entry.tension
                       )}
@@ -401,11 +371,10 @@ const {
                 ))}
               </tbody>
             </table>
-                      <div style={{display:'flex', justifyContent:'end'}}>
-          <p>Total strings database entries: {totalCount}</p>
-    </div>
+            <div style={{ display: "flex", justifyContent: "end" }}>
+              <p>Total strings database entries: {totalCount}</p>
+            </div>
           </div>
-
         )}
 
         {/* Pagination */}
@@ -419,13 +388,12 @@ const {
           <span>Page {page}</span>
           <button
             onClick={() => setPage((prev) => prev + 1)}
-            disabled={submittedData.length < 5}
+            disabled={page * PAGE_SIZE >= totalCount}
           >
             Next ➡
           </button>
         </div>
       </div>
-
     </>
   );
 }
