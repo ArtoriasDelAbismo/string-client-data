@@ -1,7 +1,11 @@
-import React, { useState } from "react";
-import { addWorkshopEntry } from "./db";
+import { useEffect, useState } from "react";
+import {
+  addWorkshopEntry,
+  updateWorkshopEntry,
+  fetchWorkshopEntry,
+  countTotalWorkshopEntries,
+} from "./db";
 import { supabase } from "./supaBase";
-import { updateWorkshopEntry } from "./db";
 
 export const useWorkshopHandlers = (initialData) => {
   const [formData, setFormData] = useState(initialData);
@@ -9,18 +13,32 @@ export const useWorkshopHandlers = (initialData) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [isEditingId, setIsEditingId] = useState(null);
   const [editData, setEditData] = useState({});
+  const [page, setPage] = useState(1);
+  const [totalCount, setTotalCount] = useState(0);
 
-  function handleChange(e) {
+  useEffect(() => {
+    const fetchDataAndCount = async () => {
+      const results = await fetchWorkshopEntry(searchTerm, page);
+      setSubmittedData(results);
+
+      const count = await countTotalWorkshopEntries(searchTerm);
+      setTotalCount(count);
+    };
+
+    fetchDataAndCount();
+  }, [searchTerm, page]);
+
+  const handleChange = (e) => {
     setFormData((prev) => ({
       ...prev,
       [e.target.name]: e.target.value,
     }));
-  }
+  };
 
   const handleSubmit = async () => {
     const now = new Date();
-    const currentDate = now.toISOString().split("T")[0]; // yyyy-mm-dd
-    const currentTime = now.toTimeString().split(" ")[0].slice(0, 5); // hh:mm
+    const currentDate = now.toISOString().split("T")[0];
+    const currentTime = now.toTimeString().split(" ")[0].slice(0, 5);
 
     const newEntry = {
       ...formData,
@@ -30,29 +48,18 @@ export const useWorkshopHandlers = (initialData) => {
       emailSent: false,
     };
 
-    const { data, error } = await supabase
-      .from("workshop-data")
-      .insert(newEntry)
-      .select();
-
-    if (error) {
-      console.error("❌ Error inserting:", error.message);
-      return;
+    try {
+      const [savedEntry] = await addWorkshopEntry(newEntry);
+      if (page !== 1) {
+        setPage(1);
+      } else {
+        setSubmittedData((prev) => [savedEntry, ...prev]);
+        setTotalCount((prev) => prev + 1);
+      }
+      setFormData(initialData);
+    } catch (error) {
+      console.error("Failed to add workshop entry:", error);
     }
-
-    setSubmittedData((prev) => [...prev, data[0]]);
-
-    setFormData({
-      name: "",
-      lastName: "",
-      service: "",
-      notes: "",
-      mail: "",
-      phone: "",
-      racket: "",
-      date: "",
-      time: "",
-    });
   };
 
   const handleComplete = (id) => {
@@ -73,23 +80,17 @@ export const useWorkshopHandlers = (initialData) => {
       return;
     }
 
-    // Only update local state if deletion was successful
     setSubmittedData((prev) => prev.filter((entry) => entry.id !== id));
+    setTotalCount((prev) => prev - 1);
     console.log("🗑️ Successfully deleted entry with ID:", id);
   };
 
   const handleSearch = (e) => {
     setSearchTerm(e.target.value.toLowerCase());
+    setPage(1);
   };
 
   const handleToggleCheck = async (id, currentStatus) => {
-    console.log(
-      "🔄 handleToggleCheck called with id:",
-      id,
-      "currentStatus:",
-      currentStatus
-    );
-
     if (!Number.isInteger(id) || id < 0) {
       console.error("🚫 Invalid ID passed to handleToggleCheck:", id);
       return;
@@ -104,8 +105,6 @@ export const useWorkshopHandlers = (initialData) => {
     if (error) {
       console.error("❌ Failed to update:", error.message);
     } else {
-      console.log("✅ Toggled row:", data);
-
       setSubmittedData((prev) =>
         prev.map((entry) =>
           entry.id === id ? { ...entry, completed: !currentStatus } : entry
@@ -114,55 +113,50 @@ export const useWorkshopHandlers = (initialData) => {
     }
   };
 
-const handleEdit = (id) => {
-  if (id === null) {
-    setIsEditingId(null);
-    setEditData({});
-    return;
-  }
-
-  const entryToEdit = submittedData.find((entry) => entry.id === id);
-  if (entryToEdit) {
-    setEditData({ ...entryToEdit });
-    setIsEditingId(id);
-  } else {
-    console.warn("⚠️ Entry to edit not found for id:", id);
-  }
-};
-
-
+  const handleEdit = (id) => {
+    if (id === null) {
+      setIsEditingId(null);
+      setEditData({});
+      return;
+    }
+    const entryToEdit = submittedData.find((entry) => entry.id === id);
+    if (entryToEdit) {
+      setEditData({ ...entryToEdit });
+      setIsEditingId(id);
+    }
+  };
 
   const handleEditChange = (e) => {
-  const { name, value } = e.target;
-  setEditData((prev) => ({
-    ...prev,
-    [name]: value,
-  }));
-};
+    const { name, value } = e.target;
+    setEditData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
 
-const handleUpdate = async () => {
-  console.log("🚀 Updating entry:", editData); 
-  const updated = await updateWorkshopEntry(editData); 
-  if (updated) {
-    const updatedList = submittedData.map((item) =>
-      item.id === editData.id ? editData : item
-    );
-    setSubmittedData(updatedList);
-    setIsEditingId(null);
-  } else {
-    console.error("❌ Update failed: updateEntry returned false");
-  }
-};
-
-
+  const handleUpdate = async () => {
+    const updated = await updateWorkshopEntry(editData);
+    if (updated) {
+      const updatedList = submittedData.map((item) =>
+        item.id === editData.id ? editData : item
+      );
+      setSubmittedData(updatedList);
+      setIsEditingId(null);
+    } else {
+      console.error("❌ Update failed: updateEntry returned false");
+    }
+  };
 
   return {
     formData,
     submittedData,
     searchTerm,
     isEditingId,
-    setIsEditingId,
     editData,
+    page,
+    totalCount,
+    setPage,
+    setIsEditingId,
     setEditData,
     handleEdit,
     handleEditChange,

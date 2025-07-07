@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from "react";
-import { useWorkshopHandlers } from "../useWorkshopHandlers";
-import { fetchWorkshopEntry } from "../db";
+import React, { useState } from "react";
+import { useWorkshopHandlers } from "../useWorkshopHandlers.jsx";
 import Navbar from "./Navbar";
-import { countTotalWorkshopEntries } from "../db";
+import { PAGE_SIZE } from "../db";
 
 export default function Workshop() {
   const {
@@ -10,19 +9,18 @@ export default function Workshop() {
     submittedData,
     searchTerm,
     isEditingId,
-    setIsEditingId,
     editData,
-    setEditData,
     handleEdit,
     handleEditChange,
     handleUpdate,
     handleChange,
     handleComplete,
-    handleDelete,
     handleSubmit,
     setSearchTerm,
-    setSubmittedData,
     handleToggleCheck,
+    page,
+    setPage,
+    totalCount,
   } = useWorkshopHandlers({
     lastName: "",
     fullname: "",
@@ -37,7 +35,8 @@ export default function Workshop() {
   });
 
   const [loading, setLoading] = useState(false);
-  const [totalCount, setTotalCount] = useState(0);
+  const [showFissureSelector, setShowFissureSelector] = useState(false);
+  const [modalImage, setModalImage] = useState(null);
 
   const fissureImages = [
     { label: "0", url: "/repair-places/0.png" },
@@ -53,30 +52,6 @@ export default function Workshop() {
     { label: "heart1", url: "/repair-places/heart1.png" },
     { label: "heart2", url: "/repair-places/heart2.png" },
   ];
-
-  const [page, setPage] = useState(1);
-  const [showFissureSelector, setShowFissureSelector] = useState(false);
-  const [modalImage, setModalImage] = useState(null);
-
-  useEffect(() => {
-    const fetchFilteredData = async () => {
-      setLoading(true);
-      const results = await fetchWorkshopEntry(searchTerm, page);
-      setSubmittedData(results);
-      setLoading(false);
-    };
-    fetchFilteredData();
-  }, [searchTerm, page]);
-
-  useEffect(() => {
-    const getTotalCount = async () => {
-      const count = countTotalWorkshopEntries()
-      setTotalCount(count)
-      console.log(totalCount);
-      
-    }
-    getTotalCount()
-  }, [])
 
   const thStyle = {
     border: "1px solid #ccc",
@@ -189,13 +164,15 @@ export default function Workshop() {
               }}
             >
               {fissureImages.map((img) => (
-                <div style={{ display: "flex", flexDirection: "column" }}>
+                <div
+                  key={img.label}
+                  style={{ display: "flex", flexDirection: "column" }}
+                >
                   <p style={{ color: "black", fontWeight: "bold" }}>
                     {img.label}
                   </p>
                   <img
                     className="image-selector-img"
-                    key={img.label}
                     src={img.url}
                     alt={img.label}
                     onClick={() => {
@@ -267,154 +244,149 @@ export default function Workshop() {
           <div className="spinner"></div>
         ) : (
           <div>
-
-          <table
-            style={{
-              width: "100%",
-              borderCollapse: "collapse",
-              minWidth: "1000px",
-            }}
-          >
-            <thead style={{ color: "black" }}>
-              <tr>
-                <th style={thStyle}>Full Name</th>
-                <th style={thStyle}>Mail</th>
-                <th style={thStyle}>Phone</th>
-                <th style={thStyle}>Racket</th>
-                <th style={thStyle}>Service</th>
-                <th style={thStyle}>Fissure Site</th>
-                <th style={thStyle}>Notes</th>
-                {!isEditingId && <th style={thStyle}>Date</th>}
-                {!isEditingId && <th style={thStyle}>Time</th>}
-                <th style={thStyle}>Done/Edit</th>
-              </tr>
-            </thead>
-            <tbody className="table-body" >
-              {submittedData.map((entry) => (
-                <tr
-                  key={entry.id}
-                  style={{
-                    backgroundColor: entry.completed
-                      ? "#419b45"
-                      : "transparent",
-                    fontSize: "small",
-                  }}
-                >
-                  <td style={tdStyle}>
-                    {isEditingId === entry.id ? (
-                      <input
-                        name="fullname"
-                        value={editData.fullname}
-                        onChange={handleEditChange}
-                      />
-                    ) : (
-                      entry.fullname
-                    )}
-                  </td>
-                  <td style={tdStyle}>
-                    {isEditingId === entry.id ? (
-                      <input
-                        name="mail"
-                        value={editData.mail}
-                        onChange={handleEditChange}
-                      />
-                    ) : (
-                      entry.mail
-                    )}
-                  </td>
-                  <td style={tdStyle}>
-                    {isEditingId === entry.id ? (
-                      <input
-                        name="phone"
-                        value={editData.phone}
-                        onChange={handleEditChange}
-                      />
-                    ) : (
-                      entry.phone
-                    )}
-                  </td>
-                  <td style={tdStyle}>
-                    {isEditingId === entry.id ? (
-                      <input
-                        name="racket"
-                        value={editData.racket}
-                        onChange={handleEditChange}
-                      />
-                    ) : (
-                      entry.racket
-                    )}
-                  </td>
-                  <td style={tdStyle}>
-                    {isEditingId === entry.id ? (
-                      <input
-                        name="service"
-                        value={editData.service}
-                        onChange={handleEditChange}
-                      />
-                    ) : (
-                      entry.service
-                    )}
-                  </td>
-                  <td style={tdStyle}>
-                    {entry.fissureSite && (
-                      <img
-                        src={entry.fissureSite}
-                        alt="Fissure site"
-                        style={{
-                          width: "60px",
-                          borderRadius: "6px",
-                          cursor: "pointer",
-                        }}
-                        onClick={() => setModalImage(entry.fissureSite)}
-                      />
-                    )}
-                  </td>
-                  <td style={tdStyle}>
-                    {isEditingId === entry.id ? (
-                      <input
-                        name="notes"
-                        value={editData.notes}
-                        onChange={handleEditChange}
-                      />
-                    ) : (
-                      entry.notes
-                    )}
-                  </td>
-                  {!isEditing && (
-                    <>
-                      <td style={tdStyle}>{entry.date}</td>
-                      <td style={tdStyle}>{entry.time}</td>
-                    </>
-                  )}
-                  <td
+            <table
+              style={{
+                width: "100%",
+                borderCollapse: "collapse",
+                minWidth: "1000px",
+              }}
+            >
+              <thead style={{ color: "black" }}>
+                <tr>
+                  <th style={thStyle}>Full Name</th>
+                  <th style={thStyle}>Mail</th>
+                  <th style={thStyle}>Phone</th>
+                  <th style={thStyle}>Racket</th>
+                  <th style={thStyle}>Service</th>
+                  <th style={thStyle}>Fissure Site</th>
+                  <th style={thStyle}>Notes</th>
+                  {!isEditingId && <th style={thStyle}>Date</th>}
+                  {!isEditingId && <th style={thStyle}>Time</th>}
+                  <th style={thStyle}>Done/Edit</th>
+                </tr>
+              </thead>
+              <tbody className="table-body">
+                {submittedData.map((entry) => (
+                  <tr
+                    key={entry.id}
                     style={{
-                      tdStyle
+                      backgroundColor: entry.completed
+                        ? "#419b45"
+                        : "transparent",
+                      fontSize: "small",
                     }}
                   >
-                    {isEditingId === entry.id ? (
-                      <div
-                        style={{
-                          display: "flex",
-                          gap: "2px",
-                          justifyContent: "center",
-                          minWidth: "110px",
-                        }}
-                      >
-                        <button onClick={handleUpdate}>
-                          <i className="fa-solid fa-check"></i>
-                        </button>
-                        <button onClick={() => handleEdit(null)}>
-                          <i className="fa-solid fa-xmark"></i>
-                        </button>
-                      </div>
-                    ) : (
-                      <div
-                        style={{
-                          display: "flex",
-                          gap: "2px",
-                          justifyContent: "center",
-                        }}
-                      >
+                    <td style={tdStyle}>
+                      {isEditingId === entry.id ? (
+                        <input
+                          name="fullname"
+                          value={editData.fullname}
+                          onChange={handleEditChange}
+                        />
+                      ) : (
+                        entry.fullname
+                      )}
+                    </td>
+                    <td style={tdStyle}>
+                      {isEditingId === entry.id ? (
+                        <input
+                          name="mail"
+                          value={editData.mail}
+                          onChange={handleEditChange}
+                        />
+                      ) : (
+                        entry.mail
+                      )}
+                    </td>
+                    <td style={tdStyle}>
+                      {isEditingId === entry.id ? (
+                        <input
+                          name="phone"
+                          value={editData.phone}
+                          onChange={handleEditChange}
+                        />
+                      ) : (
+                        entry.phone
+                      )}
+                    </td>
+                    <td style={tdStyle}>
+                      {isEditingId === entry.id ? (
+                        <input
+                          name="racket"
+                          value={editData.racket}
+                          onChange={handleEditChange}
+                        />
+                      ) : (
+                        entry.racket
+                      )}
+                    </td>
+                    <td style={tdStyle}>
+                      {isEditingId === entry.id ? (
+                        <input
+                          name="service"
+                          value={editData.service}
+                          onChange={handleEditChange}
+                        />
+                      ) : (
+                        entry.service
+                      )}
+                    </td>
+                    <td style={tdStyle}>
+                      {entry.fissureSite && (
+                        <img
+                          src={entry.fissureSite}
+                          alt="Fissure site"
+                          style={{
+                            width: "60px",
+                            borderRadius: "6px",
+                            cursor: "pointer",
+                          }}
+                          onClick={() => setModalImage(entry.fissureSite)}
+                        />
+                      )}
+                    </td>
+                    <td style={tdStyle}>
+                      {isEditingId === entry.id ? (
+                        <input
+                          name="notes"
+                          value={editData.notes}
+                          onChange={handleEditChange}
+                        />
+                      ) : (
+                        entry.notes
+                      )}
+                    </td>
+                    {!isEditing && (
+                      <>
+                        <td style={tdStyle}>{entry.date}</td>
+                        <td style={tdStyle}>{entry.time}</td>
+                      </>
+                    )}
+                    <td style={tdStyle}>
+                      {isEditingId === entry.id ? (
+                        <div
+                          style={{
+                            display: "flex",
+                            gap: "2px",
+                            justifyContent: "center",
+                            minWidth: "110px",
+                          }}
+                        >
+                          <button onClick={handleUpdate}>
+                            <i className="fa-solid fa-check"></i>
+                          </button>
+                          <button onClick={() => handleEdit(null)}>
+                            <i className="fa-solid fa-xmark"></i>
+                          </button>
+                        </div>
+                      ) : (
+                        <div
+                          style={{
+                            display: "flex",
+                            gap: "2px",
+                            justifyContent: "center",
+                          }}
+                        >
                           {!entry.completed ? (
                             <button
                               onClick={() => {
@@ -423,7 +395,7 @@ export default function Workshop() {
                               }}
                             >
                               <a
-                                href={`mailto:${entry.mail}?subject=Reparación&body=Hola ${entry.name}, tu servicio de ${entry.service} está listo para ser retirado.`}
+                                href={`mailto:${entry.mail}?subject=Reparación&body=Hola ${entry.fullname}, tu servicio de ${entry.service} está listo para ser retirado.`}
                               >
                                 <i className="fa-solid fa-check"></i>
                               </a>
@@ -437,19 +409,19 @@ export default function Workshop() {
                               <i className="fa-solid fa-xmark"></i>
                             </button>
                           )}
-                        <button onClick={() => handleEdit(entry.id)}>
-                          <i className="fa-solid fa-pen-to-square"></i> 
-                        </button>
-                      </div>
-                    )}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-          <div style={{display:'flex', justifyContent:'end'}}>
-            <p>Total workshop database entries: {totalCount}</p>
-          </div>
+                          <button onClick={() => handleEdit(entry.id)}>
+                            <i className="fa-solid fa-pen-to-square"></i>
+                          </button>
+                        </div>
+                      )}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            <div style={{ display: "flex", justifyContent: "end" }}>
+              <p>Total workshop database entries: {totalCount}</p>
+            </div>
           </div>
         )}
 
@@ -494,7 +466,7 @@ export default function Workshop() {
           <span>Page {page}</span>
           <button
             onClick={() => setPage((prev) => prev + 1)}
-            disabled={submittedData.length < 5}
+            disabled={page * PAGE_SIZE >= totalCount}
           >
             Next ➡
           </button>
