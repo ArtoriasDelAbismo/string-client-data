@@ -1,34 +1,22 @@
-import React, { useEffect, useState } from 'react'
-import { supabase } from '../supaBase'
-import { Navigate } from 'react-router-dom'
+import React from 'react';
+import { Navigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
+import './spinner.css';
 
 export default function ProtectedRoute({ children }) {
-  const [loading, setLoading] = useState(true)
-  const [session, setSession] = useState(null)
+  const { session, loading } = useAuth();
 
-  useEffect(() => {
-    const getSession = async () => {
-      const {
-        data: { session },
-      } = await supabase.auth.getSession()
-      setSession(session)
-      setLoading(false)
-    }
+  if (loading) {
+    return (
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+        <div className="spinner"></div>
+      </div>
+    );
+  }
 
-    getSession()
+  if (!session) {
+    return <Navigate to="/Login" />;
+  }
 
-    const { data: authListener } = supabase.auth.onAuthStateChange(
-      (_event, session) => {
-        setSession(session)
-      }
-    )
-
-    return () => {
-      authListener.subscription.unsubscribe()
-    }
-  }, [])
-
-  if (loading) return <p>Loading...</p>
-  if (!session) return <Navigate to="/Login" />
-  return children
+  return children;
 }

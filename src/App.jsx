@@ -5,40 +5,42 @@ import Workshop from "./components/Workshop.jsx";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import Login from "./components/Login.jsx";
+import { AuthProvider } from "./context/AuthContext.jsx";
 
 function App() {
   return (
     <Router>
-      <Routes>
-        <Route path="/Login" element={<Login />}/>
-        <Route
-          path="/"
-          element={
-            <ProtectedRoute>
-              <Home />
-            </ProtectedRoute>
-          }
-        />
+      <AuthProvider>
+        <Routes>
+          <Route path="/Login" element={<Login />} />
+          <Route
+            path="/"
+            element={
+              <ProtectedRoute>
+                <Home />
+              </ProtectedRoute>
+            }
+          />
 
-        <Route
-          path="/strings"
-          element={
-            <ProtectedRoute>
-              <Strings />
-            </ProtectedRoute>
-          }
-        />
+          <Route
+            path="/strings"
+            element={
+              <ProtectedRoute>
+                <Strings />
+              </ProtectedRoute>
+            }
+          />
 
-        <Route
-          path="/workshop"
-          element={
-            <ProtectedRoute>
-              <Workshop />
-            </ProtectedRoute>
-          }
-        />
-
-      </Routes>
+          <Route
+            path="/workshop"
+            element={
+              <ProtectedRoute>
+                <Workshop />
+              </ProtectedRoute>
+            }
+          />
+        </Routes>
+      </AuthProvider>
     </Router>
   );
 }
