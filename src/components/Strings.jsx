@@ -23,6 +23,7 @@ export default function Strings() {
     handleUpdate,
     handleEdit,
     handleToggleCheck,
+    handleTogglePaid,
     handleEditChange,
     setSearchTerm,
     page,
@@ -37,6 +38,7 @@ export default function Strings() {
     mail: "",
     date: "",
     time: "",
+    paid: false,
   });
 
   const [loading, setLoading] = useState(false);
@@ -129,6 +131,7 @@ export default function Strings() {
                     <th>Mail</th>
                     {!isEditing && <th>Date</th>}
                     {!isEditing && <th>Time</th>}
+                    <th>Paid</th>
                     <th>Done/Edit</th>
                   </tr>
                 </thead>
@@ -227,6 +230,16 @@ export default function Strings() {
                           <td data-label="Time">{entry.time}</td>
                         </>
                       )}
+                      <td data-label="Paid">
+                        <button
+                          onClick={() => handleTogglePaid(entry.id, entry.paid)}
+                          style={{
+                            backgroundColor: entry.paid ? "green" : "red",
+                          }}
+                        >
+                          {entry.paid ? "Paid" : "Unpaid"}
+                        </button>
+                      </td>
                       <td data-label="Actions">
                         {isEditingId === entry.id ? (
                           <div className="action-buttons">

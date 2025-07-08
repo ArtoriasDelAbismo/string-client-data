@@ -144,6 +144,29 @@ export const useFormHandlers = (initialData) => {
     }
   };
 
+  const handleTogglePaid = async (id, currentStatus) => {
+    if (!Number.isInteger(id) || id < 0) {
+      console.error("🚫 Invalid ID passed to handleTogglePaid:", id);
+      return;
+    }
+
+    const { data, error } = await supabase
+      .from("string-client-data")
+      .update({ paid: !currentStatus })
+      .eq("id", id)
+      .select();
+
+    if (error) {
+      console.error("❌ Failed to update paid status:", error.message);
+    } else {
+      setSubmittedData((prev) =>
+        prev.map((entry) =>
+          entry.id === id ? { ...entry, paid: !currentStatus } : entry
+        )
+      );
+    }
+  };
+
   return {
     formData,
     submittedData,
@@ -164,5 +187,6 @@ export const useFormHandlers = (initialData) => {
     setSearchTerm,
     setSubmittedData,
     handleToggleCheck,
+    handleTogglePaid,
   };
 };
