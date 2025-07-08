@@ -3,6 +3,7 @@ import { useFormHandlers } from "../useFormHandlers.jsx";
 import Navbar from "./Navbar";
 import { caliberOptions, tensionOptions } from "../data";
 import { PAGE_SIZE } from "../db";
+import "./Strings.css";
 
 export default function Strings() {
   const selectFields = {
@@ -26,7 +27,7 @@ export default function Strings() {
     setSearchTerm,
     page,
     setPage,
-    totalCount, // Get totalCount from the hook
+    totalCount,
   } = useFormHandlers({
     fullname: "",
     string: "",
@@ -39,46 +40,18 @@ export default function Strings() {
   });
 
   const [loading, setLoading] = useState(false);
-
-  const thStyle = {
-    border: "1px solid #ccc",
-    padding: "8px",
-    backgroundColor: "#f2f2f2",
-    textAlign: "center",
-    maxWidth: "150px",
-    whiteSpace: "nowrap",
-    overflow: "hidden",
-    textOverflow: "ellipsis",
-  };
-
-  const tdStyle = {
-    border: "1px solid #ccc",
-    padding: "8px",
-    textAlign: "center",
-    maxWidth: "150px",
-    whiteSpace: "nowrap",
-    overflow: "hidden",
-    textOverflow: "ellipsis",
-  };
   const isEditing = isEditingId !== null;
 
   return (
     <>
       <Navbar />
 
-      <form
-        style={{ marginTop: "100px" }}
-        onSubmit={(e) => {
-          e.preventDefault();
-          handleSubmit();
-        }}
-      >
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            gap: "10px",
-            flexWrap: "wrap",
+      <div className="strings-container">
+        <form
+          className="strings-form"
+          onSubmit={(e) => {
+            e.preventDefault();
+            handleSubmit();
           }}
         >
           {[
@@ -89,7 +62,7 @@ export default function Strings() {
             { label: "Racket", name: "racket", type: "text" },
             { label: "Mail", name: "mail", type: "email" },
           ].map(({ label, name, type }) => (
-            <div key={name}>
+            <div key={name} className="form-field">
               <label>
                 <h2>{label}</h2>
                 {selectFields[name] ? (
@@ -97,12 +70,6 @@ export default function Strings() {
                     name={name}
                     value={formData[name]}
                     onChange={handleChange}
-                    style={{
-                      width: "100%",
-                      maxWidth: "140px",
-                      boxSizing: "border-box",
-                      fontSize: "14px",
-                    }}
                     required
                   >
                     <option value="">Select</option>
@@ -118,280 +85,213 @@ export default function Strings() {
                     type={type}
                     value={formData[name]}
                     onChange={handleChange}
-                    style={{
-                      width: "100%",
-                      maxWidth: "140px",
-                      boxSizing: "border-box",
-                      fontSize: "14px",
-                    }}
                     required
                   />
                 )}
               </label>
             </div>
           ))}
-          <div style={{ textAlign: "center", marginTop: "74px" }}>
+          <div className="submit-button">
             <button type="submit">Submit</button>
           </div>
-        </div>
-      </form>
+        </form>
 
-      <div
-        style={{
-          marginTop: "20px",
-          textAlign: "center",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          width: "1250px",
-        }}
-      >
-        <h3>Submitted Data:</h3>
-        <div
-          style={{
-            marginBottom: "40px",
-            display: "flex",
-            gap: "10px",
-          }}
-        >
-          <input
-            style={{
-              height: "35px",
-              borderRadius: "4px",
-            }}
-            type="text"
-            value={searchTerm}
-            onChange={(e) => {
-              setSearchTerm(e.target.value.toLowerCase());
-              setPage(1);
-            }}
-          />
-          <button>
-            <i className="fa-solid fa-magnifying-glass"></i>
-          </button>
-        </div>
-
-        {loading ? (
-          <div className="spinner"></div>
-        ) : (
-          <div
-            className="table-container"
-            style={{ overflowX: "auto", maxWidth: "100%" }}
-          >
-            <table
-              className="responsive-table"
-              style={{
-                minWidth: "1200px",
-                width: "100%",
+        <div className="submitted-data-container">
+          <h3>Submitted Data:</h3>
+          <div className="search-container">
+            <input
+              className="search-input"
+              type="text"
+              value={searchTerm}
+              onChange={(e) => {
+                setSearchTerm(e.target.value.toLowerCase());
+                setPage(1);
               }}
-            >
-              <thead style={{ color: "black" }}>
-                <tr>
-                  <th style={thStyle}>ID</th>
-                  <th style={thStyle}>Full Name</th>
-                  <th style={thStyle}>String</th>
-                  <th style={thStyle}>Caliber</th>
-                  <th style={thStyle}>Tension</th>
-                  <th style={thStyle}>Racket</th>
-                  <th style={thStyle}>Mail</th>
-                  {!isEditing && <th style={thStyle}>Date</th>}
-                  {!isEditing && <th style={thStyle}>Time</th>}
-                  <th style={thStyle}>Done/Edit</th>
-                </tr>
-              </thead>
+            />
+            <button>
+              <i className="fa-solid fa-magnifying-glass"></i>
+            </button>
+          </div>
 
-              <tbody className="table-body">
-                {submittedData.map((entry) => (
-                  <tr
-                    key={entry.id}
-                    style={{
-                      backgroundColor: entry.completed
-                        ? "#419b45"
-                        : "transparent",
-                    }}
-                  >
-                    <td style={tdStyle}>{entry.id}</td>
-
-                    <td style={tdStyle}>
-                      {isEditingId === entry.id ? (
-                        <input
-                          name="fullname"
-                          value={editData.fullname}
-                          onChange={handleEditChange}
-                        />
-                      ) : (
-                        entry.fullname
-                      )}
-                    </td>
-                    <td style={tdStyle}>
-                      {isEditingId === entry.id ? (
-                        <input
-                          name="string"
-                          value={editData.string}
-                          onChange={handleEditChange}
-                        />
-                      ) : (
-                        entry.string
-                      )}
-                    </td>
-                    <td style={tdStyle}>
-                      {isEditingId === entry.id ? (
-                        <select
-                          name="caliber"
-                          value={editData.caliber}
-                          onChange={handleEditChange}
-                          style={{ width: "140px", fontSize: "14px" }}
-                          required
-                        >
-                          <option value="">Select caliber</option>
-                          {caliberOptions.map((option) => (
-                            <option key={option} value={option}>
-                              {option}
-                            </option>
-                          ))}
-                        </select>
-                      ) : (
-                        entry.caliber
-                      )}
-                    </td>
-                    <td style={tdStyle}>
-                      {isEditingId === entry.id ? (
-                        <select
-                          name="tension"
-                          value={editData.tension}
-                          onChange={handleEditChange}
-                          style={{ width: "140px", fontSize: "14px" }}
-                          required
-                        >
-                          <option value="">Select tension</option>
-                          {tensionOptions.map((option) => (
-                            <option key={option} value={option}>
-                              {option}
-                            </option>
-                          ))}
-                        </select>
-                      ) : (
-                        entry.tension
-                      )}
-                    </td>
-                    <td style={tdStyle}>
-                      {isEditingId === entry.id ? (
-                        <input
-                          name="racket"
-                          value={editData.racket}
-                          onChange={handleEditChange}
-                        />
-                      ) : (
-                        entry.racket
-                      )}
-                    </td>
-                    <td style={tdStyle}>
-                      {isEditingId === entry.id ? (
-                        <input
-                          name="mail"
-                          value={editData.mail}
-                          onChange={handleEditChange}
-                        />
-                      ) : (
-                        entry.mail
-                      )}
-                    </td>
-
-                    {!isEditing && (
-                      <>
-                        <td style={tdStyle}>{entry.date}</td>
-                        <td style={tdStyle}>{entry.time}</td>
-                      </>
-                    )}
-
-                    <td
-                      style={{
-                        border: "1px solid #ccc",
-                        padding: "8px",
-                        textAlign: "center",
-                        whiteSpace: "nowrap",
-                        overflow: "hidden",
-                        textOverflow: "ellipsis",
-                      }}
+          {loading ? (
+            <div className="spinner"></div>
+          ) : (
+            <div className="table-container">
+              <table className="responsive-table">
+                <thead>
+                  <tr style={{color: "black"}}>
+                    <th>ID</th>
+                    <th>Full Name</th>
+                    <th>String</th>
+                    <th>Caliber</th>
+                    <th>Tension</th>
+                    <th>Racket</th>
+                    <th>Mail</th>
+                    {!isEditing && <th>Date</th>}
+                    {!isEditing && <th>Time</th>}
+                    <th>Done/Edit</th>
+                  </tr>
+                </thead>
+                <tbody style={{color:'white'}}>
+                  {submittedData.map((entry) => (
+                    <tr
+                      key={entry.id}
+                      className={entry.completed ? "completed-row" : ""}
                     >
-                      {isEditingId === entry.id ? (
-                        <div
-                          style={{
-                            display: "flex",
-                            gap: "8px",
-                            justifyContent: "center",
-                            minWidth: "200px",
-                          }}
-                        >
-                          <button onClick={handleUpdate}>
-                            <i className="fa-solid fa-check"></i>
-                          </button>
-                          <button onClick={() => handleEdit(null)}>
-                            <i className="fa-solid fa-xmark"></i>
-                          </button>
-                        </div>
-                      ) : (
-                        <div
-                          style={{
-                            display: "flex",
-                            gap: "2px",
-                            justifyContent: "center",
-                          }}
-                        >
-                          {!entry.completed ? (
-                            <button
-                              onClick={() => {
-                                handleComplete(entry.id);
-                                handleToggleCheck(entry.id, entry.completed);
-                              }}
-                            >
-                              <a
-                                href={`mailto:${entry.mail}?subject=Encordado&body=Hola ${entry.fullname}, tu raqueta encordada con ${entry.string} está lista para ser retirada.`}
-                              >
-                                <i className="fa-solid fa-check"></i>
-                              </a>
+                      <td data-label="ID">{entry.id}</td>
+                      <td data-label="Full Name">
+                        {isEditingId === entry.id ? (
+                          <input
+                            name="fullname"
+                            value={editData.fullname}
+                            onChange={handleEditChange}
+                          />
+                        ) : (
+                          entry.fullname
+                        )}
+                      </td>
+                      <td data-label="String">
+                        {isEditingId === entry.id ? (
+                          <input
+                            name="string"
+                            value={editData.string}
+                            onChange={handleEditChange}
+                          />
+                        ) : (
+                          entry.string
+                        )}
+                      </td>
+                      <td data-label="Caliber">
+                        {isEditingId === entry.id ? (
+                          <select
+                            name="caliber"
+                            value={editData.caliber}
+                            onChange={handleEditChange}
+                            required
+                          >
+                            <option value="">Select caliber</option>
+                            {caliberOptions.map((option) => (
+                              <option key={option} value={option}>
+                                {option}
+                              </option>
+                            ))}
+                          </select>
+                        ) : (
+                          entry.caliber
+                        )}
+                      </td>
+                      <td data-label="Tension">
+                        {isEditingId === entry.id ? (
+                          <select
+                            name="tension"
+                            value={editData.tension}
+                            onChange={handleEditChange}
+                            required
+                          >
+                            <option value="">Select tension</option>
+                            {tensionOptions.map((option) => (
+                              <option key={option} value={option}>
+                                {option}
+                              </option>
+                            ))}
+                          </select>
+                        ) : (
+                          entry.tension
+                        )}
+                      </td>
+                      <td data-label="Racket">
+                        {isEditingId === entry.id ? (
+                          <input
+                            name="racket"
+                            value={editData.racket}
+                            onChange={handleEditChange}
+                          />
+                        ) : (
+                          entry.racket
+                        )}
+                      </td>
+                      <td data-label="Mail">
+                        {isEditingId === entry.id ? (
+                          <input
+                            name="mail"
+                            value={editData.mail}
+                            onChange={handleEditChange}
+                          />
+                        ) : (
+                          entry.mail
+                        )}
+                      </td>
+                      {!isEditing && (
+                        <>
+                          <td data-label="Date">{entry.date}</td>
+                          <td data-label="Time">{entry.time}</td>
+                        </>
+                      )}
+                      <td data-label="Actions">
+                        {isEditingId === entry.id ? (
+                          <div className="action-buttons">
+                            <button onClick={handleUpdate}>
+                              <i className="fa-solid fa-check"></i>
                             </button>
-                          ) : (
-                            <button
-                              onClick={() =>
-                                handleToggleCheck(entry.id, entry.completed)
-                              }
-                            >
+                            <button onClick={() => handleEdit(null)}>
                               <i className="fa-solid fa-xmark"></i>
                             </button>
-                          )}
-
-                          <button onClick={() => handleEdit(entry.id)}>
-                            <i className="fa-solid fa-pen-to-square"></i>
-                          </button>
-                        </div>
-                      )}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-            <div style={{ display: "flex", justifyContent: "end" }}>
-              <p>Total strings database entries: {totalCount}</p>
+                          </div>
+                        ) : (
+                          <div className="action-buttons">
+                            {!entry.completed ? (
+                              <button
+                                onClick={() => {
+                                  handleComplete(entry.id);
+                                  handleToggleCheck(entry.id, entry.completed);
+                                }}
+                              >
+                                <a
+                                  href={`mailto:${entry.mail}?subject=Encordado&body=Hola ${entry.fullname}, tu raqueta encordada con ${entry.string} está lista para ser retirada.`}
+                                >
+                                  <i className="fa-solid fa-check"></i>
+                                </a>
+                              </button>
+                            ) : (
+                              <button
+                                onClick={() =>
+                                  handleToggleCheck(entry.id, entry.completed)
+                                }
+                              >
+                                <i className="fa-solid fa-xmark"></i>
+                              </button>
+                            )}
+                            <button onClick={() => handleEdit(entry.id)}>
+                              <i className="fa-solid fa-pen-to-square"></i>
+                            </button>
+                          </div>
+                        )}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              <div style={{ display: "flex", justifyContent: "end", backgroundColor:'black', paddingRight:'10px' }}>
+                <p>Total strings database entries: {totalCount}</p>
+              </div>
             </div>
-          </div>
-        )}
+          )}
 
-        {/* Pagination */}
-        <div style={{ marginTop: "20px", display: "flex", gap: "20px" }}>
-          <button
-            onClick={() => setPage((prev) => Math.max(1, prev - 1))}
-            disabled={page === 1}
-          >
-            ⬅ Prev
-          </button>
-          <span>Page {page}</span>
-          <button
-            onClick={() => setPage((prev) => prev + 1)}
-            disabled={page * PAGE_SIZE >= totalCount}
-          >
-            Next ➡
-          </button>
+          <div className="pagination-container">
+            <button
+              onClick={() => setPage((prev) => Math.max(1, prev - 1))}
+              disabled={page === 1}
+            >
+              ⬅ Prev
+            </button>
+            <span>Page {page}</span>
+            <button
+              onClick={() => setPage((prev) => prev + 1)}
+              disabled={page * PAGE_SIZE >= totalCount}
+            >
+              Next ➡
+            </button>
+          </div>
         </div>
       </div>
     </>

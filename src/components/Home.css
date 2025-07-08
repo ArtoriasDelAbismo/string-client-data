@@ -28,6 +28,13 @@
   gap: 100px;
 }
 
+@media (max-width: 768px) {
+  .home-links {
+    flex-direction: column;
+    gap: 20px;
+  }
+}
+
 .home-link {
   width: 100px;
   height: 50px;

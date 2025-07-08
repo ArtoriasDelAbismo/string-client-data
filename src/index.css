@@ -91,7 +91,7 @@ button:focus-visible {
   }
 }
 
-table {
+.global-table {
   background-color: white;
   color: black;
 }
@@ -108,30 +108,7 @@ table {
   border-collapse: collapse;
 }
 
-@media (max-width: 1047px) {
 
-  #root{ 
-    width: 400px;
-  }
-  table {
-    min-width: unset;
-    font-size: 14px;
-    background-color: #ffffff;
-  }
-
-  th, td {
-    padding: 4px;
-  }
-
-  form {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-  }
-  .link-list {
-    display: none !important;
-  }
-}
 
 .css-y7ab46-MuiPaper-root-MuiDrawer-paper{
   background-color: #555859;

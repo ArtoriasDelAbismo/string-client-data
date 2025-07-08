@@ -1,0 +1,69 @@
+.fissure-selector-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.fissure-selector-content {
+  max-width: 680px;
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.fissure-image-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.fissure-image-label {
+  color: black;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.fissure-image {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  cursor: pointer;
+  border: 2px solid transparent;
+  border-radius: 6px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.fissure-image:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.fissure-image.selected {
+  border: 3px solid green;
+}
+
+.cancel-button {
+  margin-top: 10px;
+  width: 100%;
+  padding: 10px;
+  background-color: #f44336;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.cancel-button:hover {
+  background-color: #d32f2f;
+}

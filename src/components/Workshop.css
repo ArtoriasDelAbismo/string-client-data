@@ -1,0 +1,190 @@
+/* General Styles */
+.workshop-container {
+  margin-top: 100px;
+  padding: 20px;
+}
+
+.workshop-form {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-field h2 {
+  margin: 0 0 5px 0;
+  font-size: 1rem;
+}
+
+.form-field input {
+  width: 100%;
+  max-width: 150px;
+  box-sizing: border-box;
+  font-size: 14px;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.fissure-selector-button {
+  margin-bottom: 10px;
+}
+
+.selected-fissure-image {
+  width: 100px;
+  border-radius: 8px;
+}
+
+.submit-button-container {
+  text-align: center;
+  margin-top: 74px;
+}
+
+
+
+.submitted-data-container {
+  margin-top: 20px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.search-container {
+  margin-bottom: 40px;
+  display: flex;
+  gap: 10px;
+}
+
+.search-input {
+  height: 35px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  padding: 0 10px;
+}
+
+.table-container {
+  overflow-x: auto;
+  width: 100%;
+}
+
+.responsive-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 1000px;
+}
+
+.responsive-table th,
+.responsive-table td {
+  border: 1px solid #ccc;
+  padding: 8px;
+  text-align: center;
+}
+
+.responsive-table th {
+  background-color: #f2f2f2;
+}
+
+.completed-row {
+  background-color: #419b45;
+}
+
+.fissure-site-image {
+  width: 60px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 2px;
+  justify-content: center;
+}
+
+.image-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  cursor: zoom-out;
+}
+
+.modal-content-image {
+  max-width: 90%;
+  max-height: 90%;
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
+}
+
+.pagination-container {
+  margin-top: 20px;
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .workshop-form {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .form-field {
+    width: 80%;
+  }
+
+  .form-field input {
+    max-width: none;
+  }
+
+  .submit-button-container {
+    margin-top: 10px;
+  }
+
+  .responsive-table thead {
+    display: none;
+  }
+
+  .responsive-table,
+  .responsive-table tbody,
+  .responsive-table tr,
+  .responsive-table td {
+    display: block;
+    width: 100%;
+  }
+
+  .responsive-table tr {
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+  }
+
+  .responsive-table td {
+    text-align: right;
+    padding-left: 35%;
+    position: relative;
+  }
+
+  .responsive-table td::before {
+    content: attr(data-label);
+    position: absolute;
+    left: 0;
+    width: 30%;
+    padding-left: 15px;
+    font-weight: bold;
+    text-align: left;
+  }
+}
