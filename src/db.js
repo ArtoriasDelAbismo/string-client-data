@@ -29,7 +29,7 @@ export const addEntry = async (entry) => {
 
 export const fetchEntry = async (searchTerm = "", page = 1) => {
   try {
-    const baseSelect = "id, fullname, string, caliber, tension, racket, mail, date, time, completed, paid";
+    const baseSelect = "id, fullname, string, caliber, tension, racket, mail, date, time, completed, paid, notes";
     let query = supabase.from("string-client-data").select(baseSelect);
 
     if (searchTerm) {

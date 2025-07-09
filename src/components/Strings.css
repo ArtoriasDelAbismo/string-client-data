@@ -46,6 +46,7 @@
 }
 
 .search-container {
+  align-items: center;
   margin-bottom: 40px;
   display: flex;
   gap: 10px;
@@ -61,7 +62,7 @@
 .table-container {
   overflow-x: auto;
   width: 100%;
-  max-width: 1250px;
+  max-width: 1350px;
   background-color: #ebebeb;
   border-radius: 8px;
 }
@@ -145,7 +146,8 @@
     position: relative;
   }
 
-  .responsive-table td::before {
+  
+.responsive-table td::before {
     content: attr(data-label);
     position: absolute;
     left: 0;
@@ -155,4 +157,12 @@
     text-align: left;
     
   }
+}
+
+.responsive-table td input,
+.responsive-table td select {
+  width: 100%;
+  box-sizing: border-box;
+}
+
 }

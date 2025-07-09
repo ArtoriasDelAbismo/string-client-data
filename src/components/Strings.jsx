@@ -39,6 +39,7 @@ export default function Strings() {
     date: "",
     time: "",
     paid: false,
+    notes: "",
   });
 
   const [loading, setLoading] = useState(false);
@@ -63,6 +64,7 @@ export default function Strings() {
             { label: "Tension", name: "tension", type: "text" },
             { label: "Racket", name: "racket", type: "text" },
             { label: "Mail", name: "mail", type: "email" },
+            { label: "Notes", name: "notes", type: "notes" },
           ].map(({ label, name, type }) => (
             <div key={name} className="form-field">
               <label>
@@ -99,8 +101,8 @@ export default function Strings() {
         </form>
 
         <div className="submitted-data-container">
-          <h3>Submitted Data:</h3>
           <div className="search-container">
+          <h3>Search Client:</h3>
             <input
               className="search-input"
               type="text"
@@ -121,7 +123,7 @@ export default function Strings() {
             <div className="table-container">
               <table className="responsive-table">
                 <thead>
-                  <tr style={{color: "black"}}>
+                  <tr style={{ color: "black" }}>
                     <th>ID</th>
                     <th>Full Name</th>
                     <th>String</th>
@@ -131,11 +133,12 @@ export default function Strings() {
                     <th>Mail</th>
                     {!isEditing && <th>Date</th>}
                     {!isEditing && <th>Time</th>}
+                    <th>Notes</th>
                     <th>Paid</th>
                     <th>Done/Edit</th>
                   </tr>
                 </thead>
-                <tbody style={{color:'white'}}>
+                <tbody style={{ color: "white" }}>
                   {submittedData.map((entry) => (
                     <tr
                       key={entry.id}
@@ -230,6 +233,17 @@ export default function Strings() {
                           <td data-label="Time">{entry.time}</td>
                         </>
                       )}
+                      <td data-label="Notes">
+                        {isEditingId === entry.id ? (
+                          <input
+                            name="notes"
+                            value={editData.notes}
+                            onChange={handleEditChange}
+                          />
+                        ) : (
+                          entry.notes
+                        )}
+                      </td>
                       <td data-label="Paid">
                         <button
                           onClick={() => handleTogglePaid(entry.id, entry.paid)}
@@ -284,7 +298,14 @@ export default function Strings() {
                   ))}
                 </tbody>
               </table>
-              <div style={{ display: "flex", justifyContent: "end", backgroundColor:'black', paddingRight:'10px' }}>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "end",
+                  backgroundColor: "black",
+                  paddingRight: "10px",
+                }}
+              >
                 <p>Total strings database entries: {totalCount}</p>
               </div>
             </div>

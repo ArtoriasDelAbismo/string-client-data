@@ -110,8 +110,8 @@ export default function Workshop() {
         )}
 
         <div className="submitted-data-container">
-          <h3>Submitted Workshop Entries:</h3>
           <div className="search-container">
+          <h3>Submitted Workshop Entries:</h3>
             <input
               type="text"
               value={searchTerm}
