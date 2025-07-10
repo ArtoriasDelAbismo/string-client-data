@@ -1,2 +1,2 @@
-export const feature = ['Paid/Unpaid button', 'String notes']
-export const bugFix = ['Code refactoring']
+export const feature = ['Paid/Unpaid button', 'String notes', 'Total unpaid entries']
+export const bugFix = ['Fix table overflow']
