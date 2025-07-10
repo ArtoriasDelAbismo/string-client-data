@@ -29,6 +29,7 @@ export default function Strings() {
     page,
     setPage,
     totalCount,
+    unpaidCount,
   } = useFormHandlers({
     fullname: "",
     string: "",
@@ -233,7 +234,7 @@ export default function Strings() {
                           <td data-label="Time">{entry.time}</td>
                         </>
                       )}
-                      <td data-label="Notes">
+                      <td data-label="Notes" className={isEditingId === entry.id ? "notes-edit" : ""}>
                         {isEditingId === entry.id ? (
                           <input
                             name="notes"
@@ -274,7 +275,7 @@ export default function Strings() {
                                 }}
                               >
                                 <a
-                                  href={`mailto:${entry.mail}?subject=Encordado&body=Hola ${entry.fullname}, tu raqueta encordada con ${entry.string} está lista para ser retirada.`}
+                                  href={`mailto:${entry.mail}?subject=Encordado&body=Hola ${entry.fullname}, tu raqueta encordada con ${entry.string} está lista para ser retirada. Te esperamos!`}
                                 >
                                   <i className="fa-solid fa-check"></i>
                                 </a>
@@ -304,9 +305,11 @@ export default function Strings() {
                   justifyContent: "end",
                   backgroundColor: "black",
                   paddingRight: "10px",
+                  gap: "10px"
                 }}
               >
-                <p>Total strings database entries: {totalCount}</p>
+                <p><strong>Total strings database entries:</strong> {totalCount}</p>
+                <p><strong>Unpaid entries:</strong> {unpaidCount}</p>
               </div>
             </div>
           )}

@@ -1,3 +1,9 @@
+
+.responsive-table td.notes-edit input {
+  width: 150px; /* Adjust width as needed */
+  word-wrap: break-word;
+}
+
 /* General Styles */
 .strings-container {
   margin-top: 100px;

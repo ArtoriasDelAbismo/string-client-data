@@ -1,5 +1,11 @@
 import { useEffect, useState } from "react";
-import { addEntry, updateEntry, fetchEntry, countTotalEntries } from "./db";
+import {
+  addEntry,
+  updateEntry,
+  fetchEntry,
+  countTotalEntries,
+  countUnpaidEntries,
+} from "./db";
 import { supabase } from "./supaBase";
 
 export const useFormHandlers = (initialData) => {
@@ -9,12 +15,11 @@ export const useFormHandlers = (initialData) => {
   const [isEditingId, setIsEditingId] = useState(null);
   const [editData, setEditData] = useState({});
   const [page, setPage] = useState(1);
-  const [totalCount, setTotalCount] = useState(0); // State for total entries
+  const [totalCount, setTotalCount] = useState(0);
+  const [unpaidCount, setUnpaidCount] = useState(0);
 
-  // Single, consolidated useEffect for fetching data and count
   useEffect(() => {
-    const fetchDataAndCount = async () => {
-      // Fetch the data for the current page and search term
+    const fetchDataAndCounts = async () => {
       const results = await fetchEntry(searchTerm, page);
       const sanitizedResults = results.map((entry) => ({
         ...entry,
@@ -22,12 +27,14 @@ export const useFormHandlers = (initialData) => {
       }));
       setSubmittedData(sanitizedResults);
 
-      // Fetch the total count based on the same search term
-      const count = await countTotalEntries(searchTerm);
-      setTotalCount(count);
+      const total = await countTotalEntries(searchTerm);
+      setTotalCount(total);
+
+      const unpaid = await countUnpaidEntries(searchTerm);
+      setUnpaidCount(unpaid);
     };
 
-    fetchDataAndCount();
+    fetchDataAndCounts();
   }, [searchTerm, page]);
 
   const handleChange = (e) => {
@@ -174,7 +181,8 @@ export const useFormHandlers = (initialData) => {
     isEditingId,
     editData,
     page,
-    totalCount, // Return totalCount
+    totalCount,
+    unpaidCount,
     setPage,
     handleChange,
     handleEdit,

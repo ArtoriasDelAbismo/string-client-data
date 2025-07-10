@@ -20,6 +20,7 @@ export const addEntry = async (entry) => {
       console.error("Error adding new string entry:", error.message);
       throw error;
     }
+    
     return data;
   } catch (error) {
     console.error("Unexpected error adding new string entry:", error);
@@ -95,6 +96,30 @@ export const countTotalEntries = async (searchTerm = "") => {
     return count;
   } catch (err) {
     console.error("Unexpected error counting string entries:", err);
+    return 0;
+  }
+};
+
+export const countUnpaidEntries = async (searchTerm = "") => {
+  try {
+    let query = supabase
+      .from("string-client-data")
+      .select("*", { count: "exact", head: true })
+      .eq("paid", false);
+
+    if (searchTerm) {
+      query = query.or(`fullname.ilike.%${searchTerm}%,string.ilike.%${searchTerm}%,racket.ilike.%${searchTerm}%`);
+    }
+
+    const { count, error } = await query;
+
+    if (error) {
+      console.error("Error counting unpaid entries:", error);
+      return 0;
+    }
+    return count;
+  } catch (err) {
+    console.error("Unexpected error counting unpaid entries:", err);
     return 0;
   }
 };
