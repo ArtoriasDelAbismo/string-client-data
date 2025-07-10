@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useFormHandlers } from "../useFormHandlers.jsx";
 import Navbar from "./Navbar";
+import Metrics from "./Metrics";
 import { caliberOptions, tensionOptions } from "../data";
 import { PAGE_SIZE } from "../db";
 import "./Strings.css";
@@ -32,6 +33,8 @@ export default function Strings() {
     unpaidCount,
     mostUsedTension,
     mostUsedCaliber,
+    mostUsedString,
+    mostUsedRacket,
   } = useFormHandlers({
     fullname: "",
     string: "",
@@ -51,6 +54,14 @@ export default function Strings() {
   return (
     <>
       <Navbar />
+      <Metrics
+        totalCount={totalCount}
+        unpaidCount={unpaidCount}
+        mostUsedTension={mostUsedTension}
+        mostUsedCaliber={mostUsedCaliber}
+        mostUsedString={mostUsedString}
+        mostUsedRacket={mostUsedRacket}
+      />
 
       <div className="strings-container">
         <form
@@ -310,10 +321,6 @@ export default function Strings() {
                   gap: "10px"
                 }}
               >
-                <p><strong>Total strings database entries:</strong> {totalCount}</p>
-                <p><strong>Unpaid entries:</strong> {unpaidCount}</p>
-                <p><strong>Most used tension:</strong> {mostUsedTension}</p>
-                <p><strong>Most used caliber:</strong> {mostUsedCaliber}</p>
               </div>
             </div>
           )}

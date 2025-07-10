@@ -20,6 +20,8 @@ export const useFormHandlers = (initialData) => {
   const [unpaidCount, setUnpaidCount] = useState(0);
   const [mostUsedTension, setMostUsedTension] = useState(null);
   const [mostUsedCaliber, setMostUsedCaliber] = useState(null);
+  const [mostUsedString, setMostUsedString] = useState(null);
+  const [mostUsedRacket, setMostUsedRacket] = useState(null);
 
   useEffect(() => {
     const fetchDataAndCounts = async () => {
@@ -41,6 +43,12 @@ export const useFormHandlers = (initialData) => {
 
       const caliber = await getMostUsed("caliber");
       setMostUsedCaliber(caliber);
+
+      const string = await getMostUsed("string");
+      setMostUsedString(string);
+
+      const racket = await getMostUsed("racket");
+      setMostUsedRacket(racket);
     };
 
     fetchDataAndCounts();
@@ -194,6 +202,8 @@ export const useFormHandlers = (initialData) => {
     unpaidCount,
     mostUsedTension,
     mostUsedCaliber,
+    mostUsedString,
+    mostUsedRacket,
     setPage,
     handleChange,
     handleEdit,
