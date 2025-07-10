@@ -97,6 +97,12 @@ export default function Strings() {
                       </option>
                     ))}
                   </select>
+                ) : type === "notes" ? (
+                  <textarea
+                    name={name}
+                    value={formData[name]}
+                    onChange={handleChange}
+                  />
                 ) : (
                   <input
                     name={name}
