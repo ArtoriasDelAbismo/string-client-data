@@ -124,6 +124,34 @@ export const countUnpaidEntries = async (searchTerm = "") => {
   }
 };
 
+export const getMostUsed = async (column) => {
+  try {
+    const { data, error } = await supabase
+      .from("string-client-data")
+      .select(column);
+
+    if (error) {
+      console.error(`Error fetching ${column} data:`, error);
+      return null;
+    }
+
+    const counts = data.reduce((acc, item) => {
+      const value = item[column];
+      acc[value] = (acc[value] || 0) + 1;
+      return acc;
+    }, {});
+
+    const mostUsed = Object.keys(counts).reduce((a, b) =>
+      counts[a] > counts[b] ? a : b
+    );
+
+    return mostUsed;
+  } catch (err) {
+    console.error(`Unexpected error fetching most used ${column}:`, err);
+    return null;
+  }
+};
+
 {
   /* --- Workshop Database --- */
 }

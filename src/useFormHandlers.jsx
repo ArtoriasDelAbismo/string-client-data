@@ -5,6 +5,7 @@ import {
   fetchEntry,
   countTotalEntries,
   countUnpaidEntries,
+  getMostUsed,
 } from "./db";
 import { supabase } from "./supaBase";
 
@@ -17,6 +18,8 @@ export const useFormHandlers = (initialData) => {
   const [page, setPage] = useState(1);
   const [totalCount, setTotalCount] = useState(0);
   const [unpaidCount, setUnpaidCount] = useState(0);
+  const [mostUsedTension, setMostUsedTension] = useState(null);
+  const [mostUsedCaliber, setMostUsedCaliber] = useState(null);
 
   useEffect(() => {
     const fetchDataAndCounts = async () => {
@@ -32,6 +35,12 @@ export const useFormHandlers = (initialData) => {
 
       const unpaid = await countUnpaidEntries(searchTerm);
       setUnpaidCount(unpaid);
+
+      const tension = await getMostUsed("tension");
+      setMostUsedTension(tension);
+
+      const caliber = await getMostUsed("caliber");
+      setMostUsedCaliber(caliber);
     };
 
     fetchDataAndCounts();
@@ -183,6 +192,8 @@ export const useFormHandlers = (initialData) => {
     page,
     totalCount,
     unpaidCount,
+    mostUsedTension,
+    mostUsedCaliber,
     setPage,
     handleChange,
     handleEdit,

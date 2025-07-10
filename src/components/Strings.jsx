@@ -30,6 +30,8 @@ export default function Strings() {
     setPage,
     totalCount,
     unpaidCount,
+    mostUsedTension,
+    mostUsedCaliber,
   } = useFormHandlers({
     fullname: "",
     string: "",
@@ -310,6 +312,8 @@ export default function Strings() {
               >
                 <p><strong>Total strings database entries:</strong> {totalCount}</p>
                 <p><strong>Unpaid entries:</strong> {unpaidCount}</p>
+                <p><strong>Most used tension:</strong> {mostUsedTension}</p>
+                <p><strong>Most used caliber:</strong> {mostUsedCaliber}</p>
               </div>
             </div>
           )}
