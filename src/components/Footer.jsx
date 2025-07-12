@@ -1,47 +1,37 @@
 import React from "react";
 import { feature } from "../features";
 import { bugFix } from "../features";
+import "./Footer.css";
 
 export default function Footer() {
   return (
-    <footer
-      style={{
-        position: "absolute",
-        bottom: "0",
-        display: "flex",
-        justifyContent: "center",
-        width: "100%",
-        height: "110px",
-        alignItems: "center",
-        left: "0",
-        fontSize: "small",
-        backgroundColor: "#dbdbdb",
-        color: "black",
-      }}
-    >
-      <div>
-        <div style={{display:'flex', gap:'15px'}}>
-          <div>
-            <p style={{ display: "flex", gap: "5px" }}>
-              <strong>Latest feature:</strong> {feature.join(" - ")}
-            </p>
-          </div>
-          <div>
-            <p style={{ display: "flex", gap: "5px" }}>
-              <strong>Latest bug fix:</strong> {bugFix.join(" - ")}
-            </p>
-          </div>
-
+    <footer className="footer">
+      <div className="footer-content">
+        <div className="footer-section">
+          <p>
+            <strong>Latest feature:</strong> {feature.join(" - ")}
+          </p>
         </div>
+        <div className="footer-section">
+          <p>
+            <strong>Latest bug fix:</strong> {bugFix.join(" - ")}
+          </p>
+        </div>
+      </div>
 
+      <div className="footer-social">
+        <a href="https://github.com/ArtoriasDelAbismo" target="_blank" rel="noopener noreferrer">
+          <i className="fa-brands fa-github"></i>
+        </a>
+      </div>
+
+      <div className="footer-bottom">
         <p>
-          <a href="https://journadev.netlify.app/" target="_blank">
+          <a href="https://journadev.netlify.app/" target="_blank" rel="noopener noreferrer">
             Journadev
           </a>{" "}
           © 2025
         </p>
-
-
       </div>
     </footer>
   );

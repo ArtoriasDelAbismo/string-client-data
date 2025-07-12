@@ -26,10 +26,9 @@ export default function Home() {
       <Navbar />
 
       <div
-        className="home-background"
+        className={`home-background ${imageVisible ? "visible" : ""}`}
         style={{
           backgroundImage: backgroundImage ? `url(${backgroundImage})` : "none",
-          opacity: imageVisible ? 1 : 0,
         }}
       />
 
