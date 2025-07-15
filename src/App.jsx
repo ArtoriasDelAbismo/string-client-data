@@ -6,6 +6,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import Login from "./components/Login.jsx";
 import { AuthProvider } from "./context/AuthContext.jsx";
+import Footer from "./components/Footer.jsx";
 
 function App() {
   return (
@@ -40,6 +41,7 @@ function App() {
             }
           />
         </Routes>
+        <Footer />
       </AuthProvider>
     </Router>
   );

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Navbar from "./Navbar";
-import Footer from "./Footer";
 import "./Home.css";
 
 const links = [
@@ -55,7 +54,6 @@ export default function Home() {
         </div>
       </div>
 
-      <Footer />
     </>
   );
 }
