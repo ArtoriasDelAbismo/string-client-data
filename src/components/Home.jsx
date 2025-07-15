@@ -33,7 +33,7 @@ export default function Home() {
       />
 
       <div className="home-content">
-        <h1>TB Database</h1>
+        <h1 style={{color: '#fef000'}}>TB Database</h1>
         <div className="home-links">
           {links.map((link) => (
             <div key={link.to}>

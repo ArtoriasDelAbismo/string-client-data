@@ -17,6 +17,8 @@
   gap: 10px;
   flex-wrap: wrap;
   margin-bottom: 20px;
+  color: #fef000;
+
 }
 
 .form-field {
@@ -57,6 +59,8 @@
   margin-bottom: 40px;
   display: flex;
   gap: 10px;
+  color: #fef000;
+
 }
 
 .search-input {
@@ -115,6 +119,7 @@
   .strings-form {
     flex-direction: column;
     align-items: center;
+
   }
 
   .form-field {
