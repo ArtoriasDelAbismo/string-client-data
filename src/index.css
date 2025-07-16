@@ -4,6 +4,10 @@ html, body, #root {
   padding: 0;
 }
 
+html {
+  background-color: #242424;
+}
+
 body {
   display: flex;
   flex-direction: column;
