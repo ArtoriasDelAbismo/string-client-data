@@ -73,7 +73,7 @@
   overflow-x: auto;
   width: 100%;
   max-width: 1350px;
-  background-color: #ebebeb;
+  background-color: #242424;
   border-radius: 8px;
 }
 
@@ -87,12 +87,16 @@
   border: 1px solid #ccc;
   padding: 8px;
   text-align: center;
-  color: black;
 
 }
 
 .responsive-table th {
   background-color: #f2f2f2;
+}
+
+.responsive-table td {
+    color: white;
+
 }
 
 .completed-row {
