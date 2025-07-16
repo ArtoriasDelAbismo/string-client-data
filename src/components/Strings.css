@@ -7,6 +7,9 @@
 /* General Styles */
 .strings-container {
   margin-top: 100px;
+  background-color: #242424;
+  padding: 1rem;
+  border-radius: 8px;
 }
 
 .strings-form {
