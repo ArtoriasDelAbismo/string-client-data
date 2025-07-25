@@ -109,6 +109,7 @@
   display: flex;
   gap: 8px;
   justify-content: center;
+  color: #ffff;
 }
 
 .pagination-container {

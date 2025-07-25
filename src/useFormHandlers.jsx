@@ -9,7 +9,7 @@ import {
 } from "./db";
 import { supabase } from "./supaBase";
 
-export const useFormHandlers = (initialData) => {
+export const useFormHandlers = (initialData, tableName) => {
   const [formData, setFormData] = useState(initialData);
   const [submittedData, setSubmittedData] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -74,7 +74,7 @@ export const useFormHandlers = (initialData) => {
     };
 
     try {
-      const [savedEntry] = await addEntry(newEntry);
+      const [savedEntry] = await addEntry(newEntry, tableName);
       // Go back to the first page to see the new entry
       if (page !== 1) {
         setPage(1);
@@ -84,7 +84,7 @@ export const useFormHandlers = (initialData) => {
         setTotalCount((prev) => prev + 1);
       }
 
-      setFormData(initialData); // Reset form
+      setFormData(initialData);
     } catch (error) {
       console.error("Failed to add entry: ", error);
     }

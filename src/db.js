@@ -249,4 +249,98 @@ export const countTotalWorkshopEntries = async (searchTerm = "") => {
   }
 };
 
-export default { addEntry, addWorkshopEntry };
+  /* --- Reclamations Database --- */
+
+export const addReclamationEntry = async (entry) => {
+  const entryToInsert = { ...entry };
+  delete entryToInsert.id;
+
+  try {
+    const { data, error } = await supabase
+      .from("reclamations-data")
+      .insert(entryToInsert)
+      .select();
+
+    if (error) {
+      console.error("Error adding new reclamation entry:", error.message);
+      throw error;
+    }
+    
+    return data;
+  } catch (error) {
+    console.error("Unexpected error adding new reclamation entry:", error);
+    throw error;
+  }
+};
+
+export const fetchReclamations = async (searchTerm = "", page = 1) => {
+  try {
+    const baseSelect = "id, fullname, phone, email, model, type, notes, date, status";
+    let query = supabase.from("reclamations-data").select(baseSelect);
+
+    if (searchTerm) {
+      query = query.or(`fullname.ilike.%${searchTerm}%,model.ilike.%${searchTerm}%`);
+    }
+
+    query = query
+      .order("id", { ascending: false })
+      .range((page - 1) * PAGE_SIZE, page * PAGE_SIZE - 1);
+
+    const { data, error } = await query;
+
+    if (error) {
+      console.error("Error fetching reclamations:", error);
+      return [];
+    }
+
+    return data;
+  } catch (err) {
+    console.error("Unexpected error fetching reclamations:", err);
+    return [];
+  }
+};
+
+export const updateReclamationEntry = async (entry) => {
+  try {
+    const { data, error } = await supabase
+      .from("reclamations-data")
+      .update(entry)
+      .eq("id", entry.id)
+      .select();
+
+    if (error) {
+      console.error("❌ Supabase reclamation update error:", error.message);
+      return false;
+    }
+    return data;
+  } catch (err) {
+    console.error("Unexpected error updating reclamation entry:", err);
+    return false;
+  }
+};
+
+export const countTotalReclamations = async (searchTerm = "") => {
+  try {
+    let query = supabase
+      .from("reclamations-data")
+      .select("*", { count: "exact", head: true });
+
+    if (searchTerm) {
+      query = query.or(`fullname.ilike.%${searchTerm}%,model.ilike.%${searchTerm}%`);
+    }
+
+    const { count, error } = await query;
+
+    if (error) {
+      console.error("Error counting reclamations:", error);
+      return 0;
+    }
+    return count;
+  } catch (err) {
+    console.error("Unexpected error counting reclamations:", err);
+    return 0;
+  }
+};
+
+
+export default { addEntry, addWorkshopEntry, addReclamationEntry };

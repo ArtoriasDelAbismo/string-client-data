@@ -122,7 +122,7 @@ export default function Strings() {
 
         <div className="submitted-data-container">
           <div className="search-container">
-          <h3>Search Client:</h3>
+            <h3>Search Client:</h3>
             <input
               className="search-input"
               type="text"
@@ -253,7 +253,10 @@ export default function Strings() {
                           <td data-label="Time">{entry.time}</td>
                         </>
                       )}
-                      <td data-label="Notes" className={isEditingId === entry.id ? "notes-edit" : ""}>
+                      <td
+                        data-label="Notes"
+                        className={isEditingId === entry.id ? "notes-edit" : ""}
+                      >
                         {isEditingId === entry.id ? (
                           <input
                             name="notes"
@@ -324,10 +327,9 @@ export default function Strings() {
                   justifyContent: "end",
                   backgroundColor: "black",
                   paddingRight: "10px",
-                  gap: "10px"
+                  gap: "10px",
                 }}
-              >
-              </div>
+              ></div>
             </div>
           )}
 

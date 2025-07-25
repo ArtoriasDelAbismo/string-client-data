@@ -7,6 +7,7 @@ import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import Login from "./components/Login.jsx";
 import { AuthProvider } from "./context/AuthContext.jsx";
 import Footer from "./components/Footer.jsx";
+import Reclamations from "./components/Reclamations.jsx";
 
 function App() {
   return (
@@ -37,6 +38,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <Workshop />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/Reclamations"
+            element={
+              <ProtectedRoute>
+                <Reclamations />
               </ProtectedRoute>
             }
           />

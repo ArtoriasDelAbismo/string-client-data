@@ -41,11 +41,7 @@ export default function Navbar() {
     { label: "Home", to: "/" },
     { label: "Strings", to: "/Strings" },
     { label: "Workshop", to: "/Workshop" },
-    { label: "Website", href: "https://tierrabatida.com.ar/" },
-    {
-      label: "Smart Manager",
-      href: "https://tierrabatida.com.ar/wp-admin/admin.php?page=smart-manager",
-    },
+    { label: "Reclamations", to: "/Reclamations" }
   ];
 
   const drawerList = (
@@ -108,7 +104,7 @@ export default function Navbar() {
                 </a>
               )
             )}
-            <button onClick={handleLogout}>Logout</button>
+            <button style={{color:'#fff'}} onClick={handleLogout}>Logout</button>
           </Box>
         ) : isMobile && session ? (
           <>
