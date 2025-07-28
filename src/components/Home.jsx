@@ -41,7 +41,7 @@ export default function Home() {
     ];
 
   return (
-    <div>
+<div>
       <Navbar />
 
       <div className="home-dashboard-container">
