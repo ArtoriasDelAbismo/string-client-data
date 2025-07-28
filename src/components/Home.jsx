@@ -1,59 +1,66 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import Navbar from "./Navbar";
+import Footer from "./Footer";
 import "./Home.css";
 
-const links = [
-  { to: "/strings", text: "Strings", image: "/stringing-black-white.jpg" },
-  { to: "/workshop", text: "Workshop", image: "/broken_racquet_20111.png" },
-];
+import {
+  FaTachometerAlt,
+  FaWrench,
+  FaExclamationCircle,
+} from "react-icons/fa";
+import { GiTennisRacket } from "react-icons/gi";
 
 export default function Home() {
-  const [backgroundImage, setBackgroundImage] = useState(null);
-  const [imageVisible, setImageVisible] = useState(false);
-
-  useEffect(() => {
-    // Preload images
-    links.forEach((link) => {
-      const img = new Image();
-      img.src = link.image;
-    });
-  }, []);
+  const dashboardItems = [
+    {
+      to: "/Strings",
+      icon: <FaTachometerAlt className="dashboard-icon" />,
+      title: "Strings",
+      
+      description: "Manage clients and stringing jobs.",
+    },
+    {
+      to: "/workshop",
+      icon: <FaWrench className="dashboard-icon" />,
+      title: "Workshop",
+      description: "keep track of reparations.",
+    },
+    {
+      to: "/reclamations",
+      icon: <FaExclamationCircle className="dashboard-icon" />,
+      title: "Reclamations",
+      description: "Handle customer claims and issues.",
+    },
+    {
+      to: "/demos",
+      icon: <GiTennisRacket className="dashboard-icon" />,
+      title: "Demos",
+      description: "View and manage demo racquets.",
+    },
+    ];
 
   return (
-    <>
+    <div>
       <Navbar />
 
-      <div
-        className={`home-background ${imageVisible ? "visible" : ""}`}
-        style={{
-          backgroundImage: backgroundImage ? `url(${backgroundImage})` : "none",
-        }}
-      />
-
-      <div className="home-content">
-        <h1 style={{color: '#fef000'}}>TB Database</h1>
-        <div className="home-links">
-          {links.map((link) => (
-            <div key={link.to}>
-              <Link
-                className="home-link"
-                to={link.to}
-                onMouseEnter={() => {
-                  setBackgroundImage(link.image);
-                  setImageVisible(true);
-                }}
-                onMouseLeave={() => {
-                  setImageVisible(false);
-                }}
-              >
-                {link.text}
-              </Link>
-            </div>
+      <div className="home-dashboard-container">
+        <header className="home-dashboard-header">
+          <h1>Tb Services Database</h1>
+          <p>Manage all our data and services.</p>
+        </header>
+        <main className="dashboard-grid">
+          {dashboardItems.map((item, index) => (
+            <Link to={item.to} key={index} className="dashboard-card-link">
+              <div className="dashboard-card">
+                {item.icon}
+                <h2>{item.title}</h2>
+                <p>{item.description}</p>
+              </div>
+            </Link>
           ))}
-        </div>
+        </main>
       </div>
-
-    </>
+    </div>
   );
 }
