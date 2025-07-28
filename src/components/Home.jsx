@@ -1,21 +1,19 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import Navbar from "./Navbar";
-import Footer from "./Footer";
 import "./Home.css";
 
 import {
-  FaTachometerAlt,
   FaWrench,
   FaExclamationCircle,
 } from "react-icons/fa";
-import { GiTennisRacket } from "react-icons/gi";
+import { GiSewingString, GiTennisRacket } from "react-icons/gi"
 
 export default function Home() {
   const dashboardItems = [
     {
       to: "/Strings",
-      icon: <FaTachometerAlt className="dashboard-icon" />,
+      icon: <GiSewingString className="dashboard-icon" />,
       title: "Strings",
       
       description: "Manage clients and stringing jobs.",
