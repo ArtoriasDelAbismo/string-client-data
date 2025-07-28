@@ -36,7 +36,7 @@ export default function Home() {
       to: "/demos",
       icon: <GiTennisRacket className="dashboard-icon" />,
       title: "Demos",
-      description: "View and manage demo racquets.",
+      description: "View and manage demo rackets.",
     },
     ];
 
