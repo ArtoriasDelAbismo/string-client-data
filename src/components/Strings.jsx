@@ -35,6 +35,7 @@ export default function Strings() {
     mostUsedCaliber,
     mostUsedString,
     mostUsedRacket,
+    metricsLoading,
   } = useFormHandlers({
     fullname: "",
     string: "",
@@ -54,14 +55,18 @@ export default function Strings() {
   return (
     <>
       <Navbar />
-      <Metrics
-        totalCount={totalCount}
-        unpaidCount={unpaidCount}
-        mostUsedTension={mostUsedTension}
-        mostUsedCaliber={mostUsedCaliber}
-        mostUsedString={mostUsedString}
-        mostUsedRacket={mostUsedRacket}
-      />
+      {metricsLoading ? (
+        <div className="spinner"></div>
+      ) : (
+        <Metrics
+          totalCount={totalCount}
+          unpaidCount={unpaidCount}
+          mostUsedTension={mostUsedTension}
+          mostUsedCaliber={mostUsedCaliber}
+          mostUsedString={mostUsedString}
+          mostUsedRacket={mostUsedRacket}
+        />
+      )}
 
       <div className="strings-container">
         <form

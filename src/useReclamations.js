@@ -14,12 +14,16 @@ export const useReclamations = (initialData) => {
   const [editData, setEditData] = useState({});
   const [page, setPage] = useState(1);
   const [totalCount, setTotalCount] = useState(0);
+  const [updatingStatusId, setUpdatingStatusId] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const fetchData = useCallback(async () => {
+    setLoading(true);
     const results = await fetchReclamations(searchTerm, page);
     setSubmittedData(results);
     const total = await countTotalReclamations(searchTerm);
     setTotalCount(total);
+    setLoading(false);
   }, [searchTerm, page]);
 
   useEffect(() => {
@@ -75,28 +79,26 @@ export const useReclamations = (initialData) => {
   };
   
   const updateStatus = async (id, newStatus) => {
-    const updated = await updateReclamationEntry({ id, status: newStatus });
-    if (updated) {
-      // Optimistically update the UI or refetch
-      setSubmittedData((prev) =>
-        prev.map((entry) =>
-          entry.id === id ? { ...entry, status: newStatus } : entry
-        )
-      );
+    setUpdatingStatusId(id);
+    try {
+      const updated = await updateReclamationEntry({ id, status: newStatus });
+      if (updated) {
+        setSubmittedData((prev) =>
+          prev.map((entry) =>
+            entry.id === id ? { ...entry, status: newStatus } : entry
+          )
+        );
+      }
+    } catch (error) {
+      console.error("Failed to update status:", error);
+    } finally {
+      setUpdatingStatusId(null);
     }
   };
 
   const handleApprove = (id) => updateStatus(id, "Approved");
   const handleDeny = (id) => updateStatus(id, "Denied");
-
-  const handleStatusToggle = (id, currentStatus) => {
-    if (currentStatus === "Approved") {
-      updateStatus(id, "Denied");
-    } else if (currentStatus === "Denied") {
-      updateStatus(id, "Approved");
-    }
-    // If "Pending" or other, do nothing, as that's handled by Approve/Deny buttons
-  };
+  const handleResolved = (id) => updateStatus(id, "Resolved");
 
   return {
     formData,
@@ -106,6 +108,7 @@ export const useReclamations = (initialData) => {
     editData,
     page,
     totalCount,
+    updatingStatusId,
     setPage,
     handleChange,
     handleEdit,
@@ -115,6 +118,6 @@ export const useReclamations = (initialData) => {
     handleUpdate,
     handleApprove,
     handleDeny,
-    handleStatusToggle,
+    handleResolved,
   };
 };

@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 import { useReclamations } from "../useReclamations.js";
 import Navbar from "./Navbar";
+import ReclamationsTable from "./ReclamationsTable";
 import { PAGE_SIZE } from "../db";
 import "./Reclamations.css";
 
@@ -22,7 +23,9 @@ export default function Reclamations() {
     totalCount,
     handleApprove,
     handleDeny,
-    handleStatusToggle,
+    handleResolved,
+    updatingStatusId,
+    loading,
   } = useReclamations({
     fullname: "",
     phone: "",
@@ -32,41 +35,59 @@ export default function Reclamations() {
     notes: "",
   });
 
-  const [loading, setLoading] = useState(false);
+  const renderStatusContent = (entry, isResolved) => {
+    const isUpdating = updatingStatusId === entry.id;
 
-  const renderStatusContent = (entry) => {
+    if (isUpdating) {
+      return <div className="spinner-small"></div>;
+    }
+
     const status = entry.status;
 
-    if (status === "Pending" || status === false || status === "false") {
-      return (
-        <div className="action-buttons">
-          <button onClick={() => handleApprove(entry.id)} style={{ color: "white", fontWeight: "bold", border:'1px solid #ffff' }}>
-            Approve
-          </button>
-          <button onClick={() => handleDeny(entry.id)} style={{ color: "white", fontWeight: "bold" }}>
-            Deny
-          </button>
-        </div>
-      );
-    }
-
-    if (status === "Approved") {
-      return (
-        <button onClick={() => handleStatusToggle(entry.id, status)} style={{ color: "white", fontWeight: "bold", background: 'none', border: '1px solid white', cursor: 'pointer',  }}>
-          Approved
+    return (
+      <div className="action-buttons">
+        <button
+          onClick={() => handleApprove(entry.id)}
+          disabled={isResolved || status === "Approved"}
+          className="status-button approve-button"
+        >
+          <a
+            style={{ color: "white", fontWeight: "bold" }}
+            disabled={isResolved || status === "Approved"}
+            href={`mailto:${entry.mail}?subject=Solicitud de reclamo aprobada: ${entry.model}&body=Hola ${entry.fullname},%0A%0A
+Tras analizar su reclamo, confirmamos que cumple con las características atribuibles a una falla del producto.%0A%0A
+Te esperamos en nuestra sucursal de 9 a 17 hs para continuar con el proceso.%0A
+Muchas gracias.`}
+          >
+            Approved
+          </a>
         </button>
-      );
-    }
-
-    if (status === "Denied") {
-      return (
-        <button onClick={() => handleStatusToggle(entry.id, status)} style={{ color: "white", fontWeight: "bold", background: 'none', border: '1px solid white', cursor: 'pointer' }}>
-          Denied
+        <button
+          onClick={() => handleDeny(entry.id)}
+          disabled={isResolved || status === "Denied"}
+          className="status-button deny-button"
+        >
+          <a
+                      style={{ color: "white", fontWeight: "bold" }}
+            disabled={isResolved || status === "Approved"}
+            href={`mailto:${entry.mail}?subject=Solicitud de reclamo rechazada: ${entry.model}&body=Hola ${entry.fullname},%0A%0A
+Tras analizar su reclamo lamentamos informarle que ha sido rechazado por no cumplir con las características correspondientes a una falla del producto.%0A%0A
+Si desea más detalles sobre los motivos de esta decisión, no dude en contactarnos.%0A
+Agradecemos su comprensión.%0A
+Saludos cordiales.`}
+          >
+            Denied
+          </a>
         </button>
-      );
-    }
-
-    return <span style={{ color: "gray" }}>Unknown</span>;
+        <button
+          onClick={() => handleResolved(entry.id)}
+          disabled={isResolved}
+          className="status-button resolved-button"
+        >
+          Resolved
+        </button>
+      </div>
+    );
   };
 
   return (
@@ -134,126 +155,15 @@ export default function Reclamations() {
           {loading ? (
             <div className="spinner"></div>
           ) : (
-            <div className="table-container">
-              <table className="responsive-table">
-                <thead>
-                  <tr style={{ color: "black" }}>
-                    <th>ID</th>
-                    <th>Full Name</th>
-                    <th>Phone</th>
-                    <th>Email</th>
-                    <th>Model</th>
-                    <th>Type</th>
-                    <th>Notes</th>
-                    <th>Date</th>
-                    <th>Status</th>
-                    <th>Actions</th>
-                  </tr>
-                </thead>
-                <tbody style={{ color: "white" }}>
-                  {submittedData.map((entry) => {
-                    const statusStyle = {
-                      backgroundColor:
-                        entry.status === "Approved"
-                          ? "#419b45"
-                          : entry.status === "Denied"
-                          ? "rgba(255, 0, 0, 0.71)"
-                          : "transparent",
-                    };
-
-                    return (
-                      <tr key={entry.id} style={statusStyle}>
-                        <td data-label="ID">{entry.id}</td>
-                        <td data-label="Full Name">
-                          {isEditingId === entry.id ? (
-                            <input
-                              name="fullname"
-                              value={editData.fullname}
-                              onChange={handleEditChange}
-                            />
-                          ) : (
-                            entry.fullname
-                          )}
-                        </td>
-                        <td data-label="Phone">
-                          {isEditingId === entry.id ? (
-                            <input
-                              name="phone"
-                              value={editData.phone}
-                              onChange={handleEditChange}
-                            />
-                          ) : (
-                            entry.phone
-                          )}
-                        </td>
-                        <td data-label="Email">
-                          {isEditingId === entry.id ? (
-                            <input
-                              name="email"
-                              value={editData.email}
-                              onChange={handleEditChange}
-                            />
-                          ) : (
-                            entry.email
-                          )}
-                        </td>
-                        <td data-label="Model">
-                          {isEditingId === entry.id ? (
-                            <input
-                              name="model"
-                              value={editData.model}
-                              onChange={handleEditChange}
-                            />
-                          ) : (
-                            entry.model
-                          )}
-                        </td>
-                        <td data-label="Type">
-                          {isEditingId === entry.id ? (
-                            <input
-                              name="type"
-                              value={editData.type}
-                              onChange={handleEditChange}
-                            />
-                          ) : (
-                            entry.type
-                          )}
-                        </td>
-                        <td data-label="Notes">
-                          {isEditingId === entry.id ? (
-                            <input
-                              name="notes"
-                              value={editData.notes}
-                              onChange={handleEditChange}
-                            />
-                          ) : (
-                            entry.notes
-                          )}
-                        </td>
-                        <td data-label="Date">{entry.date}</td>
-                        <td data-label="Status">{renderStatusContent(entry)}</td>
-                        <td data-label="Actions">
-                          {isEditingId === entry.id ? (
-                            <div className="action-buttons">
-                              <button onClick={handleUpdate}>
-                                <i className="fa-solid fa-check"></i>
-                              </button>
-                              <button onClick={() => handleEdit(null)}>
-                                <i className="fa-solid fa-xmark"></i>
-                              </button>
-                            </div>
-                          ) : (
-                            <button onClick={() => handleEdit(entry.id)}>
-                              <i className="fa-solid fa-pen-to-square"></i>
-                            </button>
-                          )}
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
-            </div>
+            <ReclamationsTable
+              submittedData={submittedData}
+              isEditingId={isEditingId}
+              editData={editData}
+              handleEditChange={handleEditChange}
+              handleUpdate={handleUpdate}
+              handleEdit={handleEdit}
+              renderStatusContent={renderStatusContent}
+            />
           )}
 
           <div className="pagination-container">
@@ -276,5 +186,3 @@ export default function Reclamations() {
     </>
   );
 }
-
-

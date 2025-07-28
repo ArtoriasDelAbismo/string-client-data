@@ -22,9 +22,11 @@ export const useFormHandlers = (initialData, tableName) => {
   const [mostUsedCaliber, setMostUsedCaliber] = useState(null);
   const [mostUsedString, setMostUsedString] = useState(null);
   const [mostUsedRacket, setMostUsedRacket] = useState(null);
+  const [metricsLoading, setMetricsLoading] = useState(true);
 
   useEffect(() => {
     const fetchDataAndCounts = async () => {
+      setMetricsLoading(true);
       const results = await fetchEntry(searchTerm, page);
       const sanitizedResults = results.map((entry) => ({
         ...entry,
@@ -49,6 +51,7 @@ export const useFormHandlers = (initialData, tableName) => {
 
       const racket = await getMostUsed("racket");
       setMostUsedRacket(racket);
+      setMetricsLoading(false);
     };
 
     fetchDataAndCounts();
@@ -204,6 +207,7 @@ export const useFormHandlers = (initialData, tableName) => {
     mostUsedCaliber,
     mostUsedString,
     mostUsedRacket,
+    metricsLoading,
     setPage,
     handleChange,
     handleEdit,

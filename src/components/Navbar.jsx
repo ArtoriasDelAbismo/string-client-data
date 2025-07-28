@@ -41,7 +41,9 @@ export default function Navbar() {
     { label: "Home", to: "/" },
     { label: "Strings", to: "/Strings" },
     { label: "Workshop", to: "/Workshop" },
-    { label: "Reclamations", to: "/Reclamations" }
+    { label: "Reclamations", to: "/Reclamations" },
+    { label: "Demos", to: "/Demos" },
+    
   ];
 
   const drawerList = (
