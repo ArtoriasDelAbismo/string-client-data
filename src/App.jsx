@@ -9,6 +9,7 @@ import { AuthProvider } from "./context/AuthContext.jsx";
 import Footer from "./components/Footer.jsx";
 import Reclamations from "./components/Reclamations.jsx";
 import Demos from "./components/Demos.jsx";
+import Changelog from "./components/Changelog.jsx";
 
 function App() {
   return (
@@ -55,6 +56,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <Demos />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/changelog"
+            element={
+              <ProtectedRoute>
+                <Changelog />
               </ProtectedRoute>
             }
           />

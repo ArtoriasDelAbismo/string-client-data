@@ -43,7 +43,7 @@ export default function Navbar() {
     { label: "Workshop", to: "/Workshop" },
     { label: "Reclamations", to: "/Reclamations" },
     { label: "Demos", to: "/Demos" },
-    
+    { label: "Changelog", to: "/Changelog" },
   ];
 
   const drawerList = (

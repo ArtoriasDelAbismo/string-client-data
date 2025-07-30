@@ -1,0 +1,18 @@
+{
+  "features": [
+    {
+      "date": "2024-07-30",
+      "description": "Reclamations Outcome"
+    },
+    {
+      "date": "2024-07-28",
+      "description": "New dashboard layout"
+    }
+  ],
+  "bugFixes": [
+    {
+      "date": "2024-07-29",
+      "description": "Fix table overflow"
+    }
+  ]
+}
