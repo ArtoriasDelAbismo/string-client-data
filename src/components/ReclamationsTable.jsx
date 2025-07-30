@@ -11,11 +11,12 @@ const ReclamationsTable = ({
   renderStatusContent,
 }) => {
   return (
-    <div className="table-container">
+    <div className="table-container reclamations-table-container">
       <table className="responsive-table">
         <thead>
           <tr style={{ color: "black" }}>
             <th>ID</th>
+            <th>Outcome</th>
             <th>Full Name</th>
             <th>Phone</th>
             <th>Email</th>

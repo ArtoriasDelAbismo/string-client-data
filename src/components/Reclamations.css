@@ -59,3 +59,7 @@
 .reclamation-row-resolved {
   background-color: #28a745;
 }
+
+.reclamations-table-container{
+  max-width: 1420px;
+}

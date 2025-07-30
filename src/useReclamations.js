@@ -98,7 +98,20 @@ export const useReclamations = (initialData) => {
 
   const handleApprove = (id) => updateStatus(id, "Approved");
   const handleDeny = (id) => updateStatus(id, "Denied");
-  const handleResolved = (id) => updateStatus(id, "Resolved");
+  const handleResolved = (id) => {
+    const entryToResolve = submittedData.find((entry) => entry.id === id);
+    if (
+      entryToResolve &&
+      (entryToResolve.status === "Approved" ||
+        entryToResolve.status === "Denied")
+    ) {
+      const newStatus = `Resolved-${entryToResolve.status}`;
+      updateStatus(id, newStatus);
+    } else if (entryToResolve) {
+      // Fallback for other statuses like 'Pending'
+      updateStatus(id, "Resolved");
+    }
+  };
 
   return {
     formData,

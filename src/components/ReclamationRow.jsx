@@ -1,4 +1,5 @@
 import React from "react";
+import { FaCheckCircle, FaTimesCircle } from "react-icons/fa";
 
 const ReclamationRow = ({
   entry,
@@ -10,20 +11,31 @@ const ReclamationRow = ({
   renderStatusContent,
 }) => {
   const isEditing = isEditingId === entry.id;
-  const isResolved = entry.status === "Resolved";
+  const isResolved = entry.status.startsWith("Resolved");
 
   const rowClass =
     entry.status === "Approved"
       ? "reclamation-row-approved"
       : entry.status === "Denied"
       ? "reclamation-row-denied"
-      : entry.status === "Resolved"
+      : entry.status.startsWith("Resolved")
       ? "reclamation-row-resolved"
       : "";
 
   return (
     <tr className={rowClass}>
       <td data-label="ID">{entry.id}</td>
+      <td
+        data-label="Outcome"
+        style={{ textAlign: "center", verticalAlign: "middle" }}
+      >
+        {entry.status.includes("Approved") && (
+          <FaCheckCircle color="#345bddff" title="Approved" style={{width:'25px', height:'25px'}}/>
+        )}
+        {entry.status.includes("Denied") && (
+          <FaTimesCircle color="#a0101eff" title="Denied" style={{width:'25px', height:'25px'}}/>
+        )}
+      </td>
       <td data-label="Full Name">
         {isEditing ? (
           <input
