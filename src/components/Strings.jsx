@@ -83,7 +83,7 @@ export default function Strings() {
             { label: "Tension", name: "tension", type: "text" },
             { label: "Racket", name: "racket", type: "text" },
             { label: "Mail", name: "mail", type: "email" },
-            { label: "Notes", name: "notes", type: "notes" },
+            { label: "Notes", name: "notes", type: "text" },
           ].map(({ label, name, type }) => (
             <div key={name} className="form-field">
               <label>
