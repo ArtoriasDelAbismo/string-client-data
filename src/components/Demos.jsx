@@ -125,32 +125,33 @@ export default function Demos() {
             <button type="submit">Submit</button>
           </div>
         </form>
+<div className="conditions-wrapper">
+  <div className="conditions-container">
+    <h2>Condiciones</h2>
+    <ul>
+      <li>
+        <b>Costo del Demo:</b> $10.000 por raqueta.
+      </li>
+      <li>
+        <b>Período de Prueba:</b> 3 días.
+      </li>
+      <li>
+        <b>Recargo por Demora:</b> Se cobrará un adicional de $5.000 por cada día
+        posterior a los 3 días iniciales.
+      </li>
+      <li>
+        <b>Descuento por Compra:</b> El costo del alquiler se descontará del precio
+        final si el cliente decide comprar la raqueta.
+      </li>
+      <li>
+        <b>No Reembolsable:</b> El costo del alquiler no será reembolsado si el cliente
+        no realiza la compra.
+      </li>
+    </ul>
+  </div>
 
-        <div className="conditions-container">
-          <h2>Conditions
-            
-          </h2>
-          <ul>
-            <li>
-              <b>Demo Cost:</b> $10,000 per demo.
-            </li>
-            <li>
-              <b>Testing Period:</b> 3 days.
-            </li>
-            <li>
-              <b>Late Fee:</b> An additional $5,000 will be charged for each day
-              past the initial 3 days.
-            </li>
-            <li>
-              <b>Purchase Discount:</b> The rental fee will be discounted from
-              the final price if the client purchases the racket.
-            </li>
-            <li>
-              <b>Non-refundable:</b> The rental fee is not refundable if the
-              client does not purchase the racket.
-            </li>
-          </ul>
-        </div>
+</div>
+
 
         <div className="submitted-data-container">
           <div className="search-container">
