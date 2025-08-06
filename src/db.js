@@ -20,7 +20,7 @@ export const addEntry = async (entry) => {
       console.error("Error adding new string entry:", error.message);
       throw error;
     }
-    
+
     return data;
   } catch (error) {
     console.error("Unexpected error adding new string entry:", error);
@@ -30,11 +30,14 @@ export const addEntry = async (entry) => {
 
 export const fetchEntry = async (searchTerm = "", page = 1) => {
   try {
-    const baseSelect = "id, fullname, string, caliber, tension, racket, mail, date, time, completed, paid, notes";
+    const baseSelect =
+      "id, fullname, string, caliber, tension, racket, mail, date, time, completed, paid, notes";
     let query = supabase.from("string-client-data").select(baseSelect);
 
     if (searchTerm) {
-      query = query.or(`fullname.ilike.%${searchTerm}%,string.ilike.%${searchTerm}%,racket.ilike.%${searchTerm}%`);
+      query = query.or(
+        `fullname.ilike.%${searchTerm}%,string.ilike.%${searchTerm}%,racket.ilike.%${searchTerm}%`
+      );
     }
 
     query = query
@@ -62,7 +65,7 @@ export const updateEntry = async (entry) => {
   try {
     const { data, error } = await supabase
       .from("string-client-data")
-      .update(entry) // Standardized: pass object directly
+      .update(entry)
       .eq("id", entry.id)
       .select();
 
@@ -84,7 +87,9 @@ export const countTotalEntries = async (searchTerm = "") => {
       .select("*", { count: "exact", head: true });
 
     if (searchTerm) {
-      query = query.or(`fullname.ilike.%${searchTerm}%,string.ilike.%${searchTerm}%,racket.ilike.%${searchTerm}%`);
+      query = query.or(
+        `fullname.ilike.%${searchTerm}%,string.ilike.%${searchTerm}%,racket.ilike.%${searchTerm}%`
+      );
     }
 
     const { count, error } = await query;
@@ -108,7 +113,9 @@ export const countUnpaidEntries = async (searchTerm = "") => {
       .eq("paid", false);
 
     if (searchTerm) {
-      query = query.or(`fullname.ilike.%${searchTerm}%,string.ilike.%${searchTerm}%,racket.ilike.%${searchTerm}%`);
+      query = query.or(
+        `fullname.ilike.%${searchTerm}%,string.ilike.%${searchTerm}%,racket.ilike.%${searchTerm}%`
+      );
     }
 
     const { count, error } = await query;
@@ -176,13 +183,11 @@ export const addWorkshopEntry = async (entry) => {
 
 export const fetchWorkshopEntry = async (searchTerm = "", page = 1) => {
   try {
-    const baseSelect = "id, fullname, mail, phone, racket, service, fissureSite, notes, date, time, completed, emailSent";
+    const baseSelect =
+      "id, fullname, mail, phone, racket, service, fissureSite, notes, date, time, completed, emailSent";
     let query = supabase.from("workshop-data").select(baseSelect);
 
     if (searchTerm) {
-      // Note: The original code had `name.ilike` and `lastName.ilike`.
-      // Assuming the column is `fullname` like in the strings table.
-      // If not, adjust this line accordingly.
       query = query.or(`fullname.ilike.%${searchTerm}%`);
     }
 
@@ -210,13 +215,13 @@ export const fetchWorkshopEntry = async (searchTerm = "", page = 1) => {
 export const updateWorkshopEntry = async (entry) => {
   try {
     const { data, error } = await supabase
-      .from('workshop-data')
+      .from("workshop-data")
       .update(entry)
-      .eq('id', entry.id)
+      .eq("id", entry.id)
       .select();
 
     if (error) {
-      console.error('Error updating workshop entry:', error.message);
+      console.error("Error updating workshop entry:", error.message);
       return false;
     }
     return data;
@@ -229,7 +234,7 @@ export const updateWorkshopEntry = async (entry) => {
 export const countTotalWorkshopEntries = async (searchTerm = "") => {
   try {
     let query = supabase
-      .from('workshop-data')
+      .from("workshop-data")
       .select("*", { count: "exact", head: true });
 
     if (searchTerm) {
@@ -239,7 +244,7 @@ export const countTotalWorkshopEntries = async (searchTerm = "") => {
     const { count, error } = await query;
 
     if (error) {
-      console.error('Error counting workshop entries:', error);
+      console.error("Error counting workshop entries:", error);
       return 0;
     }
     return count;
@@ -249,7 +254,7 @@ export const countTotalWorkshopEntries = async (searchTerm = "") => {
   }
 };
 
-  /* --- Reclamations Database --- */
+/* --- Reclamations Database --- */
 
 export const addReclamationEntry = async (entry) => {
   const entryToInsert = { ...entry };
@@ -265,7 +270,7 @@ export const addReclamationEntry = async (entry) => {
       console.error("Error adding new reclamation entry:", error.message);
       throw error;
     }
-    
+
     return data;
   } catch (error) {
     console.error("Unexpected error adding new reclamation entry:", error);
@@ -275,11 +280,14 @@ export const addReclamationEntry = async (entry) => {
 
 export const fetchReclamations = async (searchTerm = "", page = 1) => {
   try {
-    const baseSelect = "id, fullname, phone, email, model, type, notes, date, status";
+    const baseSelect =
+      "id, fullname, phone, email, model, type, notes, date, status";
     let query = supabase.from("reclamations-data").select(baseSelect);
 
     if (searchTerm) {
-      query = query.or(`fullname.ilike.%${searchTerm}%,model.ilike.%${searchTerm}%`);
+      query = query.or(
+        `fullname.ilike.%${searchTerm}%,model.ilike.%${searchTerm}%`
+      );
     }
 
     query = query
@@ -326,7 +334,9 @@ export const countTotalReclamations = async (searchTerm = "") => {
       .select("*", { count: "exact", head: true });
 
     if (searchTerm) {
-      query = query.or(`fullname.ilike.%${searchTerm}%,model.ilike.%${searchTerm}%`);
+      query = query.or(
+        `fullname.ilike.%${searchTerm}%,model.ilike.%${searchTerm}%`
+      );
     }
 
     const { count, error } = await query;
@@ -342,5 +352,97 @@ export const countTotalReclamations = async (searchTerm = "") => {
   }
 };
 
+// Demos database
 
-export default { addEntry, addWorkshopEntry, addReclamationEntry };
+export const addDemoEntry = async (entry) => {
+  try {
+    const { data, error } = await supabase
+
+      .from("demos-data")
+      .insert(entry)
+      .select();
+    if (error) {
+      console.error("Error adding data to database: ", error.message);
+      throw error;
+    }
+    return data;
+  } catch (error) {
+    console.error("Unexpected error adding demo entry", error);
+  }
+};
+
+export const fetchDemoEntry = async ({ searchTerm = "", page = 1 }) => {
+  try {
+    const baseSelect =
+      "id, fullname, mail, phone, demo, date, time, notes, paid";
+    let query = supabase.from("demos-data").select(baseSelect);
+    if (searchTerm) {
+      query = query.or(`fullname.ilike.%${searchTerm}%`);
+    }
+
+    query = query
+      .order("id", { ascending: false })
+      .range((page - 1) * PAGE_SIZE, page * PAGE_SIZE - 1);
+    const { data, error } = await query;
+
+    if (error) {
+      console.error("Error fetching string data:", error);
+      return [];
+    }
+
+    return data.map((entry) => ({
+      
+      ...entry,
+      completed: entry.completed ?? false,
+    }));
+  } catch (err) {
+    console.error("Unexpected error fetching string data:", err);
+    return [];
+  }
+};
+
+export const updateDemoEntry = async (entry) => {
+  try {
+    const { data, error } = supabase
+    .from('demos-data')
+    .update(entry)
+    .eq("id", entry.id)
+    .select()
+    if(error){
+      console.error("Error updating demo entry ", error.message);
+      return false
+    }
+    return data
+      
+  } catch (error) {
+    console.error("Unexpected error updating demo entry " , error.message);
+    
+  }
+}
+
+export const countTotalDemos = async (searchTerm = "") => {
+  try {
+    let query = supabase
+      .from("demos-data")
+      .select("*", { count: "exact", head: true });
+
+    if (searchTerm) {
+      query = query.or(
+        `fullname.ilike.%${searchTerm}%,demo.ilike.%${searchTerm}%`
+      );
+    }
+
+    const { count, error } = await query;
+
+    if (error) {
+      console.error("Error counting demos:", error);
+      return 0;
+    }
+    return count;
+  } catch (err) {
+    console.error("Unexpected error counting demos:", err);
+    return 0;
+  }
+};
+
+export default { addEntry, addWorkshopEntry, addReclamationEntry, addDemoEntry };

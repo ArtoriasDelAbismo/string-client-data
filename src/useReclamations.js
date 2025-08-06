@@ -44,13 +44,13 @@ export const useReclamations = (initialData) => {
     const newEntry = {
       ...formData,
       date: currentDate,
-      status: "Pending", // New entries are always Pending
+      status: "Pending", 
     };
 
     try {
       await addReclamationEntry(newEntry);
-      setFormData(initialData); // Reset form
-      fetchData(); // Refetch data to show the new entry
+      setFormData(initialData); 
+      fetchData(); 
     } catch (error) {
       console.error("Failed to add reclamation: ", error);
     }
@@ -74,7 +74,7 @@ export const useReclamations = (initialData) => {
     const updated = await updateReclamationEntry(editData);
     if (updated) {
       setIsEditingId(null);
-      fetchData(); // Refetch to show updated data
+      fetchData(); 
     }
   };
   
