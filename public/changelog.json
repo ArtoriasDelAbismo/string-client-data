@@ -7,6 +7,10 @@
     {
       "date": "2025-07-28",
       "description": "New dashboard layout"
+    },
+    {
+      "date": "2025-08-6",
+      "description": "Demos section"
     }
   ],
   "bugFixes": [
