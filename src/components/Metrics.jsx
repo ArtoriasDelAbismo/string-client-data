@@ -1,5 +1,6 @@
 import React from "react";
 import "./Metrics.css";
+import { GiTennisRacket } from "react-icons/gi"
 
 const Metrics = ({
   totalCount,
@@ -58,7 +59,7 @@ const Metrics = ({
       </div>
       <div className="metric-card">
         <div className="metric-icon">
-          <i className="fa-solid fa-person-running"></i>
+          <GiTennisRacket />
         </div>
         <div className="metric-info">
           <p className="metric-title">Most Used Racket</p>

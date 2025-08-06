@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useDemosHandlers } from "../useDemosHandlers.js"
+import { useDemosHandlers } from "../useDemosHandlers.js";
 import Navbar from "./Navbar";
 import { caliberOptions, tensionOptions, demosOptions } from "../data";
 import { PAGE_SIZE } from "../db";
@@ -46,10 +46,7 @@ export default function Demos() {
       <Navbar />
 
       <div className="demos-container">
-        <form
-          className="demos-form"
-          onSubmit={handleSubmit}
-        >
+        <form className="demos-form" onSubmit={handleSubmit}>
           {[
             { label: "Full Name", name: "fullname", type: "text" },
             { label: "Mail", name: "mail", type: "email" },
@@ -95,15 +92,17 @@ export default function Demos() {
             style={{
               fontWeight: "bold",
               display: "flex",
-
+              alignItems:'center',
+              alignContent:'center',
               flexDirection: "column",
+
             }}
           >
-            <label htmlFor="select">Demo</label>
+            <label style={{marginBottom:'2px'}} htmlFor="select">Demo</label>
             <select
               name="demo"
               id="demos"
-              style={{ height: "35px" }}
+              style={{ height: "40px" }}
               onChange={handleChange}
               value={formData.demo}
               required
@@ -126,6 +125,32 @@ export default function Demos() {
             <button type="submit">Submit</button>
           </div>
         </form>
+
+        <div className="conditions-container">
+          <h2>Conditions
+            
+          </h2>
+          <ul>
+            <li>
+              <b>Demo Cost:</b> $10,000 per demo.
+            </li>
+            <li>
+              <b>Testing Period:</b> 3 days.
+            </li>
+            <li>
+              <b>Late Fee:</b> An additional $5,000 will be charged for each day
+              past the initial 3 days.
+            </li>
+            <li>
+              <b>Purchase Discount:</b> The rental fee will be discounted from
+              the final price if the client purchases the racket.
+            </li>
+            <li>
+              <b>Non-refundable:</b> The rental fee is not refundable if the
+              client does not purchase the racket.
+            </li>
+          </ul>
+        </div>
 
         <div className="submitted-data-container">
           <div className="search-container">
