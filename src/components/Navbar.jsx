@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import { SupabaseContext } from "./SupabaseContext";
-import { Link, useNavigate } from "react-router-dom";
+import { href, Link, useNavigate } from "react-router-dom";
 import {
   AppBar,
   Toolbar,
@@ -43,6 +43,7 @@ export default function Navbar() {
     { label: "Workshop", to: "/Workshop" },
     { label: "Reclamations", to: "/Reclamations" },
     { label: "Demos", to: "/Demos" },
+    { label: "CSV managing tool", href:"http://localhost:8501" },
     { label: "Changelog", to: "/Changelog" },
   ];
 
