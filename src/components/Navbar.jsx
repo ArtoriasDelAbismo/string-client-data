@@ -43,7 +43,7 @@ export default function Navbar() {
     { label: "Workshop", to: "/Workshop" },
     { label: "Reclamations", to: "/Reclamations" },
     { label: "Demos", to: "/Demos" },
-    { label: "CSV managing tool", href:"http://localhost:8501" },
+    { label: "CSV managing tool", href:"https://csv-tool-iycpb9vjj4poa97nnasq5p.streamlit.app/" },
     { label: "Changelog", to: "/Changelog" },
   ];
 
