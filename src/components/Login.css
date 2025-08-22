@@ -11,7 +11,7 @@
   background: #ffffff;
   padding: 40px;
   border-radius: 12px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 8px 32px #0000001a;
   width: 100%;
   max-width: 400px;
   text-align: center;
@@ -46,7 +46,7 @@
 .login-input:focus {
   outline: none;
   border-color: #007bff;
-  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2);
+  box-shadow: 0 0 0 3px #007bff33;
 }
 
 .password-toggle {
@@ -92,7 +92,7 @@
 }
 
 .button-spinner {
-  border: 2px solid rgba(255, 255, 255, 0.5);
+  border: 2px solid #ffffff80;
   border-left-color: #fff;
   border-radius: 50%;
   width: 18px;
