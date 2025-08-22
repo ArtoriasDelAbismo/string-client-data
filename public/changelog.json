@@ -11,12 +11,20 @@
     {
       "date": "2025-08-6",
       "description": "Demos section"
+    },
+    {
+      "date": "2025-08-22",
+      "description": "Streamlit CSV tool adition"
     }
   ],
   "bugFixes": [
     {
       "date": "2025-07-29",
       "description": "Fix table overflow"
+    },
+    {
+      "date": "2025-08-22",
+      "description": "Component modular refactoring/rgba to hexa"
     }
   ]
 }
