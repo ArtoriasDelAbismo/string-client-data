@@ -16,6 +16,9 @@ export default function Strings() {
   };
 
   const {
+    searchTerm,
+    setSearchTerm,
+    setPage,
     formData,
     submittedData,
     handleChange,
@@ -76,7 +79,21 @@ export default function Strings() {
         />
 
         <div className="submitted-data-container">
-          <Search />
+              <div className="search-container">
+      <h3>Search Client:</h3>
+      <input
+        className="search-input"
+        type="text"
+        value={searchTerm}
+        onChange={(e) => {
+          setSearchTerm(e.target.value.toLowerCase());
+          setPage(1);
+        }}
+      />
+      <button>
+        <i className="fa-solid fa-magnifying-glass"></i>
+      </button>
+    </div>
 
           {loading ? (
             <div className="spinner"></div>

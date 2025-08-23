@@ -1,6 +1,24 @@
 import React from "react";
+import { useFormHandlers } from "../useFormHandlers";
 
-export default function Search({ searchTerm, setSearchTerm, setPage }) {
+export default function Search() {
+
+    const {
+      searchTerm,
+      setSearchTerm,
+      setPage,
+    } = useFormHandlers({
+      fullname: "",
+      string: "",
+      caliber: "",
+      tension: "",
+      racket: "",
+      mail: "",
+      date: "",
+      time: "",
+      paid: false,
+      notes: "",
+    });
   return (
     <div className="search-container">
       <h3>Search Client:</h3>
