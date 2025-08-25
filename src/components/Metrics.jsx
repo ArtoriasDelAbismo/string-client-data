@@ -11,6 +11,8 @@ const Metrics = ({
   mostUsedRacket,
 }) => {
   return (
+    <div style={{display:'flex', width:'100%', justifyContent:'center'}}>
+
     <div className="metrics-container">
       <div className="metric-card">
         <div className="metric-icon">
@@ -66,6 +68,7 @@ const Metrics = ({
           <p className="metric-value">{mostUsedRacket}</p>
         </div>
       </div>
+    </div>
     </div>
   );
 };

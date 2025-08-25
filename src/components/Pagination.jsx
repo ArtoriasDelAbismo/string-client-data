@@ -3,7 +3,7 @@ import { PAGE_SIZE } from "../db";
 
 export default function Pagination({ page, setPage, totalCount }) {
   return (
-    <div className="pagination-container">
+    <div style={{marginBottom:'50px', marginTop:'50px'}} className="pagination-container">
       <button
         onClick={() => setPage((prev) => Math.max(1, prev - 1))}
         disabled={page === 1}

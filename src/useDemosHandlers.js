@@ -5,6 +5,7 @@ import {
   updateDemoEntry,
   countTotalDemos,
 } from "./db";
+import { supabase } from "./supaBase";
 
 export const useDemosHandlers = (initialData) => {
   const [formData, setFormData] = useState(initialData);
@@ -118,20 +119,25 @@ export const useDemosHandlers = (initialData) => {
   };
 
   const handleTogglePaid = async (id, currentStatus) => {
-    setUpdatingStatusId(id);
-    try {
-      const updated = await updateDemoEntry({ id, paid: !currentStatus });
-      if (updated) {
-        setSubmittedData((prev) =>
-          prev.map((entry) =>
-            entry.id === id ? { ...entry, paid: !currentStatus } : entry
-          )
-        );
-      }
-    } catch (error) {
-      console.error("Error updating paid status:", error);
-    } finally {
-      setUpdatingStatusId(null);
+    if (!Number.isInteger(id) || id < 0) {
+      console.error("🚫 Invalid ID passed to handleTogglePaid:", id);
+      return;
+    }
+
+    const { data, error } = await supabase
+      .from("demos-data")
+      .update({ paid: !currentStatus })
+      .eq("id", id)
+      .select();
+
+    if (error) {
+      console.error("❌ Failed to update paid status:", error.message);
+    } else {
+      setSubmittedData((prev) =>
+        prev.map((entry) =>
+          entry.id === id ? { ...entry, paid: !currentStatus } : entry
+        )
+      );
     }
   };
 

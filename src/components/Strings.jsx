@@ -17,6 +17,7 @@ export default function Strings() {
 
   const {
     searchTerm,
+    page,
     setSearchTerm,
     setPage,
     formData,
@@ -97,7 +98,7 @@ export default function Strings() {
             />
           )}
 
-          <Pagination />
+          <Pagination page={page} setPage={setPage} totalCount={totalCount}/>
         </div>
       </div>
     </>
