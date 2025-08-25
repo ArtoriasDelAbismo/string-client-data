@@ -79,22 +79,7 @@ export default function Strings() {
         />
 
         <div className="submitted-data-container">
-              <div className="search-container">
-      <h3>Search Client:</h3>
-      <input
-        className="search-input"
-        type="text"
-        value={searchTerm}
-        onChange={(e) => {
-          setSearchTerm(e.target.value.toLowerCase());
-          setPage(1);
-        }}
-      />
-      <button>
-        <i className="fa-solid fa-magnifying-glass"></i>
-      </button>
-    </div>
-
+        <Search searchTerm={searchTerm} setSearchTerm={setSearchTerm} setPage={setPage} />
           {loading ? (
             <div className="spinner"></div>
           ) : (
