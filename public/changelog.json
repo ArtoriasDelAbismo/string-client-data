@@ -25,6 +25,10 @@
     {
       "date": "2025-08-22",
       "description": "Component modular refactoring/rgba to hexa"
+    },
+    {
+      "date": "2025-08-26",
+      "description": "Fix demos submit issue"
     }
   ]
 }
