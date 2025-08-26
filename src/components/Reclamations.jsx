@@ -107,7 +107,7 @@ Saludos cordiales.`}
             { label: "Email", name: "email", type: "email" },
             { label: "Model", name: "model", type: "text" },
             { label: "Type", name: "type", type: "text" },
-            { label: "Notes", name: "notes", type: "notes" },
+            { label: "Notes", name: "notes", type: "text" },
           ].map(({ label, name, type }) => (
             <div key={name} className="form-field">
               <label>
