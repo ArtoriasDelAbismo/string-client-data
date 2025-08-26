@@ -15,7 +15,10 @@ export default function DemosForm({
   };
 
   return (
-    <form className="demos-form" onSubmit={handleSubmit}>
+    <form className="demos-form" onSubmit={(e) => {
+      e.preventDefault()
+      handleSubmit()
+    }}>
       {[
         { label: "Full Name", name: "fullname", type: "text" },
         { label: "Mail", name: "mail", type: "email" },

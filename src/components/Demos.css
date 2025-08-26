@@ -1,7 +1,7 @@
 .conditions-container {
   background-color: #333;
   color: #ffff;
-  padding: 20px;
+  padding: 0px;
   border-radius: 8px;
   margin-top: 20px;
   width: 60%;
@@ -22,6 +22,7 @@
   text-align: center;
   color: #ffc107;
   margin-bottom: 15px;
+  margin-left: 15px;
 }
 
 .conditions-container ul {
@@ -30,6 +31,7 @@
   align-items: start;
   list-style-type: none;
   padding: 0;
+  margin-left: 15px;
 }
 
 .conditions-container ul li {

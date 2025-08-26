@@ -74,7 +74,6 @@ export const useDemosHandlers = (initialData) => {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
     setLoading(true);
     try {
       const now = new Date();
