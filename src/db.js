@@ -131,6 +131,19 @@ export const countUnpaidEntries = async (searchTerm = "") => {
   }
 };
 
+export const fetchUnpaidEntries = async() => {
+  const { data, error } = await supabase
+  .from("string-client-data")
+  .select("*")
+  .eq("paid", false)
+
+  if (error){
+    console.error("Failed to fetch unpaid: ", error);
+    return []
+  }
+  return data
+}
+
 export const getMostUsed = async (column) => {
   try {
     const { data, error } = await supabase

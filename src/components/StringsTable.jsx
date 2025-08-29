@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { caliberOptions, tensionOptions } from "../data";
 
 export default function StringsTable({
@@ -12,7 +12,13 @@ export default function StringsTable({
   handleTogglePaid,
   handleComplete,
   isEditing,
-}) {
+  unpaidEntries,
+}) 
+
+{
+  const [showUnpaidOnly, setShowUnpaidOnly] = useState(false)
+  const displayedData = showUnpaidOnly ? unpaidEntries : submittedData;
+
   return (
     <div className="table-container">
       <table className="responsive-table">
@@ -28,12 +34,12 @@ export default function StringsTable({
             {!isEditing && <th>Date</th>}
             {!isEditing && <th>Time</th>}
             <th>Notes</th>
-            <th>Paid</th>
+            <th onClick={() => {setShowUnpaidOnly(!showUnpaidOnly)}} style={{cursor:'pointer'}} >Paid</th>
             <th>Done/Edit</th>
           </tr>
         </thead>
         <tbody style={{ color: "white" }}>
-          {submittedData.map((entry) => (
+          {displayedData.map((entry) => (
             <tr
               key={entry.id}
               className={entry.completed ? "completed-row" : ""}

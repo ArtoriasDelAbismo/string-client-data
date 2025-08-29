@@ -6,6 +6,7 @@ import {
   countTotalEntries,
   countUnpaidEntries,
   getMostUsed,
+  fetchUnpaidEntries,
 } from "./db";
 import { supabase } from "./supaBase";
 
@@ -23,6 +24,7 @@ export const useFormHandlers = (initialData, tableName) => {
   const [mostUsedString, setMostUsedString] = useState(null);
   const [mostUsedRacket, setMostUsedRacket] = useState(null);
   const [metricsLoading, setMetricsLoading] = useState(true);
+  const [unpaidEntries, setUnpaidEntries] = useState([])
 
   useEffect(() => {
     const fetchDataAndCounts = async () => {
@@ -56,6 +58,14 @@ export const useFormHandlers = (initialData, tableName) => {
 
     fetchDataAndCounts();
   }, [searchTerm, page]);
+
+  useEffect(() => {
+    const load = async() => {
+      const results = await fetchUnpaidEntries();
+      setUnpaidEntries(results)
+    }
+    load()
+  }, [])
 
   const handleChange = (e) => {
     setFormData((prev) => ({
@@ -221,5 +231,6 @@ export const useFormHandlers = (initialData, tableName) => {
     setSubmittedData,
     handleToggleCheck,
     handleTogglePaid,
+    unpaidEntries
   };
 };

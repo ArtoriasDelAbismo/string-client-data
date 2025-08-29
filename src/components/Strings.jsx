@@ -39,6 +39,7 @@ export default function Strings() {
     mostUsedString,
     mostUsedRacket,
     metricsLoading,
+    unpaidEntries,
   } = useFormHandlers({
     fullname: "",
     string: "",
@@ -95,6 +96,7 @@ export default function Strings() {
               handleTogglePaid={handleTogglePaid}
               handleComplete={handleComplete}
               isEditing={isEditing}
+              unpaidEntries={unpaidEntries}
             />
           )}
 
