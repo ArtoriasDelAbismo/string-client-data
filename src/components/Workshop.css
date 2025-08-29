@@ -11,7 +11,7 @@
   flex-wrap: wrap;
   margin-bottom: 20px;
   color: #fef000;
-
+  align-items: center;
 }
 
 .form-field {
@@ -37,15 +37,19 @@
 .fissure-selector-button {
   margin-bottom: 10px;
 }
+.fissure-image{
+  height: fit-content;
+}
 
 .selected-fissure-image {
   width: 100px;
   border-radius: 8px;
+  margin-top: 74px;
 }
 
 .submit-button-container {
   text-align: center;
-  margin-top: 74px;
+  margin-top: 18px;
 }
 
 
