@@ -1,7 +1,7 @@
 import React from "react";
-import ReclamationRow from "./ReclamationRow";
+import ClaimsRow from "./ClaimsRow";
 
-const ReclamationsTable = ({
+const ClaimsTable = ({
   submittedData,
   isEditingId,
   editData,
@@ -30,7 +30,7 @@ const ReclamationsTable = ({
         </thead>
         <tbody style={{ color: "white" }}>
           {submittedData.map((entry) => (
-            <ReclamationRow
+            <ClaimsRow
               key={entry.id}
               entry={entry}
               isEditingId={isEditingId}
@@ -47,4 +47,4 @@ const ReclamationsTable = ({
   );
 };
 
-export default ReclamationsTable;
+export default ClaimsTable;

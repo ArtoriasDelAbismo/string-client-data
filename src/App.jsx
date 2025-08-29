@@ -7,7 +7,7 @@ import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import Login from "./components/Login.jsx";
 import { AuthProvider } from "./context/AuthContext.jsx";
 import Footer from "./components/Footer.jsx";
-import Reclamations from "./components/Reclamations.jsx";
+import Claims from "./components/Claims.jsx";
 import Demos from "./components/Demos.jsx";
 import Changelog from "./components/Changelog.jsx";
 
@@ -44,10 +44,10 @@ function App() {
             }
           />
           <Route
-            path="/Reclamations"
+            path="/Claims"
             element={
               <ProtectedRoute>
-                <Reclamations />
+                <Claims />
               </ProtectedRoute>
             }
           />

@@ -6,7 +6,7 @@ import {
   countTotalReclamations,
 } from "./db";
 
-export const useReclamations = (initialData) => {
+export const useClaims = (initialData) => {
   const [formData, setFormData] = useState(initialData);
   const [submittedData, setSubmittedData] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");

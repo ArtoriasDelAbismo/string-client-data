@@ -1,11 +1,11 @@
 import React from "react";
-import { useReclamations } from "../useReclamations.js";
-import Navbar from "./Navbar";
-import ReclamationsTable from "./ReclamationsTable";
-import { PAGE_SIZE } from "../db";
-import "./Reclamations.css";
+import { useClaims } from "../useClaims.js";
+import Navbar from "./Navbar.jsx";
+import ClaimsTable from "./ClaimsTable.jsx";
+import { PAGE_SIZE } from "../db.js";
+import "./Claims.css";
 
-export default function Reclamations() {
+export default function Claims() {
   const {
     formData,
     submittedData,
@@ -26,7 +26,7 @@ export default function Reclamations() {
     handleResolved,
     updatingStatusId,
     loading,
-  } = useReclamations({
+  } = useClaims({
     fullname: "",
     phone: "",
     email: "",
@@ -155,7 +155,7 @@ Saludos cordiales.`}
           {loading ? (
             <div className="spinner"></div>
           ) : (
-            <ReclamationsTable
+            <ClaimsTable
               submittedData={submittedData}
               isEditingId={isEditingId}
               editData={editData}

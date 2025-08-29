@@ -25,9 +25,9 @@ export default function Home() {
       description: "keep track of reparations.",
     },
     {
-      to: "/reclamations",
+      to: "/claims",
       icon: <FaExclamationCircle className="dashboard-icon" />,
-      title: "Reclamations",
+      title: "Claims",
       description: "Handle customer claims and issues.",
     },
     {
