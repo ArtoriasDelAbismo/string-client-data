@@ -79,8 +79,8 @@ export const useDemosHandlers = (initialData) => {
       const now = new Date();
       const newEntry = {
         ...formData,
-        date: now.toLocaleDateString(),
-        time: now.toLocaleTimeString(),
+        date: now.toISOString().split("T")[0],
+        time: now.toTimeString().split(" ")[0].slice(0, 5),
         completed: false,
       };
       const addedEntry = await addDemoEntry(newEntry);
