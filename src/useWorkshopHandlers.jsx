@@ -4,10 +4,11 @@ import {
   updateWorkshopEntry,
   fetchWorkshopEntry,
   countTotalWorkshopEntries,
+  addEntry,
 } from "./db";
 import { supabase } from "./supaBase";
 
-export const useWorkshopHandlers = (initialData) => {
+export const useWorkshopHandlers = (initialData, tableName) => {
   const [formData, setFormData] = useState(initialData);
   const [submittedData, setSubmittedData] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -147,6 +148,36 @@ export const useWorkshopHandlers = (initialData) => {
     }
   };
 
+  const handleDuplicate = async(entryToDuplicate) => {
+    const now = new Date();
+    const currentDate = now.toISOString().split("T")[0];
+    const currentTime = now.toTimeString().split(" ")[0].slice(0, 5);
+
+    const newEntry = {
+      ...entryToDuplicate,
+      date: currentDate,
+      time: currentTime,
+      completed: false,
+    };
+    delete newEntry.id;
+    delete newEntry.created_at;
+
+    try {
+      const [savedEntry] = await addWorkshopEntry(newEntry);
+      if(page !== 1) {
+        setPage(1)
+      } else {
+        setSubmittedData((prev) => [savedEntry, ...prev]);
+        setTotalCount((prev) => prev + 1)
+      }
+    } catch (error) {
+      console.error("Failed to duplicate entry: ", error);
+      
+    }
+  }
+
+ 
+
   return {
     formData,
     submittedData,
@@ -170,5 +201,6 @@ export const useWorkshopHandlers = (initialData) => {
     setSearchTerm,
     setSubmittedData,
     handleToggleCheck,
+    handleDuplicate,
   };
 };

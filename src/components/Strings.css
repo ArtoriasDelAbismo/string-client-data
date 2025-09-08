@@ -112,6 +112,13 @@
   color: #ffff;
 }
 
+.action-buttons button {
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  
+}
+
 .pagination-container {
   margin-top: 20px;
   display: flex;

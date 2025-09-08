@@ -12,6 +12,8 @@ export default function WorkshopTable({
   handleUpdate,
   totalCount,
   setModalImage,
+  handleDuplicate,
+  handleDelete,
 }) {
   return (
     <div className="table-container">
@@ -167,6 +169,12 @@ export default function WorkshopTable({
                       )}
                       <button onClick={() => handleEdit(entry.id)}>
                         <i className="fa-solid fa-pen-to-square"></i>
+                      </button>
+                      <button onClick={() => handleDuplicate(entry)}>
+                        <i className="fa-solid fa-copy"></i>
+                      </button>
+                      <button onClick={() => handleDelete(entry.id)}>
+                        <i className="fa-solid fa-trash"></i>
                       </button>
                     </>
                   )}

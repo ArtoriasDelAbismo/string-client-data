@@ -13,6 +13,8 @@ export default function StringsTable({
   handleComplete,
   isEditing,
   unpaidEntries,
+  handleDuplicate,
+  handleDelete,
 }) 
 
 {
@@ -35,7 +37,7 @@ export default function StringsTable({
             {!isEditing && <th>Time</th>}
             <th>Notes</th>
             <th onClick={() => {setShowUnpaidOnly(!showUnpaidOnly)}} style={{cursor:'pointer'}} >Paid</th>
-            <th>Done/Edit</th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody style={{ color: "white" }}>
@@ -193,6 +195,12 @@ export default function StringsTable({
                     )}
                     <button onClick={() => handleEdit(entry.id)}>
                       <i className="fa-solid fa-pen-to-square"></i>
+                    </button>
+                    <button onClick={() => handleDuplicate(entry)}>
+                      <i className="fa-solid fa-copy"></i>
+                    </button>
+                    <button onClick={() => handleDelete(entry.id)}>
+                      <i className="fa-solid fa-trash"></i>
                     </button>
                   </div>
                 )}

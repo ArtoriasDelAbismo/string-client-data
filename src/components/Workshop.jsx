@@ -33,6 +33,8 @@ export default function Workshop() {
     page,
     setPage,
     totalCount,
+    handleDuplicate,
+    handleDelete,
   } = useWorkshopHandlers({
     lastName: "",
     fullname: "",
@@ -129,7 +131,7 @@ export default function Workshop() {
           {loading ? (
             <div className="spinner"></div>
           ) : (
-            <WorkshopTable submittedData={submittedData} editData={editData} handleEdit={handleEdit} handleComplete={handleComplete} handleEditChange={handleEditChange} handleToggleCheck={handleToggleCheck} handleUpdate={handleUpdate} page={page} totalCount={totalCount} isEditing={isEditing} setModalImage={setModalImage}/>
+            <WorkshopTable submittedData={submittedData} editData={editData} handleEdit={handleEdit} handleComplete={handleComplete} handleEditChange={handleEditChange} handleToggleCheck={handleToggleCheck} handleUpdate={handleUpdate} page={page} totalCount={totalCount} isEditing={isEditing} setModalImage={setModalImage} handleDuplicate={handleDuplicate} handleDelete={handleDelete}/>
 )}
 
           {modalImage && (

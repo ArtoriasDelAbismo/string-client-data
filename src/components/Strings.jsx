@@ -40,6 +40,8 @@ export default function Strings() {
     mostUsedRacket,
     metricsLoading,
     unpaidEntries,
+    handleDuplicate,
+    handleDelete,
   } = useFormHandlers({
     fullname: "",
     string: "",
@@ -97,6 +99,8 @@ export default function Strings() {
               handleComplete={handleComplete}
               isEditing={isEditing}
               unpaidEntries={unpaidEntries}
+              handleDuplicate={handleDuplicate}
+              handleDelete={handleDelete}
             />
           )}
 

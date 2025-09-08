@@ -204,6 +204,36 @@ export const useFormHandlers = (initialData, tableName) => {
     }
   };
 
+  const handleDuplicate = async (entryToDuplicate) => {
+    const now = new Date();
+    const currentDate = now.toISOString().split("T")[0];
+    const currentTime = now.toTimeString().split(" ")[0].slice(0, 5);
+
+    const newEntry = {
+      ...entryToDuplicate,
+      date: currentDate,
+      time: currentTime,
+      completed: false,
+    };
+    delete newEntry.id;
+    delete newEntry.created_at;
+
+
+    try {
+      const [savedEntry] = await addEntry(newEntry, tableName);
+      // Go back to the first page to see the new entry
+      if (page !== 1) {
+        setPage(1);
+      } else {
+        // If already on page 1, just add the new entry to the top
+        setSubmittedData((prev) => [savedEntry, ...prev]);
+        setTotalCount((prev) => prev + 1);
+      }
+    } catch (error) {
+      console.error("Failed to duplicate entry: ", error);
+    }
+  };
+
   return {
     formData,
     submittedData,
@@ -231,6 +261,9 @@ export const useFormHandlers = (initialData, tableName) => {
     setSubmittedData,
     handleToggleCheck,
     handleTogglePaid,
-    unpaidEntries
+
+    unpaidEntries,
+    handleDuplicate,
+    handleDelete,
   };
 };
