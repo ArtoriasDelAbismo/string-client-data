@@ -133,7 +133,7 @@ export default function WorkshopTable({
                 </>
               )}
               <td data-label="Actions">
-                <div className="action-buttons">
+                <div className="action-buttons workshop-row-actions">
                   {isEditingId === entry.id ? (
                     <>
                       <button onClick={handleUpdate}>

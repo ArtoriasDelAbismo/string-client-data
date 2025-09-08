@@ -19,7 +19,8 @@
   }
 }
 
-.action-buttons {
+.buttons-claims {
+  width:auto;
   display: flex;
   gap: 5px;
 }

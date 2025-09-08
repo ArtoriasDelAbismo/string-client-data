@@ -114,6 +114,12 @@
   justify-content: center;
 }
 
+.workshop-row-actions button {
+    width: 30px;
+  height: 30px;
+  padding: 0;
+}
+
 .image-modal {
   position: fixed;
   top: 0;

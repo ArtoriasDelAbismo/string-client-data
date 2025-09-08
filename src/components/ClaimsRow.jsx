@@ -106,7 +106,7 @@ const ReclamationRow = ({
       <td data-label="Status">{renderStatusContent(entry, isResolved)}</td>
       <td data-label="Actions">
         {isEditing ? (
-          <div className="action-buttons">
+          <div className="buttons-claims">
             <button onClick={handleUpdate}>
               <i className="fa-solid fa-check"></i>
             </button>
@@ -115,7 +115,7 @@ const ReclamationRow = ({
             </button>
           </div>
         ) : (
-          <div className="action-buttons">
+          <div className="buttons-claims">
             <button onClick={() => handleEdit(entry.id)}>
               <i className="fa-solid fa-pen-to-square"></i>
             </button>

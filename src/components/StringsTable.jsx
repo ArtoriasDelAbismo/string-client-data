@@ -161,7 +161,7 @@ export default function StringsTable({
               </td>
               <td data-label="Actions">
                 {isEditingId === entry.id ? (
-                  <div className="action-buttons">
+                  <div className="action-buttons string-row-actions">
                     <button onClick={handleUpdate}>
                       <i className="fa-solid fa-check"></i>
                     </button>
@@ -170,7 +170,7 @@ export default function StringsTable({
                     </button>
                   </div>
                 ) : (
-                  <div className="action-buttons">
+                  <div className="action-buttons string-row-actions">
                     {!entry.completed ? (
                       <button
                         onClick={() => {
