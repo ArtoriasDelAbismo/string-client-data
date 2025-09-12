@@ -24,18 +24,23 @@ def display_csv_tool():
 
     if uploaded_file is not None:
         try:
-            df = pd.read_csv(uploaded_file, index_col=0)
+            df = pd.read_csv(uploaded_file)
+            df.columns = df.columns.str.strip().str.lower()  # normalize headers
+
             if st.button("Show details"):
                 st.subheader("File details")
                 if "inventario" in df.columns:
-                    filtered_df = df[df["Inventario"] > 0]
+                    filtered_df = df[df["inventario"] > 0]
                     st.write(f"Total Products: {len(df)}")
-                    st.write(f"Existent products {len(filtered_df)}")
+                    st.write(f"Existent products: {len(filtered_df)}")
                     st.dataframe(filtered_df, use_container_width=True, height=600)
-                    st.write(f"Rows/Columns {filtered_df.shape}")
-                else: st.error("File must contain 'Inventario' column")
-        except Excepcion as e:
-            st.error(f"An error ocurred while processing the file: {e}")
+                    st.write(f"Rows/Columns: {filtered_df.shape}")
+                else:
+                    st.error("File must contain 'Inventario' column")
+        except Exception as e:
+            st.error(f"An error occurred while processing the file: {e}")
+
+
 
 def display_how_to_import():
     st.title("How to import file")
