@@ -156,7 +156,7 @@ export default function StringsTable({
                     backgroundColor: entry.paid ? "green" : "red",
                   }}
                 >
-                  {entry.paid ? "Paid" : "Unpaid"}
+                  {entry.paid ? "Paid" : "-"}
                 </button>
               </td>
               <td data-label="Actions">
