@@ -157,7 +157,7 @@ export default function DemosTable({ isEditingId, submittedData, editData, handl
                             <button onClick={() => handleEdit(entry.id)} style={{ color: "white" }}>
                               <i className="fa-solid fa-pen-to-square"></i>
                             </button>
-                            <button onClick={() => setConfirmId(entry.id)} style={{ color: "white", backgroundColor: "#c0392b" }}>
+                            <button onClick={() => setConfirmId(entry.id)} style={{ color: "white" }}>
                               <i className="fa-solid fa-trash"></i>
                             </button>
                           </div>
