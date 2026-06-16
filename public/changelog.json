@@ -2,6 +2,10 @@
   "features": [
     {
       "date": "2026-06-16",
+      "description": "Rediseño de la pantalla de inicio para que coincida con el estilo oscuro del resto de la app"
+    },
+    {
+      "date": "2026-06-16",
       "description": "Se pueden agregar y eliminar raquetas del catálogo de demos directamente desde la app"
     },
     {

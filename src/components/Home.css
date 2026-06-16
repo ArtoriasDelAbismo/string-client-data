@@ -1,19 +1,12 @@
-/* General Dashboard Container */
 .home-dashboard-container {
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 2rem 1rem;
-  background-color: #f4f7f6;
-  min-height: calc(100vh - 50px); 
-  margin-top: 100px;
-  margin-bottom: 100px;
-  border-radius: 16px;
-  background-color: #d1d1d1;
-
+  min-height: calc(100vh - 50px);
+  margin-top: 60px;
 }
 
-/* Dashboard Header */
 .home-dashboard-header {
   text-align: center;
   margin-bottom: 3rem;
@@ -21,16 +14,15 @@
 
 .home-dashboard-header h1 {
   font-size: 2.8rem;
-  color: #2c3e50;
+  color: #ffc107;
   margin-bottom: 0.5rem;
 }
 
 .home-dashboard-header p {
   font-size: 1.2rem;
-  color: #7f8c8d;
+  color: #aaa;
 }
 
-/* Grid for Dashboard Cards */
 .dashboard-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -39,14 +31,14 @@
   max-width: 1200px;
 }
 
-/* Individual Dashboard Card */
 .dashboard-card {
-  background-color: #ffffff;
+  background-color: #1e1e1e;
+  border: 1px solid #333;
   border-radius: 10px;
   padding: 2rem;
   text-align: center;
-  box-shadow: 0 4px 15px #00000014;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -55,38 +47,34 @@
 }
 
 .dashboard-card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 10px 25px #0000001f;
+  transform: translateY(-6px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+  border-color: #ffc107;
 }
 
-/* Remove underline from link */
 .dashboard-card-link {
   text-decoration: none;
   color: inherit;
 }
 
-/* Card Icon */
 .dashboard-icon {
   font-size: 3rem;
-  color: #3498db;
+  color: #ffc107;
   margin-bottom: 1.5rem;
 }
 
-/* Card Title */
 .dashboard-card h2 {
   font-size: 1.5rem;
-  color: #2c3e50;
+  color: white;
   margin-bottom: 0.75rem;
 }
 
-/* Card Description */
 .dashboard-card p {
   font-size: 1rem;
-  color: #7f8c8d;
+  color: #aaa;
   line-height: 1.5;
 }
 
-/* Responsive Design */
 @media (max-width: 768px) {
   .home-dashboard-header h1 {
     font-size: 2.2rem;
