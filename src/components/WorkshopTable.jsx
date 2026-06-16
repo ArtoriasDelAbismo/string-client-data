@@ -16,10 +16,16 @@ export default function WorkshopTable({
   handleDelete,
 }) {
   const [confirmId, setConfirmId] = useState(null);
+  const [confirmDuplicateEntry, setConfirmDuplicateEntry] = useState(null);
 
   const handleConfirmDelete = () => {
     handleDelete(confirmId);
     setConfirmId(null);
+  };
+
+  const handleConfirmDuplicate = () => {
+    handleDuplicate(confirmDuplicateEntry);
+    setConfirmDuplicateEntry(null);
   };
 
   return (
@@ -178,7 +184,7 @@ export default function WorkshopTable({
                       <button onClick={() => handleEdit(entry.id)}>
                         <i className="fa-solid fa-pen-to-square"></i>
                       </button>
-                      <button onClick={() => handleDuplicate(entry)}>
+                      <button onClick={() => setConfirmDuplicateEntry(entry)}>
                         <i className="fa-solid fa-copy"></i>
                       </button>
                       <button onClick={() => setConfirmId(entry.id)}>
@@ -213,6 +219,22 @@ export default function WorkshopTable({
                 Delete
               </button>
               <button onClick={() => setConfirmId(null)} style={{ color: "white", padding: "8px 20px" }}>
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {confirmDuplicateEntry !== null && (
+        <div className="modal-overlay">
+          <div className="modal-box">
+            <p style={{ marginBottom: "20px", fontSize: "1.1em" }}>Are you sure you want to duplicate this entry?</p>
+            <div style={{ display: "flex", gap: "12px", justifyContent: "center" }}>
+              <button onClick={handleConfirmDuplicate} style={{ backgroundColor: "#4caf50", color: "white", padding: "8px 20px" }}>
+                Duplicate
+              </button>
+              <button onClick={() => setConfirmDuplicateEntry(null)} style={{ color: "white", padding: "8px 20px" }}>
                 Cancel
               </button>
             </div>

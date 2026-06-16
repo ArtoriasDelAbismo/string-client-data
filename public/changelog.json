@@ -10,11 +10,15 @@
     },
     {
       "date": "2026-06-16",
-      "description": "Confirmación antes de eliminar cualquier entrada para evitar borrados accidentales"
+      "description": "Confirmación antes de eliminar o duplicar cualquier entrada para evitar acciones accidentales"
     },
     {
       "date": "2026-06-16",
       "description": "Notificaciones visuales al crear, editar, duplicar o eliminar entradas en todas las secciones"
+    },
+    {
+      "date": "2026-06-16",
+      "description": "Animación de apertura en todas las ventanas de confirmación"
     },
     {
       "date": "2025-09-08",

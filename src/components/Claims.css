@@ -25,6 +25,10 @@
   gap: 5px;
 }
 
+.buttons-claims button {
+  color: white;
+}
+
 .status-button {
   border: 1px solid white;
   color: white;
