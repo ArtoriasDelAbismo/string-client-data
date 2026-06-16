@@ -6,6 +6,12 @@ export default function DemosManager({ demosOptions, onAdd, onRemove }) {
   const [model, setModel] = useState("");
   const [existingBrand, setExistingBrand] = useState("");
   const [existingModel, setExistingModel] = useState("");
+  const [confirmRemove, setConfirmRemove] = useState(null);
+
+  const handleConfirmRemove = () => {
+    onRemove(confirmRemove.brand, confirmRemove.model);
+    setConfirmRemove(null);
+  };
 
   const handleAddToExisting = () => {
     const m = existingModel.trim();
@@ -24,7 +30,7 @@ export default function DemosManager({ demosOptions, onAdd, onRemove }) {
   };
 
   const handleRemoveModel = (brand, model) => {
-    onRemove(brand, model);
+    setConfirmRemove({ brand, model });
   };
 
   const inputStyle = { padding: "6px", borderRadius: "6px", width: "160px" };
@@ -124,6 +130,22 @@ export default function DemosManager({ demosOptions, onAdd, onRemove }) {
           </div>
         </div>
       </div>
+      {confirmRemove !== null && (
+        <div className="modal-overlay">
+          <div className="modal-box">
+            <p style={{ marginBottom: "8px", fontSize: "1.1em" }}>Are you sure you want to remove</p>
+            <p style={{ marginBottom: "20px", color: "#ffc107", fontWeight: "bold" }}>{confirmRemove.model}?</p>
+            <div style={{ display: "flex", gap: "12px", justifyContent: "center" }}>
+              <button onClick={handleConfirmRemove} style={{ backgroundColor: "#c0392b", color: "white", padding: "8px 20px" }}>
+                Remove
+              </button>
+              <button onClick={() => setConfirmRemove(null)} style={{ color: "white", padding: "8px 20px" }}>
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

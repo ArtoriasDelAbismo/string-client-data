@@ -18,10 +18,16 @@ export default function StringsTable({
 }) {
   const [showUnpaidOnly, setShowUnpaidOnly] = useState(false);
   const [confirmId, setConfirmId] = useState(null);
+  const [confirmDuplicateEntry, setConfirmDuplicateEntry] = useState(null);
 
   const handleConfirmDelete = () => {
     handleDelete(confirmId);
     setConfirmId(null);
+  };
+
+  const handleConfirmDuplicate = () => {
+    handleDuplicate(confirmDuplicateEntry);
+    setConfirmDuplicateEntry(null);
   };
   const displayedData = showUnpaidOnly ? unpaidEntries : submittedData;
 
@@ -201,7 +207,7 @@ export default function StringsTable({
                     <button onClick={() => handleEdit(entry.id)}>
                       <i className="fa-solid fa-pen-to-square"></i>
                     </button>
-                    <button onClick={() => handleDuplicate(entry)}>
+                    <button onClick={() => setConfirmDuplicateEntry(entry)}>
                       <i className="fa-solid fa-copy"></i>
                     </button>
                     <button onClick={() => setConfirmId(entry.id)}>
@@ -217,20 +223,30 @@ export default function StringsTable({
     </div>
 
     {confirmId !== null && (
-      <div style={{
-        position: "fixed", inset: 0, backgroundColor: "rgba(0,0,0,0.6)",
-        display: "flex", alignItems: "center", justifyContent: "center", zIndex: 1000,
-      }}>
-        <div style={{
-          backgroundColor: "#2a2a2a", color: "white", borderRadius: "10px",
-          padding: "28px 32px", textAlign: "center", minWidth: "280px",
-        }}>
+      <div className="modal-overlay">
+        <div className="modal-box">
           <p style={{ marginBottom: "20px", fontSize: "1.1em" }}>Are you sure you want to delete this entry?</p>
           <div style={{ display: "flex", gap: "12px", justifyContent: "center" }}>
             <button onClick={handleConfirmDelete} style={{ backgroundColor: "#c0392b", color: "white", padding: "8px 20px" }}>
               Delete
             </button>
             <button onClick={() => setConfirmId(null)} style={{ color: "white", padding: "8px 20px" }}>
+              Cancel
+            </button>
+          </div>
+        </div>
+      </div>
+    )}
+
+    {confirmDuplicateEntry !== null && (
+      <div className="modal-overlay">
+        <div className="modal-box">
+          <p style={{ marginBottom: "20px", fontSize: "1.1em" }}>Are you sure you want to duplicate this entry?</p>
+          <div style={{ display: "flex", gap: "12px", justifyContent: "center" }}>
+            <button onClick={handleConfirmDuplicate} style={{ backgroundColor: "#4caf50", color: "white", padding: "8px 20px" }}>
+              Duplicate
+            </button>
+            <button onClick={() => setConfirmDuplicateEntry(null)} style={{ color: "white", padding: "8px 20px" }}>
               Cancel
             </button>
           </div>
