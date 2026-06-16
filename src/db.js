@@ -416,7 +416,7 @@ export const fetchDemoEntry = async ({ searchTerm = "", page = 1 }) => {
 
 export const updateDemoEntry = async (entry) => {
   try {
-    const { data, error } = supabase
+    const { data, error } = await supabase
     .from('demos-data')
     .update(entry)
     .eq("id", entry.id)
@@ -455,6 +455,116 @@ export const countTotalDemos = async (searchTerm = "") => {
   } catch (err) {
     console.error("Unexpected error counting demos:", err);
     return 0;
+  }
+};
+
+export const deleteDemoEntry = async (id) => {
+  try {
+    const { error } = await supabase.from("demos-data").delete().eq("id", id);
+    if (error) {
+      console.error("Error deleting demo entry:", error.message);
+      return false;
+    }
+    return true;
+  } catch (err) {
+    console.error("Unexpected error deleting demo entry:", err);
+    return false;
+  }
+};
+
+export const fetchDemoCatalog = async () => {
+  try {
+    const { data, error } = await supabase
+      .from("demo_models")
+      .select("name, demo_brands(name)")
+      .order("name");
+
+    if (error) {
+      console.error("Error fetching demo catalog:", error.message);
+      return [];
+    }
+
+    const grouped = {};
+    for (const row of data) {
+      const brand = row.demo_brands.name;
+      if (!grouped[brand]) grouped[brand] = [];
+      grouped[brand].push(row.name);
+    }
+
+    return Object.entries(grouped).map(([brand, models]) => ({ brand, models }));
+  } catch (err) {
+    console.error("Unexpected error fetching demo catalog:", err);
+    return [];
+  }
+};
+
+export const addDemoCatalogModel = async (brandName, modelName) => {
+  try {
+    let { data: brand, error: brandError } = await supabase
+      .from("demo_brands")
+      .select("id")
+      .eq("name", brandName)
+      .single();
+
+    if (brandError || !brand) {
+      const { data: newBrand, error: insertError } = await supabase
+        .from("demo_brands")
+        .insert({ name: brandName })
+        .select("id")
+        .single();
+      if (insertError) throw insertError;
+      brand = newBrand;
+    }
+
+    const { error } = await supabase
+      .from("demo_models")
+      .insert({ brand_id: brand.id, name: modelName });
+
+    if (error) {
+      console.error("Error adding demo model:", error.message);
+      return false;
+    }
+    return true;
+  } catch (err) {
+    console.error("Unexpected error adding demo model:", err);
+    return false;
+  }
+};
+
+export const removeDemoCatalogModel = async (brandName, modelName) => {
+  try {
+    const { data: brand, error: brandError } = await supabase
+      .from("demo_brands")
+      .select("id")
+      .eq("name", brandName)
+      .single();
+
+    if (brandError || !brand) return false;
+
+    const { error } = await supabase
+      .from("demo_models")
+      .delete()
+      .eq("brand_id", brand.id)
+      .eq("name", modelName);
+
+    if (error) {
+      console.error("Error removing demo model:", error.message);
+      return false;
+    }
+
+    const { count } = await supabase
+      .from("demo_models")
+      .select("*", { count: "exact", head: true })
+      .eq("brand_id", brand.id);
+
+    if (count === 0) {
+      await supabase.from("demo_brands").delete().eq("id", brand.id);
+    }
+
+    return true;
+  } catch (err) {
+    console.error("Unexpected error removing demo model:", err);
+    return false;
   }
 };
 

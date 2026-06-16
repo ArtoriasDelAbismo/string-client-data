@@ -1,47 +1,66 @@
 {
   "features": [
     {
-      "date": "2025-07-30",
-      "description": "Reclamations Outcome"
+      "date": "2026-06-16",
+      "description": "Se pueden agregar y eliminar raquetas del catálogo de demos directamente desde la app"
     },
     {
-      "date": "2025-07-28",
-      "description": "New dashboard layout"
+      "date": "2026-06-16",
+      "description": "Nuevas raquetas de demo disponibles: HEAD, Wilson, Babolat y Yonex"
     },
     {
-      "date": "2025-08-6",
-      "description": "Demos section"
+      "date": "2026-06-16",
+      "description": "Confirmación antes de eliminar cualquier entrada para evitar borrados accidentales"
     },
     {
-      "date": "2025-08-22",
-      "description": "Streamlit CSV tool adition"
-    },
-        {
-      "date": "2025-08-29",
-      "description": "add unpaid filter"
+      "date": "2026-06-16",
+      "description": "Notificaciones visuales al crear, editar, duplicar o eliminar entradas en todas las secciones"
     },
     {
       "date": "2025-09-08",
-      "description": "Add duplicate/delete entry options"
+      "description": "Opción para duplicar y eliminar entradas"
+    },
+    {
+      "date": "2025-08-29",
+      "description": "Filtro para ver solo entradas sin pagar"
+    },
+    {
+      "date": "2025-08-22",
+      "description": "Herramienta Streamlit para gestión de datos CSV"
+    },
+    {
+      "date": "2025-08-06",
+      "description": "Nueva sección de Demos"
+    },
+    {
+      "date": "2025-07-28",
+      "description": "Nuevo diseño del panel principal"
+    },
+    {
+      "date": "2025-07-30",
+      "description": "Resultados de reclamaciones"
     }
   ],
   "bugFixes": [
     {
-      "date": "2025-07-29",
-      "description": "Fix table overflow"
+      "date": "2026-06-16",
+      "description": "Corregido el botón de guardar cambios al editar entradas en Demos y Workshop"
     },
     {
-      "date": "2025-08-22",
-      "description": "Component modular refactoring/rgba to hexa"
+      "date": "2025-08-29",
+      "description": "Corrección de imagen modal y altura de imágenes de fisuras"
     },
     {
       "date": "2025-08-26",
-      "description": "Fix demos submit issue"
+      "description": "Corrección al enviar formulario de demos"
     },
-        {
-      "date": "2025-08-29",
-      "description": "Fix modal image not showing/fix fissure site images height"
+    {
+      "date": "2025-08-22",
+      "description": "Refactorización de componentes y corrección de colores"
+    },
+    {
+      "date": "2025-07-29",
+      "description": "Corrección de desbordamiento de tabla"
     }
-
   ]
 }

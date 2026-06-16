@@ -15,13 +15,18 @@ export default function StringsTable({
   unpaidEntries,
   handleDuplicate,
   handleDelete,
-}) 
+}) {
+  const [showUnpaidOnly, setShowUnpaidOnly] = useState(false);
+  const [confirmId, setConfirmId] = useState(null);
 
-{
-  const [showUnpaidOnly, setShowUnpaidOnly] = useState(false)
+  const handleConfirmDelete = () => {
+    handleDelete(confirmId);
+    setConfirmId(null);
+  };
   const displayedData = showUnpaidOnly ? unpaidEntries : submittedData;
 
   return (
+    <>
     <div className="table-container">
       <table className="responsive-table">
         <thead>
@@ -199,7 +204,7 @@ export default function StringsTable({
                     <button onClick={() => handleDuplicate(entry)}>
                       <i className="fa-solid fa-copy"></i>
                     </button>
-                    <button onClick={() => handleDelete(entry.id)}>
+                    <button onClick={() => setConfirmId(entry.id)}>
                       <i className="fa-solid fa-trash"></i>
                     </button>
                   </div>
@@ -210,5 +215,28 @@ export default function StringsTable({
         </tbody>
       </table>
     </div>
+
+    {confirmId !== null && (
+      <div style={{
+        position: "fixed", inset: 0, backgroundColor: "rgba(0,0,0,0.6)",
+        display: "flex", alignItems: "center", justifyContent: "center", zIndex: 1000,
+      }}>
+        <div style={{
+          backgroundColor: "#2a2a2a", color: "white", borderRadius: "10px",
+          padding: "28px 32px", textAlign: "center", minWidth: "280px",
+        }}>
+          <p style={{ marginBottom: "20px", fontSize: "1.1em" }}>Are you sure you want to delete this entry?</p>
+          <div style={{ display: "flex", gap: "12px", justifyContent: "center" }}>
+            <button onClick={handleConfirmDelete} style={{ backgroundColor: "#c0392b", color: "white", padding: "8px 20px" }}>
+              Delete
+            </button>
+            <button onClick={() => setConfirmId(null)} style={{ color: "white", padding: "8px 20px" }}>
+              Cancel
+            </button>
+          </div>
+        </div>
+      </div>
+    )}
+    </>
   );
 }

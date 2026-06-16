@@ -1,11 +1,19 @@
-import React from 'react'
+import React, { useState } from 'react'
 
-export default function DemosTable({ isEditingId, submittedData, editData, handleEditChange, handleToggleCheck, handleTogglePaid, handleEdit, handleUpdate }) {
+export default function DemosTable({ isEditingId, submittedData, editData, handleEditChange, handleToggleCheck, handleTogglePaid, handleDelete, handleEdit, handleUpdate }) {
+  const [confirmId, setConfirmId] = useState(null);
+
+  const handleConfirmDelete = () => {
+    handleDelete(confirmId);
+    setConfirmId(null);
+  };
+
   return (
+    <>
             <div className="table-container">
               <table className="responsive-table">
                 <thead>
-                  <tr style={{ color: "black" }}>
+                  <tr style={{ color: "white" }}>
                     <th>ID</th>
                     <th>Full Name</th>
                     <th>Mail</th>
@@ -104,10 +112,10 @@ export default function DemosTable({ isEditingId, submittedData, editData, handl
                       <td data-label="Actions">
                         {isEditingId === entry.id ? (
                           <div className="action-buttons">
-                            <button onClick={handleUpdate}>
+                            <button onClick={handleUpdate} style={{ color: "white" }}>
                               <i className="fa-solid fa-check"></i>
                             </button>
-                            <button onClick={() => handleEdit(null)}>
+                            <button onClick={() => handleEdit(null)} style={{ color: "white" }}>
                               <i className="fa-solid fa-xmark"></i>
                             </button>
                           </div>
@@ -118,6 +126,7 @@ export default function DemosTable({ isEditingId, submittedData, editData, handl
                                 onClick={() => {
                                   handleToggleCheck(entry.id, entry.completed);
                                 }}
+                                style={{ color: "white" }}
                               >
                                 <a
                                   href={
@@ -140,12 +149,16 @@ export default function DemosTable({ isEditingId, submittedData, editData, handl
                                 onClick={() =>
                                   handleToggleCheck(entry.id, entry.completed)
                                 }
+                                style={{ color: "white" }}
                               >
                                 <i className="fa-solid fa-xmark"></i>
                               </button>
                             )}
-                            <button onClick={() => handleEdit(entry.id)}>
+                            <button onClick={() => handleEdit(entry.id)} style={{ color: "white" }}>
                               <i className="fa-solid fa-pen-to-square"></i>
+                            </button>
+                            <button onClick={() => setConfirmId(entry.id)} style={{ color: "white", backgroundColor: "#c0392b" }}>
+                              <i className="fa-solid fa-trash"></i>
                             </button>
                           </div>
                         )}
@@ -164,5 +177,28 @@ export default function DemosTable({ isEditingId, submittedData, editData, handl
                 }}
               ></div>
             </div>
+
+            {confirmId !== null && (
+              <div style={{
+                position: "fixed", inset: 0, backgroundColor: "rgba(0,0,0,0.6)",
+                display: "flex", alignItems: "center", justifyContent: "center", zIndex: 1000,
+              }}>
+                <div style={{
+                  backgroundColor: "#2a2a2a", color: "white", borderRadius: "10px",
+                  padding: "28px 32px", textAlign: "center", minWidth: "280px",
+                }}>
+                  <p style={{ marginBottom: "20px", fontSize: "1.1em" }}>Are you sure you want to delete this entry?</p>
+                  <div style={{ display: "flex", gap: "12px", justifyContent: "center" }}>
+                    <button onClick={handleConfirmDelete} style={{ backgroundColor: "#c0392b", color: "white", padding: "8px 20px" }}>
+                      Delete
+                    </button>
+                    <button onClick={() => setConfirmId(null)} style={{ color: "white", padding: "8px 20px" }}>
+                      Cancel
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+    </>
   )
 }

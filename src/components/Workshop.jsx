@@ -131,7 +131,7 @@ export default function Workshop() {
           {loading ? (
             <div className="spinner"></div>
           ) : (
-            <WorkshopTable submittedData={submittedData} editData={editData} handleEdit={handleEdit} handleComplete={handleComplete} handleEditChange={handleEditChange} handleToggleCheck={handleToggleCheck} handleUpdate={handleUpdate} page={page} totalCount={totalCount} isEditing={isEditing} setModalImage={setModalImage} handleDuplicate={handleDuplicate} handleDelete={handleDelete}/>
+            <WorkshopTable submittedData={submittedData} editData={editData} handleEdit={handleEdit} handleComplete={handleComplete} handleEditChange={handleEditChange} handleToggleCheck={handleToggleCheck} handleUpdate={handleUpdate} page={page} totalCount={totalCount} isEditing={isEditing} isEditingId={isEditingId} setModalImage={setModalImage} handleDuplicate={handleDuplicate} handleDelete={handleDelete}/>
 )}
 
           {modalImage && (

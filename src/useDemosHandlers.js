@@ -3,11 +3,14 @@ import {
   addDemoEntry,
   fetchDemoEntry,
   updateDemoEntry,
+  deleteDemoEntry,
   countTotalDemos,
 } from "./db";
 import { supabase } from "./supaBase";
+import { useSnackbar } from "notistack";
 
 export const useDemosHandlers = (initialData) => {
+  const { enqueueSnackbar } = useSnackbar();
   const [formData, setFormData] = useState(initialData);
   const [submittedData, setSubmittedData] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -65,9 +68,13 @@ export const useDemosHandlers = (initialData) => {
           )
         );
         setIsEditingId(null);
+        enqueueSnackbar("Demo updated successfully!", { variant: "success" });
+      } else {
+        enqueueSnackbar("Failed to update demo.", { variant: "error" });
       }
     } catch (error) {
       console.error("Error updating data:", error);
+      enqueueSnackbar("Unexpected error updating demo.", { variant: "error" });
     } finally {
       setLoading(false);
     }
@@ -87,9 +94,13 @@ export const useDemosHandlers = (initialData) => {
       if (addedEntry) {
         setSubmittedData((prev) => [addedEntry[0], ...prev]);
         setFormData(initialData);
+        enqueueSnackbar("Demo added successfully!", { variant: "success" });
+      } else {
+        enqueueSnackbar("Failed to add demo.", { variant: "error" });
       }
     } catch (error) {
       console.error("Error submitting data:", error);
+      enqueueSnackbar("Unexpected error adding demo.", { variant: "error" });
     } finally {
       setLoading(false);
     }
@@ -114,6 +125,16 @@ export const useDemosHandlers = (initialData) => {
       console.error("Error updating status:", error);
     } finally {
       setUpdatingStatusId(null);
+    }
+  };
+
+  const handleDelete = async (id) => {
+    const ok = await deleteDemoEntry(id);
+    if (ok) {
+      setSubmittedData((prev) => prev.filter((entry) => entry.id !== id));
+      enqueueSnackbar("Demo deleted.", { variant: "info" });
+    } else {
+      enqueueSnackbar("Failed to delete demo.", { variant: "error" });
     }
   };
 
@@ -166,5 +187,6 @@ export const useDemosHandlers = (initialData) => {
     handleSubmit,
     handleToggleCheck,
     handleTogglePaid,
+    handleDelete,
   };
 };

@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ls -la \"\\\\\\\\wsl.localhost\\\\Debian\\\\home\\\\jero\\\\Documents\\\\string-client-data\")",
+      "Bash(ls -la \"\\\\\\\\wsl.localhost\\\\Debian\\\\home\\\\jero\\\\Documents\\\\string-client-data\\\\src\")",
+      "Bash(ls -la \"\\\\\\\\wsl.localhost\\\\Debian\\\\home\\\\jero\\\\Documents\\\\string-client-data\\\\src\\\\components\")",
+      "Bash(ls -la \"\\\\\\\\wsl.localhost\\\\Debian\\\\home\\\\jero\\\\Documents\\\\string-client-data\\\\src\\\\context\")",
+      "Bash(ls -la \"\\\\\\\\wsl.localhost\\\\Debian\\\\home\\\\jero\\\\Documents\\\\string-client-data\\\\public\")",
+      "Bash(ls -la \"\\\\\\\\wsl.localhost\\\\Debian\\\\home\\\\jero\\\\Documents\\\\string-client-data\\\\streamlit\")",
+      "Bash(ls -la \"\\\\\\\\wsl.localhost\\\\Debian\\\\home\\\\jero\\\\Documents\\\\string-client-data\\\\supabase\")"
+    ]
+  }
+}

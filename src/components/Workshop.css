@@ -36,6 +36,12 @@
 
 .fissure-selector-button {
   margin-bottom: 10px;
+  color: white;
+}
+
+.submit-button-container button,
+.search-container button {
+  color: white;
 }
 .fissure-image{
   height: fit-content;
@@ -115,9 +121,10 @@
 }
 
 .workshop-row-actions button {
-    width: 30px;
+  width: 30px;
   height: 30px;
   padding: 0;
+  color: white;
 }
 
 .image-modal {

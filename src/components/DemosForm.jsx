@@ -1,12 +1,12 @@
 import React from "react";
 import { caliberOptions } from "../data";
 import { tensionOptions } from "../data";
-import { demosOptions } from "../data";
 
 export default function DemosForm({
   handleChange,
   handleSubmit,
   formData,
+  demosOptions,
 }) {
   const selectFields = {
     caliber: caliberOptions,
@@ -42,7 +42,7 @@ export default function DemosForm({
                   </option>
                 ))}
               </select>
-            ) : type === "notes" ? (
+            ) : name === "notes" ? (
               <textarea
                 name={name}
                 value={formData[name]}

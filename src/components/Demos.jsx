@@ -2,12 +2,42 @@ import { useDemosHandlers } from "../useDemosHandlers.js";
 import Navbar from "./Navbar";
 import "./Demos.css";
 import DemosForm from "./DemosForm.jsx";
+import DemosManager from "./DemosManager.jsx";
 import Search from "./Search.jsx";
 import DemosTable from "./DemosTable.jsx";
 import Pagination from "./Pagination.jsx";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { fetchDemoCatalog, addDemoCatalogModel, removeDemoCatalogModel } from "../db.js";
+import { useSnackbar } from "notistack";
 
 export default function Demos() {
+  const { enqueueSnackbar } = useSnackbar();
+  const [demosOptions, setDemosOptions] = useState([]);
+
+  useEffect(() => {
+    fetchDemoCatalog().then(setDemosOptions);
+  }, []);
+
+  const handleAddModel = async (brandName, modelName) => {
+    const ok = await addDemoCatalogModel(brandName, modelName);
+    if (ok) {
+      fetchDemoCatalog().then(setDemosOptions);
+      enqueueSnackbar(`${modelName} added to ${brandName}!`, { variant: "success" });
+    } else {
+      enqueueSnackbar("Failed to add model.", { variant: "error" });
+    }
+  };
+
+  const handleRemoveModel = async (brandName, modelName) => {
+    const ok = await removeDemoCatalogModel(brandName, modelName);
+    if (ok) {
+      fetchDemoCatalog().then(setDemosOptions);
+      enqueueSnackbar(`${modelName} removed.`, { variant: "info" });
+    } else {
+      enqueueSnackbar("Failed to remove model.", { variant: "error" });
+    }
+  };
+
   const {
     formData,
     submittedData,
@@ -20,6 +50,7 @@ export default function Demos() {
     handleEdit,
     handleToggleCheck,
     handleTogglePaid,
+    handleDelete,
     handleEditChange,
     setSearchTerm,
     page,
@@ -37,8 +68,6 @@ export default function Demos() {
     paid: false,
   });
 
-  const [open, setOpen] = useState(false);
-
   return (
     <>
       <Navbar />
@@ -48,38 +77,10 @@ export default function Demos() {
           handleChange={handleChange}
           handleSubmit={handleSubmit}
           formData={formData}
+          demosOptions={demosOptions}
         />
-        <div className="conditions-wrapper">
-          <div className="conditions-container">
-            <h2 onClick={() => {setOpen(!open)}}
-              style={{ cursor:'pointer', userSelect:'none', height:'35px' }}
-              >Condiciones {open ? "▲" : "▼"}</h2>
 
-              {open && (
-                <ul>
-                  <li>
-                    <b>Costo del Demo:</b> $10.000 por raqueta.
-                  </li>
-                  <li>
-                    <b>Período de Prueba:</b> 3 días.
-                  </li>
-                  <li>
-                    <b>Recargo por Demora:</b> Se cobrará un adicional de $5.000 por
-                    cada día posterior a los 3 días iniciales.
-                  </li>
-                  <li>
-                    <b>Descuento por Compra:</b> El costo del alquiler se descontará
-                    del precio final si el cliente decide comprar la raqueta.
-                  </li>
-                  <li>
-                    <b>No Reembolsable:</b> El costo del alquiler no será
-                    reembolsado si el cliente no realiza la compra.
-                  </li>
-                </ul>
-
-              )}
-          </div>
-        </div>
+        <DemosManager demosOptions={demosOptions} onAdd={handleAddModel} onRemove={handleRemoveModel} />
 
         <div className="submitted-data-container">
           <Search searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
@@ -94,6 +95,7 @@ export default function Demos() {
               handleEditChange={handleEditChange}
               handleToggleCheck={handleToggleCheck}
               handleTogglePaid={handleTogglePaid}
+              handleDelete={handleDelete}
               handleEdit={handleEdit}
               handleUpdate={handleUpdate}
             />

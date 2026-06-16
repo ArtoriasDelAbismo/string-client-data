@@ -9,8 +9,10 @@ import {
   fetchUnpaidEntries,
 } from "./db";
 import { supabase } from "./supaBase";
+import { useSnackbar } from "notistack";
 
 export const useFormHandlers = (initialData, tableName) => {
+  const { enqueueSnackbar } = useSnackbar();
   const [formData, setFormData] = useState(initialData);
   const [submittedData, setSubmittedData] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -98,8 +100,10 @@ export const useFormHandlers = (initialData, tableName) => {
       }
 
       setFormData(initialData);
+      enqueueSnackbar("Entry added successfully!", { variant: "success" });
     } catch (error) {
       console.error("Failed to add entry: ", error);
+      enqueueSnackbar("Failed to add entry.", { variant: "error" });
     }
   };
 
@@ -118,12 +122,13 @@ export const useFormHandlers = (initialData, tableName) => {
 
     if (error) {
       console.error("❌ Failed to delete entry:", error.message);
+      enqueueSnackbar("Failed to delete entry.", { variant: "error" });
       return;
     }
 
     setSubmittedData((prev) => prev.filter((entry) => entry.id !== id));
-    setTotalCount((prev) => prev - 1); // Decrement total count
-    console.log("🗑️ Successfully deleted entry with ID:", id);
+    setTotalCount((prev) => prev - 1);
+    enqueueSnackbar("Entry deleted.", { variant: "info" });
   };
 
   const handleSearch = (e) => {
@@ -176,8 +181,10 @@ export const useFormHandlers = (initialData, tableName) => {
       );
       setSubmittedData(updatedList);
       setIsEditingId(null);
+      enqueueSnackbar("Entry updated successfully!", { variant: "success" });
     } else {
       console.error("❌ Update failed: updateEntry returned false");
+      enqueueSnackbar("Failed to update entry.", { variant: "error" });
     }
   };
 
@@ -229,8 +236,10 @@ export const useFormHandlers = (initialData, tableName) => {
         setSubmittedData((prev) => [savedEntry, ...prev]);
         setTotalCount((prev) => prev + 1);
       }
+      enqueueSnackbar("Entry duplicated successfully!", { variant: "success" });
     } catch (error) {
       console.error("Failed to duplicate entry: ", error);
+      enqueueSnackbar("Failed to duplicate entry.", { variant: "error" });
     }
   };
 
